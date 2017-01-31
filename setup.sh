@@ -26,6 +26,11 @@ gem install pry
 gem install rails
 gem install passenger
 
+# java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+
 # elastic
 wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 sudo apt-get install apt-transport-https
