@@ -20,9 +20,6 @@ alias ta='tmux attach -t '
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
-source ~/.SIGMA_ENV
-source ~/.personal
-
 # COMPLETION SETTINGS
 # add custom completion scripts
 fpath=(~/.zsh/completion $fpath)
@@ -34,4 +31,7 @@ compinit
 # show completion menu when number of options is at least 2
 zstyle ':completion:*' menu select=2
 zstyle ":completion:*:descriptions" format "%B%d%b"
+
+# personal
+source ~/.personal
 
