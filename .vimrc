@@ -20,6 +20,8 @@ set background=dark
 set number
 set noswapfile
 
+let mapleader=","
+
 """ VUNDLE START
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -50,6 +52,14 @@ syntax on
 
 """ VUNDLE SETUP START
 
+" vim-fugitive
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gp :Git push<CR>
+
 " vim-airline
 set laststatus=2
 let g:airline_theme='badwolf'
@@ -67,5 +77,3 @@ autocmd Filetype javascript setlocal ts=4 sw=4 sts=0 noexpandtab
 
 map <F1> <ESC>:help<CR>
 map <C-n> <ESC>:NERDTree<CR>
-let mapleader=","
-
