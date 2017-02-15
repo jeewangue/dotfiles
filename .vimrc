@@ -18,7 +18,7 @@ set showcmd
 set hlsearch
 set background=dark
 set number
-set noswapfile
+set swapfile
 
 let mapleader=","
 
@@ -62,8 +62,11 @@ nnoremap <leader>gp :Git push<CR>
 
 " vim-airline
 set laststatus=2
-let g:airline_theme='badwolf'
-let g:airline_powerline_fonts=1
+let g:airline_theme = 'badwolf'
+let g:airline_powerline_fonts = 1
+
+" bufferline
+let g:bufferline_echo = 0
 
 " you complete me
 let g:ycm_python_binary_path = 'python'
