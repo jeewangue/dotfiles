@@ -18,6 +18,7 @@ source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
 export EDITOR=vim
+export GPG_TTY=$(tty)
 
 function zle-keymap-select() { zle reset-prompt; zle -R; }
 zle -N zle-keymap-select

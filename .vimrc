@@ -19,6 +19,7 @@ set hlsearch
 set background=dark
 set number
 set swapfile
+set wildmenu
 
 let mapleader=","
 

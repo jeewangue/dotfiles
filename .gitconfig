@@ -6,5 +6,9 @@
 [user]
 	name = Jee Wan Gue
 	email = jeewangue@gmail.com
+	signingkey = ABBA73AF9D947ED4
 [core]
 	editor = vim
+[commit]
+	gpgsign = true
+
