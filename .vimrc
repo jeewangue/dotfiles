@@ -39,6 +39,8 @@ Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-haml'
 Plugin 'tpope/vim-endwise'
 Plugin 'vim-ruby/vim-ruby'
+
+Plugin 'chrisbra/csv.vim'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Plugin 'scrooloose/nerdtree'
