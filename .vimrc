@@ -36,6 +36,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
+Plugin 'gikmx/ctrlp-obsession'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-haml'
@@ -63,6 +64,9 @@ nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
+
+" ctrlp-obsession
+nnoremap <Leader>ss :CtrlPObsession<CR>
 
 " vim-airline
 set laststatus=2
