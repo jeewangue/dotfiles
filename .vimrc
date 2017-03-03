@@ -33,7 +33,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-Plugin 'bling/vim-bufferline'
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
@@ -59,15 +58,14 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gp :Git push<CR>
 
 " vim-airline
 set laststatus=2
 let g:airline_theme = 'badwolf'
 let g:airline_powerline_fonts = 1
-
-" bufferline
-let g:bufferline_echo = 0
+let g:airline#extensions#tabline#enabled = 1
 
 " you complete me
 let g:ycm_python_binary_path = 'python'
