@@ -60,7 +60,6 @@ nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
-nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gp :Git push<CR>
 
 " vim-airline
