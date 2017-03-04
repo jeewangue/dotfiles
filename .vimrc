@@ -30,25 +30,26 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-
 Plugin 'jeetsukumaran/vim-buffergator'
 Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 Plugin 'gikmx/ctrlp-obsession'
+Plugin 'mbbill/undotree'
+
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-haml'
 Plugin 'tpope/vim-endwise'
 Plugin 'vim-ruby/vim-ruby'
-
 Plugin 'chrisbra/csv.vim'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 Plugin 'scrooloose/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'Valloric/YouCompleteMe'
+
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 call vundle#end()
 filetype plugin indent on
@@ -66,7 +67,14 @@ nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
 
 " ctrlp-obsession
-nnoremap <Leader>ss :CtrlPObsession<CR>
+nnoremap <leader>ss :CtrlPObsession<CR>
+
+" undotree
+if has("persistent_undo")
+	set undodir=~/.vim/.undodir/
+	set undofile
+endif
+nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
 
 " vim-airline
 set laststatus=2
