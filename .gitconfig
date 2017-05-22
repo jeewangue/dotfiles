@@ -3,12 +3,11 @@
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	conflicts = diff --name-only --diff-filter=U
-[user]
-	name = Jee Wan Gue
-	email = jeewangue@gmail.com
-	signingkey = ABBA73AF9D947ED4
+	dt = difftool
+	s = status
 [core]
 	editor = vim
-[commit]
-	gpgsign = true
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[diff]
+	tool = vimdiff
 
