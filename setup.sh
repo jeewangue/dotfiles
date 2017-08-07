@@ -9,7 +9,7 @@ cp -v "$BASEDIR/.tmux.conf" "$HOME/.tmux.conf"
 
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install -y build-essential git zsh tmux openssl autojump vim tree htop imagemagick sqlite3 graphviz nodejs ruby
+sudo apt-get install -y build-essential git zsh tmux openssl autojump vim tree htop imagemagick sqlite3 graphviz ruby
 sudo apt-get install -y nginx postgresql postgresql-server-dev-all redis-server libmysqlclient-dev 
 sudo apt-get install -y diff-so-fancy
 
@@ -49,15 +49,22 @@ sudo add-apt-repository ppa:webupd8team/java
 sudo apt-get update
 sudo apt-get install oracle-java8-installer
 
+# nodejs
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
 # elastic
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-sudo apt-get update
-sudo apt-get install elasticsearch
-sudo apt-get install logstash
-sudo apt-get install kibana
-sudo apt-get install filebeat
-sudo apt-get install metricbeat
-sudo apt-get install packetbeat
+read -r -p "[install] Install ElasticSearch? [y/N] " response
+if [ "$response" = "y" ]; then
+	wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+	sudo apt-get install apt-transport-https
+	echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+	sudo apt-get update
+	sudo apt-get install elasticsearch
+	sudo apt-get install logstash
+	sudo apt-get install kibana
+	sudo apt-get install filebeat
+	sudo apt-get install metricbeat
+	sudo apt-get install packetbeat
+fi
 
