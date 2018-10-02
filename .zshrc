@@ -3,16 +3,14 @@ export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="spaceship"
 SPACESHIP_TIME_SHOW=true
 
-COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS=true
 HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(git autojump zsh-syntax-highlighting common-aliases vi-mode)
-plugins+=(ruby rvm rails gem pip zsh-better-npm-completion git-flow) 
-plugins+=(brew virtualenvwrapper tmuxinator)
 
 # User configuration
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.yarn/bin"
 fpath=(~/.zsh/completion $fpath)
 source $ZSH/oh-my-zsh.sh
 
@@ -22,8 +20,6 @@ export GPG_TTY=$(tty)
 
 bindkey 'OA' history-beginning-search-backward
 bindkey 'OB' history-beginning-search-forward
-
-source ~/.personal
 
 # aliases
 alias ta='tmux attach -t '

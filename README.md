@@ -6,5 +6,5 @@
 * .zshrc
 * .vimrc
 * .tmux.conf
-* setup.sh (ubuntu 16.04)
+* setup.sh (ubuntu 18.04)
 

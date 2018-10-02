@@ -1,70 +1,68 @@
 #!/bin/bash
 
-BASEDIR=$(dirname $0)
-cp -v "$BASEDIR/.gitconfig" "$HOME/.gitconfig"
-cp -v "$BASEDIR/.gitignore" "$HOME/.gitignore"
-cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
-cp -v "$BASEDIR/.vimrc"     "$HOME/.vimrc"
-cp -v "$BASEDIR/.tmux.conf" "$HOME/.tmux.conf"
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install -y build-essential git zsh tmux openssl autojump vim tree htop imagemagick sqlite3 graphviz ruby
-sudo apt-get install -y nginx postgresql postgresql-server-dev-all redis-server libmysqlclient-dev 
-sudo apt-get install -y diff-so-fancy
+BASEDIR=$(dirname $0)
+
+# general
+echo -e "Installing ${RED}Prerequisite${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, imagemagick, nginx, sqlite3, redis-server${NC}"
+read -r -p "continue?"
+sudo apt update
+sudo apt upgrade
+sudo apt install -y build-essential git git-flow zsh vim tmux curl openssl autojump tree htop imagemagick
+sudo apt install -y nginx sqlite3 redis-server 
+
+# nodejs
+echo -e "Installing ${RED}NodeJS (v8)${NC}"
+echo -e "${BLUE}node, npm, yarn, diff-so-fancy${NC}"
+read -r -p "continue?"
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm -g install yarn
+yarn global add diff-so-fancy
+
+# java
+echo -e "Installing ${RED}Oracle Java8${NC}"
+read -r -p "continue?"
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt update
+sudo apt install oracle-java8-installer
 
 # oh my zsh
+echo -e "Installing ${RED}Zsh Configuration${NC}"
+echo -e "${BLUE}ohmyzsh, spaceship-prompt, zsh-syntax-highlighting${NC}"
+read -r -p "continue?"
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-curl -o - "https://raw.githubusercontent.com/denysdovhan/spaceship-zsh-theme/master/install.zsh" | zsh
+git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt
+ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/lukechilds/zsh-better-npm-completion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-better-npm-completion
+cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
 
 # git
-read -r -p "[git] What's your name? " response_name
-read -r -p "[git] What's your email? " response_email
+echo -e "Installing ${RED}Git Configuration${NC}"
+echo -e "${BLUE}.gitconfig .gitignore${NC}"
+read -r -p "continue?"
+cp -v "$BASEDIR/.gitconfig" "$HOME/.gitconfig"
+cp -v "$BASEDIR/.gitignore" "$HOME/.gitignore"
+read -r -p "[git] enter your name: " response_name
+read -r -p "[git] enter your email: " response_email
 git config --global user.name "$response_name"
 git config --global user.email "$response_email"
 
-# vundle
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# vim
+echo -e "Installing ${RED}Vim Configuration${NC}"
+read -r -p "continue?"
+cp -v "$BASEDIR/.vimrc"     "$HOME/.vimrc"
+git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
 # tmux plugin manager
+echo -e "Installing ${RED}Tmux Configuration${NC}"
+read -r -p "continue?"
+cp -v "$BASEDIR/.tmux.conf" "$HOME/.tmux.conf"
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 $HOME/.tmux/plugins/tpm/scripts/install_plugins.sh
-
-# rvm
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-\curl -sSL https://get.rvm.io | bash -s stable
-
-# rails
-rvm install ruby 
-gem install bundler
-gem install pry
-gem install rails
-gem install passenger
-
-# java
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java8-installer
-
-# nodejs
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# elastic
-read -r -p "[install] Install ElasticSearch? [y/N] " response
-if [ "$response" = "y" ]; then
-	wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-	sudo apt-get install apt-transport-https
-	echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
-	sudo apt-get update
-	sudo apt-get install elasticsearch
-	sudo apt-get install logstash
-	sudo apt-get install kibana
-	sudo apt-get install filebeat
-	sudo apt-get install metricbeat
-	sudo apt-get install packetbeat
-fi
 
