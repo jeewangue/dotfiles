@@ -22,7 +22,7 @@ read -r -p "continue?"
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt install -y nodejs
 sudo npm -g install yarn
-yarn global add diff-so-fancy
+sudo yarn global add diff-so-fancy
 
 # java
 echo -e "Installing ${RED}Oracle Java8${NC}"
