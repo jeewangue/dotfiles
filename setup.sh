@@ -8,12 +8,13 @@ BASEDIR=$(dirname $0)
 
 # general
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, imagemagick, nginx, sqlite3, redis-server${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, imagemagick, nginx, sqlite3, redis-server fonts-powerline${NC}"
 read -r -p "continue?"
 sudo apt update
 sudo apt upgrade
 sudo apt install -y build-essential git git-flow zsh vim tmux curl openssl autojump tree htop imagemagick
 sudo apt install -y nginx sqlite3 redis-server 
+sudo apt install -y fonts-powerline
 
 # nodejs
 echo -e "Installing ${RED}NodeJS (v8)${NC}"
