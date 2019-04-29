@@ -34,12 +34,18 @@ sudo apt install oracle-java8-installer
 
 # oh my zsh
 echo -e "Installing ${RED}Zsh Configuration${NC}"
-echo -e "${BLUE}ohmyzsh, spaceship-prompt, zsh-syntax-highlighting${NC}"
+echo -e "${BLUE}ohmyzsh, spaceship-prompt, zsh-syntax-highlighting, zsh-autosuggestions${NC}"
 read -r -p "continue?"
+
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
 git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt
 ln -s ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
+
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
 cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
 
 # git

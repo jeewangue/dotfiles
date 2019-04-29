@@ -7,7 +7,8 @@ COMPLETION_WAITING_DOTS=true
 HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
-plugins=(git autojump zsh-syntax-highlighting common-aliases vi-mode)
+plugins=(git autojump common-aliases)
+plugins+=(vi-mode zsh-syntax-highlighting zsh-autosuggestions)
 
 # User configuration
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.yarn/bin"
