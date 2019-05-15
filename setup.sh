@@ -8,13 +8,13 @@ BASEDIR=$(dirname $0)
 
 # general
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, glances, pipenv, imagemagick, nginx, sqlite3, redis-server fonts-powerline${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, glances, imagemagick, nginx, sqlite3, redis-server fonts-powerline${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt update
   sudo apt upgrade
-  sudo apt install -y build-essential git git-flow zsh vim tmux curl openssl autojump tree htop glances pipenv imagemagick
+  sudo apt install -y build-essential git git-flow zsh vim tmux curl openssl autojump tree htop glances imagemagick
   sudo apt install -y nginx sqlite3 redis-server 
   sudo apt install -y fonts-powerline
 fi
