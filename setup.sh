@@ -6,26 +6,39 @@ NC='\033[0m'
 
 BASEDIR=$(dirname $0)
 
-# general
+# updated at 2019/07/13
+# general server packages
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, openssl, autojump, tree, htop, glances, imagemagick, nginx, sqlite3, redis-server fonts-powerline${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, nginx, sqlite3, postgresql, redis-server fonts-powerline${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt update
   sudo apt upgrade
-  sudo apt install -y build-essential git git-flow zsh vim tmux curl openssl autojump tree htop glances imagemagick
-  sudo apt install -y nginx sqlite3 redis-server 
+  sudo apt install -y build-essential git git-flow zsh vim tmux xclip curl openssl autojump tree htop glances imagemagick graphicsmagick
+  sudo apt install -y nginx sqlite3 postgresql redis-server 
+fi
+
+# updated at 2019/07/13
+# general X packages
+echo -e "Installing ${RED}X packages${NC}"
+echo -e "${BLUE}fonts-powerline${NC}"
+echo -n "continue? [y/N] "
+read answer
+if [ "$answer" != "${answer#[Yy]}" ]; then
+  sudo apt update
+  sudo apt upgrade
   sudo apt install -y fonts-powerline
 fi
 
-# nodejs (v10)
-echo -e "Installing ${RED}NodeJS (v10)${NC}"
+# updated at 2019/07/13
+# nodejs (v12)
+echo -e "Installing ${RED}NodeJS (v12)${NC}"
 echo -e "${BLUE}node, npm, yarn, diff-so-fancy${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
-  curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   sudo apt install -y nodejs
   sudo npm -g install yarn
   sudo yarn global add diff-so-fancy
@@ -42,6 +55,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt install oracle-java10-installer
 fi
 
+# updated at 2019/07/13
 # oh my zsh
 echo -e "Installing ${RED}Zsh Configuration${NC}"
 echo -e "${BLUE}ohmyzsh, spaceship-prompt, zsh-syntax-highlighting, zsh-autosuggestions${NC}"
@@ -57,9 +71,12 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
 
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
+  git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+
   cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
 fi
 
+# updated at 2019/07/13
 # git
 echo -e "Installing ${RED}Git Configuration${NC}"
 echo -e "${BLUE}.gitconfig .gitignore${NC}"
@@ -74,6 +91,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   git config --global user.email "$response_email"
 fi
 
+# updated at 2019/07/13
 # vim
 echo -e "Installing ${RED}Vim Configuration${NC}"
 echo -n "continue? [y/N] "
@@ -84,6 +102,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   vim +PluginInstall +qall
 fi
 
+# updated at 2019/07/13
 # tmux plugin manager
 echo -e "Installing ${RED}Tmux Configuration${NC}"
 echo -n "continue? [y/N] "

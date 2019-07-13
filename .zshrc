@@ -8,7 +8,8 @@ HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(git autojump common-aliases)
-plugins+=(vi-mode zsh-syntax-highlighting zsh-autosuggestions)
+plugins+=(zsh-syntax-highlighting zsh-autosuggestions zsh-completions)
+plugins+=(vi-mode)
 
 # User configuration
 export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/.yarn/bin"
@@ -25,4 +26,6 @@ bindkey 'OB' history-beginning-search-forward
 # aliases
 alias ta='tmux attach -t '
 alias mux='tmuxinator'
+
+autoload -U compinit && compinit
 
