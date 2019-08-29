@@ -27,5 +27,28 @@ bindkey 'OB' history-beginning-search-forward
 alias ta='tmux attach -t '
 alias mux='tmuxinator'
 
+
+# ADD By Goznauk 190805
+# Play safe!
+alias 'rm=rm -i'
+alias 'rmdir=rm -rfi'
+alias 'mv=mv -i'
+alias 'cp=cp -i'
+
+# Typing errors...
+alias 'cd..=cd ..'
+
+# Convinence
+alias 'l=ls -F'
+alias 'la=ls -AF'
+alias 'lal=ls -alF'
+alias 'v=vim'
+
+
+
+
+
+
+
 autoload -U compinit && compinit
 
