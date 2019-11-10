@@ -1,0 +1,156 @@
+! copied from
+! https://github.com/dougmaitelli/dotfiles/blob/7cf0c8edac4f7cb8d46aa8664b060d2393b3cfd5/.Xresources
+
+! special
+*.foreground:   #cbcdd2
+*.background:   #1c1d21
+*.cursorColor:  #d6d8db
+
+! black
+*.color0:       #1c1d21 
+*.color8:       #babcc4
+
+! red
+*.color1:       #eb3d54
+*.color9:       #eb3d54
+
+! green
+*.color2:       #78bd65
+*.color10:      #78bd65
+
+! yellow
+*.color3:       #e5cd52
+*.color11:      #e5cd52
+
+! blue
+*.color4:       #4fb4d8 
+*.color12:      #4fb4d8
+
+! magenta
+*.color5:       #B85C8A
+*.color13:      #B85C8A
+
+! cyan
+*.color6:       #669c9c
+*.color14:      #669c9c
+
+! white
+*.color7:       #cbcdd2 
+*.color15:      #cbcdd2
+
+Xft.dpi: 96
+Xft.antialias: false
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+!Xft.hintstyle: hintslight
+Xft.hintstyle: hintfull
+Xft.lcdfilter: lcddefault
+
+!XTerm*background: bg_color
+!XTerm*foreground: fg_color
+!XTerm*pointerColor: cursor_color
+XTerm*faceName: Inconsolata Nerd Font:Medium
+XTerm*faceSize: 10
+XTerm*geometry: 80x25
+
+URxvt.iconName:          urxvt
+URxvt.iconFile:          /usr/share/icons/Papirus-Dark/48x48/apps/urxvt.svg
+URxvt.internalBorder:    2
+URxvt.externalBorder:    0
+!URxvt.borderColor:      color7
+!URxvt.lineSpace:        0
+!URxvt*shading:          30
+URxvt.depth:             32
+URxvt.saveLines:         100000
+URxvt*geometry:          80x25
+URxvt*terminalName:      rxvt-unicode-256color
+URxvt*visualBell:        false
+URxvt*buffered:          false
+
+!! Scrollbar
+!URxvt.scrollStyle:      rxvt
+URxvt.scrollBar:         false
+URxvt*scrollTtyOutput:   false
+URxvt*scrollWithBuffer:  true
+URxvt*scrollTtyKeypress: true
+URxvt*transparent:       false
+!URxvt*shading: 70
+
+!! Fonts
+
+!URxvt*font:              -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1
+URxvt*font:              xft:DejaVu Sans Mono for Powerline:style=Book:size=12
+URxvt*boldFont:          xft:DejaVu Sans Mono for Powerline:style=Bold:size=12
+URxvt*italicFont:        xft:DejaVu Sans Mono for Powerline:style=Oblique:size=12
+URxvt*boldItalicFont:    xft:DejaVu Sans Mono for Powerline:style=Bold Oblique:size=12
+
+URxvt.letterSpace:       -1
+
+!! Perl Extension
+URxvt.perl-lib: /home/jeewangue/.urxvt
+URxvt.perl-ext-common: default,font-size
+URxvt.perl-ext: tabbedex
+
+!! Keybinding
+URxvt.keysym.C-Up:       perl:font-size:increase
+URxvt.keysym.C-Down:     perl:font-size:decrease
+URxvt.keysym.C-S-Up:     perl:font-size:incglobal
+URxvt.keysym.C-S-Down:   perl:font-size:decglobal
+!Home and End keys to jump to the beginning and end of lines
+!URxvt*keysym.Home:       \033[1~
+!URxvt*keysym.End:        \033[4~
+
+!! Tabs
+URxvt.tabbed.tabbar-fg:  2
+URxvt.tabbed.tabbar-bg:  0
+URxvt.tabbed.tab-fg:     3
+URxvt.tabbed.tab-bg:     0
+URxvt.tabbed.title-fg:   2
+URxvt.tabbed.title-bg:   0
+
+URxvt.tabbed.autohide:   false
+URxvt.tabbed.new-button: false
+URxvt.tabbed.title:      true
+
+URxvt.keysym.Control-t:            perl:tabbedex:new_tab
+URxvt.keysym.Control-Tab:          perl:tabbedex:next_tab
+URxvt.keysym.Control-Shift-ISO_Left_Tab:    perl:tabbedex:prev_tab
+
+URxvt.keysym.Control-Shift-Left:   perl:tabbedex:move_tab_left
+URxvt.keysym.Control-Shift-Right:  perl:tabbedex:move_tab_right
+URxvt.keysym.Control-Shift-R:      perl:tabbedex:rename_tab
+
+!! Disable the stupid ctrl+shift 'feature'
+URxvt*iso14755:            false
+URxvt*iso14755_52:         false
+
+!! Cursor
+URxvt.cursorBlink:         1
+URxvt.colorUL:             #83a598
+Xcursor.theme:             La Captaine
+
+!! Pointer
+!URxvt.pointerBlank: true
+
+rofi.color-enabled: true
+rofi.color-window: argb:aa1c1d21, #751c1d21, argb:001c1d21
+rofi.color-normal: argb:001c1d21, #cbcdd2, argb:001c1d21, argb:c2d6d8db, #222222
+rofi.color-active: argb:4d1b2b34, #6699cc, argb:4d343d46, argb:4d6699cc, #d8dee9
+rofi.color-urgent: argb:4d1b2b34, #ec5f67, argb:4d343d46, argb:4dec5f67, #d8dee9
+
+rofi.modi: run,ssh,window
+rofi.separator-style: solid
+rofi.show-icons: true
+rofi.drun-icon-theme: Papirus-Dark
+rofi.font: Inconsolata Nerd Font Mono 12
+rofi.sidebar-mode:    true
+rofi.padding:         0
+rofi.bw:              10
+rofi.scrollbar-width: 0
+rofi.line-margin:     0
+rofi.lines: 10
+rofi.terminal: urxvt
+rofi.case-sensitive: false
+rofi.run-command: fish -c '{cmd}'
+rofi.run-list-command: 'fish -c functions'
