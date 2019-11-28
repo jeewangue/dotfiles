@@ -122,7 +122,13 @@ let g:ale_fixers = {
 
 " deoplete
 set pyxversion=3
+set encoding=utf-8
+let g:python_host_prog = "/usr/bin/python2"
+let g:python3_host_prog = "/usr/bin/python3"
 let g:deoplete#enable_at_startup = 1
+" close preview window on leaving the insert mode
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
+
 
 " goyo / limelight
 map <C-f> <ESC>:Goyo<CR>

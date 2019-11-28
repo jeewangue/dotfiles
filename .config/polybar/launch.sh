@@ -4,10 +4,14 @@
 killall -q polybar
 
 # Wait until the processes have been shut down
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+while pgrep -x polybar > /dev/null; do sleep 1; done
 
-for m in $(polybar --list-monitors | cut -d":" -f1); do
-	MONITOR=$m polybar --reload example &
-done
+# Launch primary bar
+polybar primary &
+
+# Launch secondary bar if second monitor is plugged in
+if [ "$(polybar -m | grep -w DP-1)" ]; then
+    polybar secondary &
+fi
 
 echo "Bars launched..."

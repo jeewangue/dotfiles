@@ -38,8 +38,8 @@
 *.color7:       #cbcdd2 
 *.color15:      #cbcdd2
 
-Xft.dpi: 96
-Xft.antialias: false
+Xft.dpi: 141
+Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
 Xft.autohint: false
@@ -53,6 +53,10 @@ Xft.lcdfilter: lcddefault
 XTerm*faceName: Inconsolata Nerd Font:Medium
 XTerm*faceSize: 10
 XTerm*geometry: 80x25
+
+!! Shells
+URxvt*loginShell: true
+URxvt*print-pipe:  cat > $HOME/$(echo urxvt.dump.$(date +'%Y%M%d%H%m%S'))
 
 URxvt.iconName:          urxvt
 URxvt.iconFile:          /usr/share/icons/Papirus-Dark/48x48/apps/urxvt.svg
@@ -80,12 +84,12 @@ URxvt*transparent:       false
 !! Fonts
 
 !URxvt*font:              -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1
-URxvt*font:              xft:DejaVu Sans Mono for Powerline:style=Book:size=12
-URxvt*boldFont:          xft:DejaVu Sans Mono for Powerline:style=Bold:size=12
-URxvt*italicFont:        xft:DejaVu Sans Mono for Powerline:style=Oblique:size=12
-URxvt*boldItalicFont:    xft:DejaVu Sans Mono for Powerline:style=Bold Oblique:size=12
+URxvt*font:               xft:SauceCodePro Nerd Font Mono:style=Regular:size=7, xft:MesloLGS Nerd Font Mono:style=RegularForPowerline:size=7
+!URxvt*boldFont:          xft:SauceCodePro Nerd Font Mono:style=Bold:size=9
+!URxvt*italicFont:        xft:SauceCodePro Nerd Font Mono:style=Regular Italic:size=9
+!URxvt*boldItalicFont:    xft:SauceCodePro Nerd Font Mono:style=Bold Italic:size=9
 
-URxvt.letterSpace:       -1
+URxvt.letterSpace:        0
 
 !! Perl Extension
 URxvt.perl-lib: /home/jeewangue/.urxvt

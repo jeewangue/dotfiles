@@ -1,410 +1,226 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+
 [colors]
-alert = #bd2c40
-icon = #ffffff
+bg              = #282c34
+active-bg       = #3e4452
+text            = #abb2bf
+active-text     = ${colors.text}
+highlight       = #61afef
+highlight-text  = ${colors.bg}
+urgent          = #e5c07b
+urgent-text     = ${colors.bg}
 
-background = #cf172a47
-;it's ARGB so "cfl" is for transparency
-background-alt = #cf3C5A46
-background-unf = #cf2E463E
-background-mod0 = #cf3C5A46
-background-mod1 = #cf546E53
-background-mod2 = #cf708963
-background-alrt = #cfA1BB76
+[monitors]
+primary         = eDP-1
+secondary       = DP-1
 
-;foreground = ${xrdb:color7:#222}
-foreground = #F3F3BA
-foreground-alt = #F3F3BA
-primary = #F3F3BA
-secondary = #F3F3BA
-
-[bar/example]
-monitor = ${env:MONITOR:eDP-1-1}
+[bar/base]
 width = 100%
-height = 32
-offset-x = 1%
-;offset-y = 1%
-radius = 0.0
+height = 27
 fixed-center = true
 
-background = ${colors.background}
-foreground = ${colors.foreground}
-
-line-size = 0
-line-color = #f00
-
-border-size = 0
-border-color = #00000000
+background = ${colors.bg}
+foreground = ${colors.text}
+border-top-size = 1
+border-top-color = ${colors.bg}
+border-bottom-size = 1
+border-bottom-color = ${colors.bg}
 
 padding-left = 0
-padding-right = 0
+padding-right = 2
 
-module-margin-left = 0
-module-margin-right = 0
+module-margin-left = 1
+module-margin-right = 2
 
-# font-0 = fixed:pixelsize=10;1
-font-0 = DejaVuSans:pixelsize=11;2
-font-1 = FontAwesome5ProLight:size=12;2
-font-2 = FontAwesome5Brands:size=12;2
-font-3 = Weather Icons:size=12;2
+font-0 = Roboto:size=11;3
+font-1 = Font Awesome 5 Pro:size=11;2
+font-2 = Font Awesome 5 Pro Solid:size=11;2
+font-3 = Font Awesome 5 Brands:size=11;2
 
-modules-left = i3
-modules-center = date weather
-modules-right = eth wlan backlight-acpi pulseaudio battery powermenu
-; modules-right = filesystem system-usb-udev cpu system-nvidia-smi memory temperature battery powermenu
-
-;tray-position = right
-tray-position = none
-;tray-padding = 11
-;tray-transparent = true
-;tray-background = #0063ff
-
-;wm-restack = bspwm
-wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
 
 cursor-click = pointer
-cursor-scroll = ns-resize
 
-[module/weather]
-type = custom/script
-exec = ~/.config/polybar/scripts/openweathermap-detailed.sh
-interval = 600
-label-font = 4
-label-underline = #9f78e1
+locale = en_US.UTF-8
+monitor-exact = true
+monitor-strict = true
 
-[module/system-usb-udev]
-type = custom/script
-exec = ~/.config/polybar/scripts/system-usb-udev.sh
-tail = true
-click-left = ~/.config/polybar/scripts/system-usb-udev.sh --mount
-click-right = ~/.config/polybar/scripts/system-usb-udev.sh --unmount
+[bar/primary]
+inherit = bar/base
+monitor = ${monitors.primary}
 
-[module/system-nvidia-smi]
-type = custom/script
-exec = ~/.config/polybar/scripts/system-nvidia-smi.sh
-interval = 10
-label-underline = #f90000
+modules-left = i3 xwindow
+modules-center = date
+modules-right = mpris updates redshift backlight pulseaudio bluetooth wlan eth battery
 
-[module/xwindow]
-type = internal/xwindow
-label = %title:0:30:...%
+tray-position = right
+tray-padding = 2
 
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
+[bar/secondary]
+inherit = bar/base
+monitor = ${monitors.secondary}
 
-format-prefix = " "
-format-prefix-foreground = ${colors.icon}
-format-prefix-underline = ${colors.secondary}
+modules-left = i3
+modules-center =
+modules-right =
 
-label-layout = %layout%
-label-layout-underline = ${colors.secondary}
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
-
-[module/filesystem]
-type = internal/fs
-interval = 30
-
-mount-0 = /
-mount-1 = /home
-
-label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
-label-mounted-underline = #0a6cf5
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.secondary}
-
-[module/bspwm]
-type = internal/bspwm
-
-label-focused = %index%
-label-focused-background = ${colors.background-alt}
-label-focused-underline= ${colors.primary}
-label-focused-padding = 2
-
-label-occupied = %index%
-label-occupied-padding = 2
-
-label-urgent = %index%!
-label-urgent-background = ${colors.alert}
-label-urgent-padding = 2
-
-label-empty = %index%
-label-empty-foreground = ${colors.foreground-alt}
-label-empty-padding = 2
-
-; Separator in between workspaces
-; label-separator = |
+tray-position = none
 
 [module/i3]
 type = internal/i3
 format = <label-state> <label-mode>
-; index-sort = true
+index-sort = true
 wrapping-scroll = false
 
-; Only show workspaces on the same output as the bar
-; pin-workspaces = true
+; Icons
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-default = 
 
-label-mode-padding = 4
-label-mode-foreground = #000
-label-mode-background = ${colors.primary}
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = ${colors.urgent}
+label-mode-background = ${colors.urgent-text}
 
 ; focused = Active workspace on focused monitor
-label-focused = %name%
-label-focused-background = ${colors.background-alt}
-label-focused-underline = ${module/bspwm.label-focused-underline}
-label-focused-padding = 4
+label-focused = %index% %icon%
+label-focused-background = ${colors.highlight}
+label-focused-foreground = ${colors.highlight-text}
+label-focused-padding = 2
 
 ; unfocused = Inactive workspace on any monitor
-label-unfocused = %name%
-label-unfocused-background = ${colors.background-unf}
-label-unfocused-padding = 4
+label-unfocused = %index% %icon%
+label-unfocused-padding = 2
 
 ; visible = Active workspace on unfocused monitor
-label-visible = %name%
-label-visible-background = ${self.label-focused-background}
-label-visible-underline = ${self.label-focused-underline}
-label-visible-padding = 4
+label-visible = %index% %icon%
+label-visible-background = ${colors.active-bg}
+label-visible-foreground = ${colors.active-text}
+label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = %name%
-label-urgent-background = ${colors.background-alrt}
-label-urgent-padding = 4
+label-urgent = %index% %icon%
+label-urgent-background = ${colors.urgent}
+label-urgent-foreground = ${colors.urgent-text}
+label-urgent-padding = 2
 
-; Separator in between workspaces
-; label-separator = |
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:55:...%
 
+[module/mpris]
+type = custom/script
+exec = ~/.config/polybar/modules/player-mpris-tail.py -f '{icon} {artist} - {title}' --icon-playing  --icon-paused  -b vlc
+tail = true
+label = %output:0:35:...%
 
-[module/mpd]
-type = internal/mpd
-format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+[module/updates]
+type = custom/script
+interval = 600
+exec = ~/.config/polybar/modules/updates.sh
+label =  %output%
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
-
-label-song-maxlen = 25
-label-song-ellipsis = true
-
-[module/xbacklight]
-type = internal/xbacklight
-
-format = "<label>  "
-format-prefix = "  "
-label =  %percentage:2%%
-format-background = ${colors.background-alt}
-
-[module/backlight-acpi]
-inherit = module/xbacklight
-type = internal/backlight
-card = intel_backlight
-
-[module/cpu]
-type = internal/cpu
-interval = 5
-format-prefix = "cpu"
-format-prefix-foreground = ${colors.icon}
-format-underline = #f90000
-label = %percentage:2%%
-
-[module/memory]
-type = internal/memory
-interval = 5
-format-prefix = "mem"
-format-prefix-foreground = ${colors.icon}
-format-underline = #f90000
-label = %percentage_used:2%%
-
-[module/wlan]
-type = internal/network
-interface = wlo1
-interval = 3.0
-
-format-connected = "<ramp-signal> <label-connected>  "
-format-connected-prefix = "  "
-format-connected-background = ${colors.background-alt}
-format-connected-underline = #9f78e1
-label-connected = %essid% | %local_ip%
-
-format-disconnected = " <label-disconnected>  "
-format-disconnected-prefix = "  "
-format-disconnected-background = ${colors.background-unf}
-format-disconnected-underline = ${self.format-connected-underline}
-label-disconnected = %ifname% disconnected
-label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.icon}
-
-[module/eth]
-type = internal/network
-interface = enp61s0
-interval = 3.0
-
-format-connected-underline = #55aa55
-format-connected-prefix = "   "
-format-connected-prefix-foreground = ${colors.icon}
-label-connected = "%local_ip%  "
-
-format-disconnected =
-;format-disconnected = <label-disconnected>
-;format-disconnected-underline = ${self.format-connected-underline}
-;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
+[module/redshift]
+type = custom/script
+interval = 15
+exec = ~/.config/polybar/modules/redshift.sh
+label =  %output%
+click-left = ~/.config/polybar/modules/redshift.sh toggle
 
 [module/date]
 type = internal/date
-interval = 5
+interval = 15
 
-date = 
-date-alt = " %Y-%m-%d"
+date = %e %b
+time = %H:%M
+label =  %date%, %time%
 
-time = "   %a %b %d     %I:%M %p  "
-time-alt = "%H:%M:%S  "
-
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #0a6cf5
-
-label = %date% %time%
+[module/backlight]
+type = custom/script
+exec = ~/.config/polybar/modules/light.sh
+tail = true
+scroll-up = ~/.config/polybar/modules/light.sh inc
+scroll-down = ~/.config/polybar/modules/light.sh dec
+label =  %output%%
 
 [module/pulseaudio]
 type = internal/pulseaudio
+use-ui-max = false
+format-volume = <label-volume>
+label-volume =  %percentage%%
+label-muted =  %percentage%%
 
-format-volume = "<ramp-volume> <label-volume>  "
-format-volume-prefix = "  "
-format-volume-background = ${colors.background-alt}
-label-volume = %percentage%%
-label-volume-foreground = ${colors.foreground}
+[module/bluetooth]
+type = custom/script
+exec = ~/.config/polybar/modules/system-bluetooth-buetoothctl.sh
+tail = true
+label =  %output%
 
-format-muted-background = ${colors.background-unf}
-format-muted-prefix = "  "
-label-muted = " muted   "
+[module/wlan]
+type = internal/network
+interval = 3.0
+interface = wlo1
 
-ramp-volume-0 = 
-ramp-volume-1 = 
-ramp-volume-2 = 
+label-connected =  %signal%% %essid%
+format-disconnected =
+
+[module/eth]
+type = internal/network
+interval = 3.0
+interface = enp61s0
+
+label-connected =  eth
+format-disconnected =
 
 [module/battery]
 type = internal/battery
+
 battery = BAT1
 adapter = ADP1
-full-at = 97
+full-at = 100
 
-format-charging = "<animation-charging> <label-charging>  "
-format-charging-prefix = "  "
-format-charging-background = ${colors.background-mod1}
-format-charging-underline = #ffb52a
+time-format = %H:%M
 
-format-discharging = "<animation-discharging> <label-discharging>  "
-format-discharging-prefix = "  "
-format-discharging-background = ${colors.background-mod1}
-format-discharging-underline = ${self.format-charging-underline}
+format-full = <ramp-capacity> <label-full>
+format-charging =  <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
 
-format-full = " 100%  "
-format-full-prefix = "  "
-format-full-background = ${colors.background-mod2}
-format-full-underline = ${self.format-charging-underline}
+label-full = %percentage%%
+label-charging = %percentage%%
+label-discharging = %percentage%%
 
 ramp-capacity-0 = 
 ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-3 = 
 ramp-capacity-4 = 
-ramp-capacity-foreground = ${colors.icon}
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-foreground = ${colors.icon}
-animation-charging-framerate = 750
-
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-3 = 
-animation-discharging-4 = 
-animation-discharging-foreground = ${colors.icon}
-animation-discharging-framerate = 750
-
-[module/temperature]
-type = internal/temperature
-thermal-zone = 0
-warn-temperature = 60
-
-format = <ramp> <label>
-format-underline = #f50a4d
-format-warn = <ramp> <label-warn>
-format-warn-underline = ${self.format-underline}
-
-label = %temperature-c%
-label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
-
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.icon}
-
-[module/powermenu]
-type = custom/menu
-
-expand-right = true
-
-format-spacing = 2
-format-background = ${colors.background-alt}
-format-prefix = "  "
-
-label-open = "  "
-label-open-background = ${colors.background-alt}
-label-open-foreground = ${colors.secondary}
-label-close = " cancel  "
-label-close-background = ${colors.background-alt}
-label-close-foreground = ${colors.secondary}
-label-separator = |
-label-separator-foreground = ${colors.foreground-alt}
-
-menu-0-0 = reboot
-menu-0-0-exec = menu-open-1
-menu-0-1 = power off
-menu-0-1-exec = menu-open-2
-
-menu-1-0 = cancel
-menu-1-0-exec = menu-open-0
-menu-1-1 = reboot
-menu-1-1-exec = sudo reboot
-
-menu-2-0 = power off
-menu-2-0-exec = sudo poweroff
-menu-2-1 = cancel
-menu-2-1-exec = menu-open-0
-
-[settings]
-screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
-
-[global/wm]
-margin-top = 5
-margin-bottom = 5
 
 ; vim:ft=dosini

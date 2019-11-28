@@ -5,6 +5,10 @@ set $mod Mod4
 
 font pango:monospace 10
 
+# DPI / Xrandr setup
+exec_always --no-startup-id xrandr --dpi 141
+exec_always --no-startup-id xrdb -merge ~/.Xresources
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -15,8 +19,7 @@ bindsym $mod+Return exec urxvt
 bindsym $mod+Shift+q kill
 
 # start krunner (a program launcher)
-bindsym $mod+d exec --no-startup-id \
-					qdbus org.kde.kglobalaccel /component/krunner org.kde.kglobalaccel.Component.invokeShortcut 'run command'
+bindsym $mod+d exec --no-startup-id rofi-appsmenu 
 
 # change focus
 bindsym $mod+h focus left
@@ -64,16 +67,16 @@ bindsym $mod+Shift+a focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1 "
-set $ws2 "2 "
-set $ws3 "3 "
-set $ws4 "4 "
-set $ws5 "5 "
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-set $ws10 "10 "
+set $ws10 "10"
 
 # switch between workspaces
 bindsym $mod+Tab workspace back_and_forth
@@ -107,7 +110,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit Session
-bindsym $mod+Shift+e exec qdbus org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout -1 -1 -1
+bindsym $mod+Shift+e exec --no-startup-id rofi-power
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -152,10 +155,10 @@ exec_always --no-startup-id "killall -q compton; compton --config ~/.config/comp
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 # wallpaper (feh)
-exec_always --no-startup-id feh --recursive --randomize --bg-fill ~/.wallpaper
+exec_always --no-startup-id feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
 
 bindsym $mod+b exec --no-startup-id \
-					feh --recursive --randomize --bg-fill ~/.wallpaper
+					feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
 
 # (No) Title Bars
 for_window [class="^.*"] border pixel 0 
@@ -188,52 +191,45 @@ bindsym $mod+Shift+Right move workspace to output right
 ####################### Function Keys ###########################
 
 # volume control
-# bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-# bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-# bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
-bindsym XF86AudioRaiseVolume exec --no-startup-id \
-					qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume" 
-bindsym XF86AudioLowerVolume exec --no-startup-id \
-					qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "decrease_volume"
-bindsym XF86AudioMute exec --no-startup-id \
-					qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "mute"
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
 # backlight control
-bindsym XF86MonBrightnessUp exec --no-startup-id \
-					qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) + 5)
-
-bindsym XF86MonBrightnessDown exec --no-startup-id \
-					qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.setBrightness $(expr $(qdbus org.kde.Solid.PowerManagement /org/kde/Solid/PowerManagement/Actions/BrightnessControl org.kde.Solid.PowerManagement.Actions.BrightnessControl.brightness) - 5)
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 ######################### Screen Capture Mode ###################
 
-set $mode_capture Capture: [b]ackground [r]egion [a]ctive-window
+# set $mode_capture Capture: [b]ackground [r]egion [a]ctive-window
 
-mode "$mode_capture" {
-	bindsym --release b exec --no-startup-id spectacle -b ; mode "default"
-	bindsym --release r exec --no-startup-id spectacle -br; mode "default"
-	bindsym --release a exec --no-startup-id spectacle -ba; mode "default"
+# mode "$mode_capture" {
+# 	bindsym --release b exec --no-startup-id spectacle -b ; mode "default"
+# 	bindsym --release r exec --no-startup-id spectacle -br; mode "default"
+# 	bindsym --release a exec --no-startup-id spectacle -ba; mode "default"
 
-	bindsym Escape mode "default"
-	bindsym Return mode "default"
-	bindsym $mod+Shift+c mode "default"
-}
+# 	bindsym Escape mode "default"
+# 	bindsym Return mode "default"
+# 	bindsym $mod+Shift+c mode "default"
+# }
 
-bindsym $mod+Shift+c mode "$mode_capture"
+# bindsym $mod+Shift+c mode "$mode_capture"
+
+bindsym $mod+Shift+c exec --no-startup-id rofi-scrot
 
 ######################### Launcher Mode #########################
 
-set $mode_launcher Launch: [a]ndroid-studio [c]hrome [d]olphin [f]irefox [k]akaotalk [r]anger [s]ettings [t]ypora [v]scode
+set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]anger [s]ettings [t]ypora [v]scode
 
 mode "$mode_launcher" {
-	bindsym --release a exec studio            ; mode "default"
-	bindsym --release c exec google-chrome     ; mode "default"
-	bindsym --release d exec dolphin           ; mode "default"
-	bindsym --release f exec firefox           ; mode "default"
-	bindsym --release r exec konsole -e ranger ; mode "default"
-	bindsym --release s exec systemsettings5   ; mode "default"
-	bindsym --release t exec typora            ; mode "default"
-	bindsym --release v exec code              ; mode "default"
+	bindsym --release a exec studio               ; mode "default"
+	bindsym --release c exec google-chrome-stable ; mode "default"
+	bindsym --release f exec firefox              ; mode "default"
+	bindsym --release n exec nautilus -w          ; mode "default"
+	bindsym --release r exec konsole -e ranger    ; mode "default"
+	bindsym --release s exec systemsettings5      ; mode "default"
+	bindsym --release t exec typora               ; mode "default"
+	bindsym --release v exec code                 ; mode "default"
 	bindsym --release k exec env WINEPREFIX="/home/jeewangue/.wine" LANG="ko_KR.UTF-8" wine /home/jeewangue/.wine/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
 
 	bindsym Escape mode "default"
@@ -268,6 +264,8 @@ for_window [class="KakaoTalk"] floating enable
 for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"] floating enable
 for_window [title="^Confirm.*" class="jetbrains-pycharm"] floating enable
 for_window [instance="electron" class="Electron"] floating enable
+for_window [instance="qjackctl" class="QjackCtl"] floating enable
+for_window [instance="qsynth" class="Qsynth"] floating enable
 
 ######################### Workspace Mapping #####################
 
