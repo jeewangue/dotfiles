@@ -2,7 +2,7 @@
 
 # Original: https://github.com/polybar/polybar-scripts/tree/master/polybar-scripts/updates-arch-combined
 
-if ! updates_arch=$(checkupdates 2> /dev/null | wc -l ); then
+if ! updates_arch=$(pacman -Que 2> /dev/null | wc -l ); then
     updates_arch=0
 fi
 

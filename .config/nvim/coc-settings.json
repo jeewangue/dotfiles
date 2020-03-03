@@ -1,0 +1,67 @@
+{
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    },
+    "haskell": {
+      "command": "hie-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml"
+      ],
+      "filetypes": [
+        "hs",
+        "lhs",
+        "haskell"
+      ],
+      "initializationOptions": {
+        "languageServerHaskell": {
+          "hlintOn": true
+        }
+      },
+      "trace.server": "verbose",
+    }
+  },
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "Markdown",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "graphql"
+  ],
+  "coc.preferences.extensionUpdateCheck": "never",
+  "codeLens.enable": true,
+  "solargraph.checkGemVersion": false,
+  "solargraph.diagnostics": true,
+  "solargraph.autoformat": true,
+  "solargraph.formatting": true,
+  "solargraph.useBundler": true,
+  "markdownlint.config": {
+    "default": true,
+    "line_length": false
+  },
+  "explorer.icon.enableNerdfont": true,
+  "go.goplsOptions": {
+    "completeUnimported": true
+  },
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": true,
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    "http://json.schemastore.org/ansible-stable-2.7": "yaml.ansible"
+  },
+  "yaml.trace.server": "verbose"
+}

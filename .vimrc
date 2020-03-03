@@ -26,6 +26,7 @@ set background=dark
 set number
 set swapfile
 set wildmenu
+set ignorecase
 
 let mapleader=","
 syntax on
@@ -52,6 +53,8 @@ Plug 'udalov/kotlin-vim'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'fatih/vim-go'
+Plug 'neovimhaskell/haskell-vim'
 
 " theme
 Plug 'vim-airline/vim-airline'
@@ -59,7 +62,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 
 " syntax / autocomplete
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 
 Plug 'neoclide/coc.nvim',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-highlight',       { 'do': 'yarn install --frozen-lockfile'}
@@ -75,17 +78,28 @@ Plug 'neoclide/coc-git',             { 'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-tailwindcss',       { 'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-markdownlint', { 'do': 'yarn install --frozen-lockfile'}
 Plug 'weirongxu/coc-explorer',       { 'do': 'yarn install --frozen-lockfile'}
+Plug 'josa42/coc-go',                { 'do': 'yarn install --frozen-lockfile'}
+Plug 'josa42/coc-docker',            { 'do': 'yarn install --frozen-lockfile'}
 
 " utils
+Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'junegunn/fzf', { 'do': './install --all' }
+Plug 'junegunn/fzf',                 { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'luochen1990/rainbow'
+Plug 'jiangmiao/auto-pairs'
+Plug 'skanehira/docker-compose.vim'
+Plug 'vimwiki/vimwiki'
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 
 " kubernetes
 Plug 'c9s/helper.vim'
@@ -104,7 +118,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
@@ -131,13 +145,15 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " ale
-let g:ale_linters = {
-			\  'python': ['pylint']
-			\}
-let g:ale_fixers = {
-			\  'python': ['yapf'],
-			\  'ruby': ['rubocop']
-			\}
+" let g:ale_linters = {
+" 			\  'python': ['pylint']
+" 			\}
+" let g:ale_fixers = {
+" 			\  'python': ['yapf'],
+" 			\  'ruby': ['rubocop']
+" 			\}
+""" Only run linters named in ale_linters settings.
+let g:ale_linters_explicit = 1
 
 " goyo / limelight
 map <C-f> <ESC>:Goyo<CR>
@@ -194,6 +210,14 @@ if has_key(g:plugs, 'coc.nvim')
 				\ coc#refresh()
 	inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+	inoremap <silent><expr> <C-space>
+				\ pumvisible() ? "\<C-n>" :
+				\ coc#refresh()
+
+	inoremap <silent><expr> <C-S-space>
+				\ pumvisible() ? "\<C-n>" :
+				\ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
+
 	function! s:show_documentation()
 		if (index(['vim', 'help'], &filetype) >= 0)
 			execute 'h' expand('<cword>')
@@ -233,7 +257,7 @@ nmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>ac <Plug>(coc-codeaction)
 nmap <leader>qf <Plug>(coc-fix-current)
 
-nmap <leader>n :CocCommand explorer<CR>
+nmap <leader>n :CocCommand explorer --sources=buffer+,file+ --width=40<CR>
 
 " Using CocList
 " Show all diagnostics
@@ -253,15 +277,61 @@ nnoremap <silent> <leader><space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <leader><space>p  :<C-u>CocListResume<CR>
 
+" coc-yaml
+
+
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
-""" Plugin Configuration END
+" vim-go
+let g:go_def_mapping_enabled = 0
 
+" rainbow
+let g:rainbow_active = 1
+
+" vimwiki
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+			\ 'auto_tags': 1,
+			\ 'auto_diary_index': 1,
+			\ 'syntax': 'markdown',
+			\ 'ext': '.md'}]
+let g:vimwiki_folding = 'expr'
+autocmd Filetype vimwiki set syntax=markdown.pandoc
+
+" pandoc
+let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
+let g:pandoc#folding#mode = ["syntax"]
+let g:pandoc#spell#enabled = 0
+let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html", 
+			\ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
+			\ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
+			\ "bash=sh", "literatehaskell=lhaskell"]
+let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
+
+" markdown-preview.nvim
+let g:mkdp_auto_start   = 0
+let g:mkdp_auto_close   = 0
+let g:mkdp_refresh_slow = 0
+nmap <leader>mp <Plug>MarkdownPreviewToggle
+
+" vim-haskell
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+"" Plugin Configuration END
+
+autocmd Filetype markdown   setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype html       setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype ruby       setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype python     setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype haskell    setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype go         setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype typescript setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype json       setlocal ts=2 sw=2 sts=0 expandtab
@@ -310,4 +380,12 @@ if has('nvim')
 else
 	source ~/.vim/colorscheme.vim
 endif
+
+
+" Simple Shortcut
+nmap <C-l> :tnext<CR>
+nmap <C-h> :tprevious<CR>
+nmap <leader>wq :wq<CR>
+nmap <leader>qq :q<CR>
+nmap <leader>tn :tabnew<CR>
 

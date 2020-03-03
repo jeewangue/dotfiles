@@ -10,7 +10,7 @@ while pgrep -x polybar > /dev/null; do sleep 1; done
 polybar primary &
 
 # Launch secondary bar if second monitor is plugged in
-if [ "$(polybar -m | grep -w DP-1)" ]; then
+if [ "$(polybar -m | grep -w HDMI-0)" ]; then
     polybar secondary &
 fi
 

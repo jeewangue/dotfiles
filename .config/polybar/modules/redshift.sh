@@ -6,7 +6,7 @@ pid=$(pgrep -x redshift)
 
 redshift_print() {
     if [ "$pid" ]; then
-        status=$(redshift -p 2> /dev/null | grep Temp | cut -d ":" -f 2)
+        status=$(redshift -p 2> /dev/null | grep temp | cut -d ":" -f 2)
     else
         status="off"
     fi

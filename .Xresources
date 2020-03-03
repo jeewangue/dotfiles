@@ -38,7 +38,7 @@
 *.color7:       #cbcdd2 
 *.color15:      #cbcdd2
 
-Xft.dpi: 141
+Xft.dpi: 96
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
@@ -56,7 +56,7 @@ XTerm*geometry: 80x25
 
 !! Shells
 URxvt*loginShell: true
-URxvt*print-pipe:  cat > $HOME/$(echo urxvt.dump.$(date +'%Y%M%d%H%m%S'))
+URxvt*print-pipe: "cat > $HOME/$(echo urxvt.dump.$(date +'%Y%M%d%H%m%S'))"
 
 URxvt.iconName:          urxvt
 URxvt.iconFile:          /usr/share/icons/Papirus-Dark/48x48/apps/urxvt.svg
@@ -84,7 +84,10 @@ URxvt*transparent:       false
 !! Fonts
 
 !URxvt*font:              -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso8859-1
-URxvt*font:               xft:SauceCodePro Nerd Font Mono:style=Regular:size=7, xft:MesloLGS Nerd Font Mono:style=RegularForPowerline:size=7
+URxvt*font:               xft:DejaVuSansMono Nerd Font Mono:style=Book:size=10
+URxvt*boldFont:           xft:DejaVuSansMono Nerd Font Mono:style=Bold:size=10
+URxvt*italicFont:         xft:DejaVuSansMono Nerd Font Mono:style=Oblique:size=10
+URxvt*boldItalicFont:     xft:DejaVuSansMono Nerd Font Mono:style=Bold Oblique:size=10
 !URxvt*boldFont:          xft:SauceCodePro Nerd Font Mono:style=Bold:size=9
 !URxvt*italicFont:        xft:SauceCodePro Nerd Font Mono:style=Regular Italic:size=9
 !URxvt*boldItalicFont:    xft:SauceCodePro Nerd Font Mono:style=Bold Italic:size=9
@@ -101,6 +104,8 @@ URxvt.keysym.C-Up:       perl:font-size:increase
 URxvt.keysym.C-Down:     perl:font-size:decrease
 URxvt.keysym.C-S-Up:     perl:font-size:incglobal
 URxvt.keysym.C-S-Down:   perl:font-size:decglobal
+URxvt.keysym.S-space:    \033[32;2u
+URxvt.keysym.C-S-space:  \033[32;6u
 !Home and End keys to jump to the beginning and end of lines
 !URxvt*keysym.Home:       \033[1~
 !URxvt*keysym.End:        \033[4~
@@ -158,3 +163,4 @@ rofi.terminal: urxvt
 rofi.case-sensitive: false
 rofi.run-command: fish -c '{cmd}'
 rofi.run-list-command: 'fish -c functions'
+#include ".Xresources.d/colors"

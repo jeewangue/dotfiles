@@ -28,8 +28,8 @@ urgent          = #e5c07b
 urgent-text     = ${colors.bg}
 
 [monitors]
-primary         = eDP-1
-secondary       = DP-1
+primary         = eDP-1-1
+secondary       = HDMI-0
 
 [bar/base]
 width = 100%
@@ -53,6 +53,7 @@ font-0 = Roboto:size=11;3
 font-1 = Font Awesome 5 Pro:size=11;2
 font-2 = Font Awesome 5 Pro Solid:size=11;2
 font-3 = Font Awesome 5 Brands:size=11;2
+font-4 = Weather Icons:size=11;2
 
 scroll-up = i3wm-wsnext
 scroll-down = i3wm-wsprev
@@ -65,10 +66,10 @@ monitor-strict = true
 
 [bar/primary]
 inherit = bar/base
-monitor = ${monitors.primary}
+# monitor = ${monitors.primary}
 
 modules-left = i3 xwindow
-modules-center = date
+modules-center = date openweathermap-detailed
 modules-right = mpris updates redshift backlight pulseaudio bluetooth wlan eth battery
 
 tray-position = right
@@ -79,7 +80,7 @@ inherit = bar/base
 monitor = ${monitors.secondary}
 
 modules-left = i3
-modules-center =
+modules-center = date
 modules-right =
 
 tray-position = none
@@ -132,6 +133,18 @@ label-urgent-background = ${colors.urgent}
 label-urgent-foreground = ${colors.urgent-text}
 label-urgent-padding = 2
 
+[module/openweathermap-detailed]
+type = custom/script
+exec = ~/.config/polybar/modules/openweathermap-detailed.sh
+interval = 600
+label-font = 5
+
+[module/openweathermap-fullfeatured]
+type = custom/script
+exec = ~/.config/polybar/modules/openweathermap-fullfeatured.sh
+interval = 600
+label-font = 5
+
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:55:...%
@@ -150,7 +163,7 @@ label =  %output%
 
 [module/redshift]
 type = custom/script
-interval = 15
+interval = 30
 exec = ~/.config/polybar/modules/redshift.sh
 label =  %output%
 click-left = ~/.config/polybar/modules/redshift.sh toggle

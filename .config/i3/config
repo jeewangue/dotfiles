@@ -6,8 +6,11 @@ set $mod Mod4
 font pango:monospace 10
 
 # DPI / Xrandr setup
-exec_always --no-startup-id xrandr --dpi 141
-exec_always --no-startup-id xrdb -merge ~/.Xresources
+# exec_always --no-startup-id xrandr --dpi 141
+# exec_always --no-startup-id xrdb -merge ~/.Xresources
+
+# Start picom compositor on background
+exec_always --no-startup-id picom -b
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -191,9 +194,9 @@ bindsym $mod+Shift+Right move workspace to output right
 ####################### Function Keys ###########################
 
 # volume control
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # backlight control
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
@@ -219,15 +222,15 @@ bindsym $mod+Shift+c exec --no-startup-id rofi-scrot
 
 ######################### Launcher Mode #########################
 
-set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]anger [s]ettings [t]ypora [v]scode
+set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]ubymine [s]lack [t]ypora [v]scode
 
 mode "$mode_launcher" {
 	bindsym --release a exec studio               ; mode "default"
 	bindsym --release c exec google-chrome-stable ; mode "default"
 	bindsym --release f exec firefox              ; mode "default"
 	bindsym --release n exec nautilus -w          ; mode "default"
-	bindsym --release r exec konsole -e ranger    ; mode "default"
-	bindsym --release s exec systemsettings5      ; mode "default"
+	bindsym --release r exec rubymine             ; mode "default"
+	bindsym --release s exec slack                ; mode "default"
 	bindsym --release t exec typora               ; mode "default"
 	bindsym --release v exec code                 ; mode "default"
 	bindsym --release k exec env WINEPREFIX="/home/jeewangue/.wine" LANG="ko_KR.UTF-8" wine /home/jeewangue/.wine/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
@@ -258,34 +261,50 @@ for_window [class="(?i)*nextcloud*"] floating disable
 
 ######################### Floating ##############################
 
-for_window [title="Emulator"]  floating enable
-for_window [class="Wine"]      floating enable
-for_window [class="KakaoTalk"] floating enable
-for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"] floating enable
-for_window [title="^Confirm.*" class="jetbrains-pycharm"] floating enable
-for_window [instance="electron" class="Electron"] floating enable
-for_window [instance="qjackctl" class="QjackCtl"] floating enable
-for_window [instance="qsynth" class="Qsynth"] floating enable
+for_window [title="Emulator"                                             ] floating enable
+for_window [                                  class="Wine"               ] floating enable
+for_window [                                  class="KakaoTalk"          ] floating enable
+for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"   ] floating enable
+for_window [title="^Confirm.*"                class="jetbrains-pycharm"  ] floating enable
+for_window [instance="electron"               class="Electron"           ] floating enable
+for_window [instance="qjackctl"               class="QjackCtl"           ] floating enable
+for_window [instance="qsynth"                 class="Qsynth"             ] floating enable
+for_window [instance="zoom"                   class="zoom"               ] floating enable
+for_window [instance="VirtualBox Manager"     class="VirtualBox Manager" ] floating enable
+for_window [instance="VirtualBox Machine"     class="VirtualBox Machine" ] floating enable
+for_window [instance="xclock"                 class="XClock"             ] floating enable
+for_window [instance="urxvt_floating"                                    ] floating enable
+
+######################### Sticky Windows    #####################
+
+for_window [instance="urxvt_sticky"] floating enable; sticky enable
+# exec --no-startup-id urxvt -name urxvt_sticky
+no_focus [instance="urxvt_sticky"]
+
+bindsym $mod+Shift+s sticky toggle
+bindsym $mod+Shift+d exec --no-startup-id urxvt -name urxvt_sticky
 
 ######################### Workspace Mapping #####################
 
-assign [class="^Typora$"] $ws3
-assign [class="^Code$"] $ws4
+assign [class="^Typora$"]            $ws3
+assign [class="^Code$"]              $ws4
 assign [class="^jetbrains-pycharm$"] $ws4
-assign [class="^Slack$"] $ws5
+assign [class="^Slack$"]             $ws5
 
 ######################### Opacity Shortcuts #####################
 
 bindsym $mod+u exec --no-startup-id \
-					transset -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --dec 0.1
+					transset-df -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --dec 0.1
 bindsym $mod+Shift+u exec --no-startup-id \
-					transset -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --inc 0.1
+					transset-df -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --inc 0.1
 
 ######################### Scratchpad Window #####################
 
 for_window [instance="urxvt_scratchpad"] move container to scratchpad
 for_window [instance="urxvt_scratchpad"] border pixel 1
+
 exec --no-startup-id urxvt -name urxvt_scratchpad
+
 bindsym $mod+z [instance="urxvt_scratchpad"] scratchpad show
 bindsym $mod+Shift+z exec --no-startup-id urxvt -name urxvt_scratchpad
 
