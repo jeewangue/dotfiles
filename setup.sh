@@ -9,14 +9,14 @@ BASEDIR=$(dirname $0)
 # updated at 2019/07/13
 # general server packages
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, nginx, sqlite3, postgresql, redis-server fonts-powerline${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, nginx, sqlite3, postgresql, redis-server${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt update
   sudo apt upgrade
   sudo apt install -y build-essential git git-flow zsh vim tmux xclip curl openssl autojump tree htop glances imagemagick graphicsmagick
-  sudo apt install -y nginx sqlite3 postgresql redis-server 
+  sudo apt install -y nginx sqlite3 postgresql redis-server
 fi
 
 # updated at 2019/07/13
@@ -58,14 +58,13 @@ fi
 # updated at 2019/07/13
 # oh my zsh
 echo -e "Installing ${RED}Zsh Configuration${NC}"
-echo -e "${BLUE}ohmyzsh, spaceship-prompt, zsh-syntax-highlighting, zsh-autosuggestions${NC}"
+echo -e "${BLUE}ohmyzsh, powerlevel10k, zsh-syntax-highlighting, zsh-autosuggestions zsh-completions${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
-  sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-  git clone https://github.com/denysdovhan/spaceship-prompt.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt
-  ln -s ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship-prompt/spaceship.zsh-theme ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/spaceship.zsh-theme
+  wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O ./oh-my-zsh-install.sh
+  RUNZSH=no sh ./oh-my-zsh-install.sh
+  rm -v ./oh-my-zsh-install.sh
 
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
@@ -100,8 +99,9 @@ echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   cp -v "$BASEDIR/.vimrc"     "$HOME/.vimrc"
-  git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.vim
-  vim +PluginInstall +qall
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  vim +PlugInstall +qall
 fi
 
 # updated at 2019/07/13
