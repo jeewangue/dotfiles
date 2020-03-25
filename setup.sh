@@ -40,8 +40,8 @@ read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
 	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
   sudo apt install -y nodejs
-  sudo npm -g install yarn
-  sudo yarn global add diff-so-fancy
+  npm -g install yarn
+  yarn global add diff-so-fancy
 fi
 
 # updated at 2019/05/13
