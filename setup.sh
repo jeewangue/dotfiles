@@ -33,13 +33,17 @@ fi
 
 # updated at 2019/07/13
 # nodejs (v12)
-echo -e "Installing ${RED}NodeJS (v12)${NC}"
-echo -e "${BLUE}node, npm, yarn, diff-so-fancy${NC}"
+echo -e "Installing ${RED}NVM / NodeJS (v12)${NC}"
+echo -e "${BLUE}nvm, node, npm, yarn, diff-so-fancy${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
-	curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-  sudo apt install -y nodejs
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+	echo '# NVM scripts'                                                                                         >> $HOME/.zshrc
+	echo 'export NVM_DIR="$HOME/.nvm"'                                                                           >> $HOME/.zshrc
+	echo '[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'                                   >> $HOME/.zshrc
+	echo '[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.zshrc
+
   npm -g install yarn
   yarn global add diff-so-fancy
 fi
