@@ -44,6 +44,9 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
 	echo '[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'                                   >> $HOME/.zshrc
 	echo '[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.zshrc
 
+	source $HOME/.zshrc # source
+	nvm install --lts=erbium # version 12
+
   npm -g install yarn
   yarn global add diff-so-fancy
 fi
