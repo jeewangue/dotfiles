@@ -30,26 +30,6 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt install -y fonts-powerline
 fi
 
-# updated at 2019/07/13
-# nodejs (v12)
-echo -e "Installing ${RED}NVM / NodeJS (v12)${NC}"
-echo -e "${BLUE}nvm, node, npm, yarn, diff-so-fancy${NC}"
-echo -n "continue? [y/N] "
-read answer
-if [ "$answer" != "${answer#[Yy]}" ]; then
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-	echo '# NVM scripts'                                                                                         >> $HOME/.zshrc
-	echo 'export NVM_DIR="$HOME/.nvm"'                                                                           >> $HOME/.zshrc
-	echo '[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'                                   >> $HOME/.zshrc
-	echo '[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.zshrc
-
-	source $HOME/.zshrc # source
-	nvm install --lts=erbium # version 12
-
-  npm -g install yarn
-  yarn global add diff-so-fancy
-fi
-
 # updated at 2020/04/09
 # Java11
 echo -e "Installing ${RED}Oracle Java11${NC}"
@@ -71,16 +51,31 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O ./oh-my-zsh-install.sh
   RUNZSH=no sh ./oh-my-zsh-install.sh
   rm -v ./oh-my-zsh-install.sh
-
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
-
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-
   git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
-
   cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
+fi
+
+# updated at 2019/07/13
+# nodejs (v12)
+echo -e "Installing ${RED}NVM / NodeJS (v12)${NC}"
+echo -e "${BLUE}nvm, node, npm, yarn, diff-so-fancy${NC}"
+echo -n "continue? [y/N] "
+read answer
+if [ "$answer" != "${answer#[Yy]}" ]; then
+	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+	echo '# NVM scripts'                                                                                         >> $HOME/.zshrc
+	echo 'export NVM_DIR="$HOME/.nvm"'                                                                           >> $HOME/.zshrc
+	echo '[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'                                   >> $HOME/.zshrc
+	echo '[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.zshrc
+
+	source $HOME/.zshrc # source
+	nvm install --lts=erbium # version 12
+
+  npm -g install yarn
+  yarn global add diff-so-fancy
 fi
 
 # updated at 2019/07/13
