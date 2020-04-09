@@ -55,6 +55,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'fatih/vim-go'
 Plug 'neovimhaskell/haskell-vim'
+Plug 'Shougo/neco-vim'
 
 " theme
 Plug 'vim-airline/vim-airline'
@@ -70,16 +71,23 @@ Plug 'neoclide/coc-prettier',        { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-html',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-css',             { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver',        { 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint',          { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python',          { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-solargraph',      { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-json',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-git',             { 'do': 'yarn install --frozen-lockfile'}
-Plug 'iamcco/coc-tailwindcss',       { 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-neco',            { 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-snippets',        { 'do': 'yarn install --frozen-lockfile'}
+" Plug 'iamcco/coc-actions',           { 'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-markdownlint', { 'do': 'yarn install --frozen-lockfile'}
 Plug 'weirongxu/coc-explorer',       { 'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go',                { 'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-docker',            { 'do': 'yarn install --frozen-lockfile'}
+Plug 'antoinemadec/coc-fzf',         { 'do': 'yarn install --frozen-lockfile'}
+
+" tags explorer
+Plug 'liuchengxu/vista.vim'
 
 " utils
 Plug 'tpope/vim-eunuch'
@@ -94,7 +102,7 @@ Plug 'junegunn/fzf',                 { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'luochen1990/rainbow'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'skanehira/docker-compose.vim'
 Plug 'vimwiki/vimwiki'
 Plug 'vim-pandoc/vim-pandoc'
@@ -118,6 +126,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gf :Gvdiffsplit!<CR>
 nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
@@ -208,6 +217,7 @@ if has_key(g:plugs, 'coc.nvim')
 				\ pumvisible() ? "\<C-n>" :
 				\ <SID>check_back_space() ? "\<TAB>" :
 				\ coc#refresh()
+
 	inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 	inoremap <silent><expr> <C-space>
@@ -215,7 +225,7 @@ if has_key(g:plugs, 'coc.nvim')
 				\ coc#refresh()
 
 	inoremap <silent><expr> <C-S-space>
-				\ pumvisible() ? "\<C-n>" :
+				\ pumvisible() ? "\<C-p>" :
 				\ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
 
 	function! s:show_documentation()
@@ -232,11 +242,16 @@ if has_key(g:plugs, 'coc.nvim')
 
 	augroup coc-config
 		autocmd!
+		autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
+		autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
 		autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
 		autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
 		autocmd VimEnter * nmap <silent> gp :call CocAction('showSignatureHelp')<CR>
 		autocmd VimEnter * imap <silent> <C-p> <ESC>:call CocAction('showSignatureHelp')<CR>a
 	augroup END
+
+
 endif
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
@@ -244,41 +259,45 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 nmap <leader>rn <Plug>(coc-rename)
 
-xmap <leader>f <Plug>(coc-format-selected)
-vmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
+xmap <silent> <leader>f <Plug>(coc-format-selected)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>f <Plug>(coc-format-selected)
 
 xmap <leader>fa <Plug>(coc-format)
 nmap <leader>fa <Plug>(coc-format)
 
-xmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+" replaced by coc-actions
+xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>ac <Plug>(coc-codeaction)
 
-nmap <leader>ac <Plug>(coc-codeaction)
-nmap <leader>qf <Plug>(coc-fix-current)
+" Remap for do codeAction of selected region
+" function! s:cocActionsOpenFromSelected(type) abort
+"   execute 'CocCommand actions.open ' . a:type
+" endfunction
+" xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+" nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+" nmap <silent> <leader>ac :<C-u>CocCommand actions.open<CR>
 
-nmap <leader>n :CocCommand explorer --sources=buffer+,file+ --width=40<CR>
 
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <leader><space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <leader><space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <leader><space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <leader><space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <leader><space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <leader><space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <leader><space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <leader><space>p  :<C-u>CocListResume<CR>
+nmap <silent> <leader>qf <Plug>(coc-fix-current)
 
-" coc-yaml
+nnoremap <silent> <leader><space>a  :<C-u>CocFzfList diagnostics<CR>
+nnoremap <silent> <leader><space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
+nnoremap <silent> <leader><space>c  :<C-u>CocFzfList commands<CR>
+nnoremap <silent> <leader><space>e  :<C-u>CocFzfList extensions<CR>
+nnoremap <silent> <leader><space>l  :<C-u>CocFzfList location<CR>
+nnoremap <silent> <leader><space>o  :<C-u>CocFzfList outline<CR>
+nnoremap <silent> <leader><space>s  :<C-u>CocFzfList symbols<CR>
+nnoremap <silent> <leader><space>S  :<C-u>CocFzfList services<CR>
+nnoremap <silent> <leader><space>p  :<C-u>CocFzfListResume<CR>
+nnoremap <silent> <leader><space><space>  :<C-u>CocFzfList<CR>
 
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+" coc-explorer
+nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
+nnoremap <silent> <leader>ee :CocCommand explorer --preset floating<CR>
 
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
@@ -292,12 +311,25 @@ let g:rainbow_active = 1
 
 " vimwiki
 let g:vimwiki_list = [{'path': '~/vimwiki/',
+			\ 'automatic_nested_syntaxes': 1,
+			\ 'auto_toc': 1,
 			\ 'auto_tags': 1,
 			\ 'auto_diary_index': 1,
 			\ 'syntax': 'markdown',
 			\ 'ext': '.md'}]
 let g:vimwiki_folding = 'expr'
+let g:vimwiki_auto_chdir = 1
 autocmd Filetype vimwiki set syntax=markdown.pandoc
+let g:tagbar_type_vimwiki = {
+			\ 'ctagstype': 'vimwiki'
+			\ , 'kinds': ['h:header']
+			\ , 'sro':'&&&'
+			\ , 'kind2scope':{'h':'header'}
+			\ , 'sort':0
+			\ , 'ctagsbin':'~/vimwiki/vwtags.py'
+			\ , 'ctagsargs': 'markdown'
+			\ }
+
 
 " pandoc
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
@@ -324,17 +356,55 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 
+" vista
+nnoremap <leader>vv :Vista!!<CR>
+nnoremap <leader>vf :Vista finder<CR>
+
+let g:vista_default_executive = 'ctags'
+let g:vista_executive_for = {
+			\ 'markdown': 'coc',
+			\ 'html': 'coc',
+			\ 'ruby': 'coc',
+			\ 'python': 'coc',
+			\ 'haskell': 'coc',
+			\ 'go': 'coc',
+			\ 'javascript': 'coc',
+			\ 'typescript': 'coc',
+			\ 'typescript.tsx': 'coc',
+			\ 'json': 'coc',
+			\ 'yaml': 'coc',
+			\ }
+let g:vista_fzf_preview = ['right:50%']
+
+" coc-snippets
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+
+" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
 "" Plugin Configuration END
 
-autocmd Filetype markdown   setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype html       setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype ruby       setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype python     setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype haskell    setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype go         setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
-autocmd Filetype javascript setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype typescript setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype json       setlocal ts=2 sw=2 sts=0 expandtab
+autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
+autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
@@ -382,10 +452,12 @@ else
 endif
 
 
+
 " Simple Shortcut
-nmap <C-l> :tnext<CR>
-nmap <C-h> :tprevious<CR>
+nmap <C-l> :tabnext<CR>
+nmap <C-h> :tabprevious<CR>
+
 nmap <leader>wq :wq<CR>
-nmap <leader>qq :q<CR>
+nmap <leader>qq :qa<CR>
 nmap <leader>tn :tabnew<CR>
 
