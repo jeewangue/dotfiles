@@ -6,17 +6,16 @@ NC='\033[0m'
 
 BASEDIR=$(dirname $0)
 
-# updated at 2019/07/13
+# updated at 2020/04/09
 # general server packages
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, nginx, sqlite3, postgresql, redis-server${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, sqlite3${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt update
   sudo apt upgrade
-  sudo apt install -y build-essential git git-flow zsh vim tmux xclip curl openssl autojump tree htop glances imagemagick graphicsmagick
-  sudo apt install -y nginx sqlite3 postgresql redis-server
+  sudo apt install -y build-essential git git-flow zsh vim tmux xclip curl openssl autojump tree htop glances imagemagick graphicsmagick sqlite3
 fi
 
 # updated at 2019/07/13
@@ -51,15 +50,15 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   yarn global add diff-so-fancy
 fi
 
-# updated at 2019/05/13
-# Java10
-echo -e "Installing ${RED}Oracle Java10${NC}"
+# updated at 2020/04/09
+# Java11
+echo -e "Installing ${RED}Oracle Java11${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo add-apt-repository ppa:linuxuprising/java
   sudo apt update
-  sudo apt install oracle-java10-installer
+  sudo apt install oracle-java11-installer-local
 fi
 
 # updated at 2019/07/13
