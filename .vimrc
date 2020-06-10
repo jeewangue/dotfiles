@@ -27,6 +27,8 @@ set number
 set swapfile
 set wildmenu
 set ignorecase
+set cursorline
+set relativenumber
 
 let mapleader=","
 syntax on
@@ -53,9 +55,14 @@ Plug 'udalov/kotlin-vim'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Shougo/neco-vim'
+Plug 'jparise/vim-graphql'
+
+" syntax
+Plug 'towolf/vim-helm'
+Plug 'mustache/vim-mustache-handlebars'
 
 " theme
 Plug 'vim-airline/vim-airline'
@@ -80,6 +87,7 @@ Plug 'neoclide/coc-git',             { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-neco',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-snippets',        { 'do': 'yarn install --frozen-lockfile'}
 " Plug 'iamcco/coc-actions',           { 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-lists',           { 'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-markdownlint', { 'do': 'yarn install --frozen-lockfile'}
 Plug 'weirongxu/coc-explorer',       { 'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go',                { 'do': 'yarn install --frozen-lockfile'}
@@ -93,7 +101,6 @@ Plug 'liuchengxu/vista.vim'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
@@ -108,6 +115,9 @@ Plug 'vimwiki/vimwiki'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
+Plug 'Yggdroot/indentLine'
+Plug 'chrisbra/Colorizer'
+Plug 'lambdalisue/suda.vim' " write suda://PATH
 
 " kubernetes
 Plug 'c9s/helper.vim'
@@ -118,10 +128,6 @@ call plug#end()
 """ PLUG END
 
 """ Plugin Configuration START
-
-" NerdTree
-map <C-n> <ESC>:NERDTree<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -186,6 +192,9 @@ command! -nargs=? -complete=dir AF
 
 nnoremap <leader>, :AF<CR>
 nnoremap <leader>af :AFI<CR>
+nnoremap <leader>. :Buffers<CR>
+" ripgrep
+nnoremap <leader>rg :Rg<CR>
 
 let g:fzf_colors =
 			\ { 'fg':      ['fg', 'Normal'],
@@ -242,6 +251,7 @@ if has_key(g:plugs, 'coc.nvim')
 
 	augroup coc-config
 		autocmd!
+		autocmd VimEnter * nmap <silent> g? <Plug>(coc-diagnostic-info)
 		autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
 		autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
@@ -376,7 +386,12 @@ let g:vista_executive_for = {
 			\ }
 let g:vista_fzf_preview = ['right:50%']
 
-" coc-snippets
+""" coc-list
+nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
+
+
+
+""" coc-snippets
 " Use <C-l> for trigger snippet expand.
 imap <C-l> <Plug>(coc-snippets-expand)
 
@@ -392,6 +407,10 @@ let g:coc_snippet_prev = '<c-k>'
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 
+
+""" indent-line
+" let g:indentLine_char = ''
+
 "" Plugin Configuration END
 
 autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
@@ -405,6 +424,7 @@ autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=sy
 autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
 autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
@@ -456,8 +476,8 @@ endif
 " Simple Shortcut
 nmap <C-l> :tabnext<CR>
 nmap <C-h> :tabprevious<CR>
+nmap <C-n> :tabnew<CR>
 
-nmap <leader>wq :wq<CR>
-nmap <leader>qq :qa<CR>
-nmap <leader>tn :tabnew<CR>
+nmap <leader>qq :q<CR>
+nmap <leader>qa :qa<CR>
 
