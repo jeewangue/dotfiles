@@ -5,31 +5,23 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
-# ZSH plugins
 plugins=(zsh-syntax-highlighting zsh-autosuggestions zsh-completions vi-mode common-aliases)
-# common
 plugins+=(tmux git git-flow autojump dotenv timer)
-# auths
 plugins+=(ssh-agent gpg-agent keychain)
-# container
 plugins+=(docker docker-compose kubectl helm)
-# node
-plugins+=(npm yarn npx)
-# ruby
+plugins+=(npm yarn)
 plugins+=(ruby gem)
-# python
 plugins+=(pipenv)
-# others
 plugins+=(aws)
 
-# User configuration
-export PATH="$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.local/bin:$PATH"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export LANG=en_US.UTF-8
 
 fpath=(~/.zsh/completion $fpath)
 source $ZSH/oh-my-zsh.sh
 
-export LANG=en_US.UTF-8
+# User configuration
+export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.local/bin:$PATH"
 export EDITOR=vim
 export GPG_TTY=$(tty)
 
