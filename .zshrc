@@ -11,7 +11,7 @@ plugins+=(ssh-agent gpg-agent keychain)
 plugins+=(docker docker-compose kubectl helm)
 plugins+=(npm yarn)
 plugins+=(ruby gem)
-plugins+=(pipenv)
+plugins+=(pip pipenv)
 plugins+=(aws)
 
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -99,5 +99,4 @@ complete -o nospace -F /usr/bin/mcli mcli
 
 complete -o nospace -C /usr/bin/kustomize kustomize
 
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 

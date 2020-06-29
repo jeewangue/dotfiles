@@ -59,6 +59,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neovimhaskell/haskell-vim'
 Plug 'Shougo/neco-vim'
 Plug 'jparise/vim-graphql'
+Plug 'PProvost/vim-ps1'
 
 " syntax
 Plug 'towolf/vim-helm'
@@ -88,6 +89,7 @@ Plug 'neoclide/coc-neco',            { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-snippets',        { 'do': 'yarn install --frozen-lockfile'}
 " Plug 'iamcco/coc-actions',           { 'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-lists',           { 'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-pyright',      { 'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-markdownlint', { 'do': 'yarn install --frozen-lockfile'}
 Plug 'weirongxu/coc-explorer',       { 'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go',                { 'do': 'yarn install --frozen-lockfile'}
@@ -256,9 +258,12 @@ if has_key(g:plugs, 'coc.nvim')
 		autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 		autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
+		autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
+		autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
 		autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
 		autocmd VimEnter * nmap <silent> gp :call CocAction('showSignatureHelp')<CR>
 		autocmd VimEnter * imap <silent> <C-p> <ESC>:call CocAction('showSignatureHelp')<CR>a
+		autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 	augroup END
 
 
@@ -280,17 +285,27 @@ nmap <leader>fa <Plug>(coc-format)
 xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
 nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
 nmap <silent> <leader>ac <Plug>(coc-codeaction)
-
-" Remap for do codeAction of selected region
-" function! s:cocActionsOpenFromSelected(type) abort
-"   execute 'CocCommand actions.open ' . a:type
-" endfunction
-" xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-" nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
-" nmap <silent> <leader>ac :<C-u>CocCommand actions.open<CR>
-
-
 nmap <silent> <leader>qf <Plug>(coc-fix-current)
+nmap <silent> <leader>cc :<C-u>vs<CR>:<C-u>CocConfig<CR>
+nmap <silent> <leader>cd :<C-u>CocDiagnostics<CR>
+
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+nmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
+xmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
 
 nnoremap <silent> <leader><space>a  :<C-u>CocFzfList diagnostics<CR>
 nnoremap <silent> <leader><space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
