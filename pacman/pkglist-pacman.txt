@@ -146,7 +146,6 @@ gnu-netcat
 go-tools
 gparted
 graphicsmagick
-grc
 grep
 grilo-plugins
 groff
@@ -241,6 +240,7 @@ openssh
 openssh-askpass
 openvpn
 os-prober
+packer
 pacman
 pacman-contrib
 pandoc
@@ -280,9 +280,11 @@ qsampler
 qsynth
 quadrapassel
 ranger
+rdesktop
 realtime-privileges
 redis
 redshift
+remmina
 rofi
 rosegarden
 rsync
@@ -298,7 +300,6 @@ sonic-pi
 soundfont-fluid
 sox
 sshfs
-stack
 stardict
 steam
 steam-native-runtime
@@ -311,6 +312,7 @@ sysprof
 tali
 termite
 termite-terminfo
+terraform
 texinfo
 tk
 tldr
@@ -327,7 +329,7 @@ urxvt-perls
 usbutils
 util-linux
 v4l2loopback-dkms
-vagrant
+viewnior
 vifm
 vim
 vino

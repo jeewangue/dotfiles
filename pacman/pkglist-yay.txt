@@ -1,5 +1,6 @@
 apachedirectorystudio
 autojump-git
+azure-cli
 base16-manager
 bluez-alsa-git
 cloudflared-bin
