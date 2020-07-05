@@ -12,6 +12,7 @@ arandr
 arch-install-scripts
 ario
 asoundconf
+aspnet-runtime
 audacious
 audacious-plugins
 autoconf
@@ -52,6 +53,7 @@ discord
 dmidecode
 docker
 docker-compose
+dotnet-sdk
 efibootmgr
 eog
 epiphany
@@ -213,6 +215,8 @@ maven
 mediainfo
 mesa-demos
 minio-client
+mono
+mono-tools
 mousetweaks
 mpc
 mpd

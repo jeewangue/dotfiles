@@ -17,7 +17,6 @@ google-cloud-sdk
 google-photos-desktop
 graphql-playground-electron
 greed
-hollywood
 htop-vim-git
 i3-gnome
 insomnia
@@ -26,7 +25,6 @@ jetbrains-toolbox
 kompose-bin
 kubeval
 libldac
-natron
 nautilus-dropbox
 nerd-fonts-complete
 notion-app
