@@ -131,6 +131,9 @@ call plug#end()
 
 """ Plugin Configuration START
 
+" Coc Extensions
+let g:coc_global_extensions=[ 'coc-omnisharp' ]
+
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gs :Gstatus<CR>
@@ -470,14 +473,6 @@ function! MyFoldText() " {{{
 endfunction " }}}
 
 set foldtext=MyFoldText()
-
-
-""" colorscheme (base16)
-" if filereadable(expand("~/.vimrc_background"))
-" 	let base16colorspace=256
-" 	source ~/.vimrc_background
-" endif
-"
 
 let base16colorspace=256
 if has('nvim')
