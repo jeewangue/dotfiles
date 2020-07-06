@@ -1,1 +1,1 @@
-colorscheme base16-snazzy
+colorscheme base16-woodland

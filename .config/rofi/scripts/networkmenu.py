@@ -9,7 +9,7 @@ https://wiki.archlinux.org/index.php/NetworkManager#Set_up_PolicyKit_permissions
 OR running the script as root
 
 Add dmenu formatting options and default terminal if desired to
-/usr/share/rofi-menus-git/networkmanager/config.ini
+~/.config/networkmanager-dmenu/config.ini
 
 """
 import itertools
@@ -52,7 +52,7 @@ def dmenu_cmd(num_lines, prompt="Networks", active_lines=None):  # pylint: disab
     """
     dmenu_command = "dmenu"
     conf = configparser.ConfigParser()
-    conf.read(expanduser("/usr/share/rofi-menus-git/networkmanager/config.ini"))
+    conf.read(expanduser("~/.config/networkmanager-dmenu/config.ini"))
     if not conf.sections():
         res = [dmenu_command, "-i", "-l", str(num_lines), "-p", str(prompt)]
         res.extend(sys.argv[1:])
@@ -387,7 +387,7 @@ def get_selection(eths, aps, vpns, gsms, blues, wwan, others):
 
     """
     conf = configparser.ConfigParser()
-    conf.read(expanduser("/usr/share/rofi-menus-git/networkmanager/config.ini"))
+    conf.read(expanduser("~/.config/networkmanager-dmenu/config.ini"))
     rofi_highlight = False
     if conf.has_option('dmenu', 'rofi_highlight'):
         rofi_highlight = conf.getboolean('dmenu', 'rofi_highlight')
@@ -464,7 +464,7 @@ def launch_connection_editor():
 
     """
     conf = configparser.ConfigParser()
-    conf.read(expanduser("/usr/share/rofi-menus-git/networkmanager/config.ini"))
+    conf.read(expanduser("~/.config/networkmanager-dmenu/config.ini"))
     if conf.has_option("editor", "terminal"):
         terminal = conf.get("editor", "terminal")
     else:
@@ -490,7 +490,7 @@ def get_passphrase():
     """
 
     conf = configparser.ConfigParser()
-    conf.read(expanduser("/usr/share/rofi-menus-git/networkmanager/config.ini"))
+    conf.read(expanduser("~/.config/networkmanager-dmenu/config.ini"))
     pinentry = None
     if conf.has_option("dmenu", "pinentry"):
         pinentry = conf.get("dmenu", "pinentry")

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rofi_command="rofi -theme /usr/share/rofi-menus-git/themes/i3layoutmenu.rasi"
+rofi_command="rofi -theme themes/i3layoutmenu.rasi"
 
 ### Options ###
 stacked=""

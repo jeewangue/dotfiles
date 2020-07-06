@@ -28,8 +28,8 @@ urgent          = #e5c07b
 urgent-text     = ${colors.bg}
 
 [monitors]
-primary         = eDP-1-1
-secondary       = HDMI-0
+# primary         = eDP-1-1
+# secondary       = HDMI-0
 
 [bar/base]
 width = 100%
@@ -66,7 +66,7 @@ monitor-strict = true
 
 [bar/primary]
 inherit = bar/base
-# monitor = ${monitors.primary}
+monitor = ${env:MONITOR:}
 
 modules-left = i3 xwindow
 modules-center = date openweathermap-detailed
@@ -77,7 +77,7 @@ tray-padding = 2
 
 [bar/secondary]
 inherit = bar/base
-monitor = ${monitors.secondary}
+monitor = ${env:MONITOR:}
 
 modules-left = i3
 modules-center = date

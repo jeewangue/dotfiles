@@ -22,8 +22,6 @@ search work
 search pers
 search xlsx
 
-delete
-search down
 search cloud
 search erd
 set preview_images_method w3m
@@ -37,3 +35,8 @@ search h
 search ho
 search wire
 open_with 
+search down
+rename 졸업논문_최종.pdf
+rename 졸업논문_지완규.pdf
+rename 졸업논문_지완규.hwp
+delete

@@ -16,13 +16,14 @@ exec_always --no-startup-id picom -b
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec urxvt
+# bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
 
 # start krunner (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi-appsmenu 
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/scripts/appsmenu.sh
 
 # change focus
 bindsym $mod+h focus left
@@ -113,8 +114,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit Session
-bindsym $mod+Shift+e exec --no-startup-id rofi-power
-
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/rofi/bin/menu_powermenu.sh
 # resize window (you can also use the mouse for that)
 mode "resize" {
 	# These bindings trigger as soon as you enter the resize mode
@@ -218,8 +218,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 # bindsym $mod+Shift+c mode "$mode_capture"
 
-bindsym $mod+Shift+c exec --no-startup-id rofi-scrot
-
+bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/bin/menu_screenshot.sh
 ######################### Launcher Mode #########################
 
 set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]ubymine [s]lack [t]ypora [v]scode
@@ -233,7 +232,7 @@ mode "$mode_launcher" {
 	bindsym --release s exec slack                ; mode "default"
 	bindsym --release t exec typora               ; mode "default"
 	bindsym --release v exec code                 ; mode "default"
-	bindsym --release k exec env WINEPREFIX="/home/jeewangue/.wine" LANG="ko_KR.UTF-8" wine /home/jeewangue/.wine/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
+	bindsym --release k exec env WINEPREFIX="/home/jeewangue/.wine32" LANG="ko_KR.UTF-8" wine /home/jeewangue/.wine32/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
 
 	bindsym Escape mode "default"
 	bindsym Return mode "default"
@@ -273,23 +272,19 @@ for_window [instance="zoom"                   class="zoom"               ] float
 for_window [instance="VirtualBox Manager"     class="VirtualBox Manager" ] floating enable
 for_window [instance="VirtualBox Machine"     class="VirtualBox Machine" ] floating enable
 for_window [instance="xclock"                 class="XClock"             ] floating enable
-for_window [instance="urxvt_floating"                                    ] floating enable
 
-######################### Sticky Windows    #####################
-
-for_window [instance="urxvt_sticky"] floating enable; sticky enable
-# exec --no-startup-id urxvt -name urxvt_sticky
-no_focus [instance="urxvt_sticky"]
-
-bindsym $mod+Shift+s sticky toggle
-bindsym $mod+Shift+d exec --no-startup-id urxvt -name urxvt_sticky
+assign [class="Microsoft Teams - Preview"] $ws5
+for_window [title="Microsoft Teams Notification"] floating enable
+no_focus [title="Microsoft Teams Notification"]
 
 ######################### Workspace Mapping #####################
 
-assign [class="^Typora$"]            $ws3
-assign [class="^Code$"]              $ws4
-assign [class="^jetbrains-pycharm$"] $ws4
-assign [class="^Slack$"]             $ws5
+assign [class="^VirtualBox Manager$"]      $ws1
+assign [class="^VirtualBox Machine$"]      $ws1
+assign [class="^Typora$"]                  $ws3
+assign [class="^Code$"]                    $ws4
+assign [class="^jetbrains-pycharm$"]       $ws4
+assign [class="^Slack$"]                   $ws5
 
 ######################### Opacity Shortcuts #####################
 
@@ -300,24 +295,28 @@ bindsym $mod+Shift+u exec --no-startup-id \
 
 ######################### Scratchpad Window #####################
 
-for_window [instance="urxvt_scratchpad"] move container to scratchpad
-for_window [instance="urxvt_scratchpad"] border pixel 1
+# for_window [instance="urxvt_scratchpad"] move container to scratchpad
+# for_window [instance="urxvt_scratchpad"] border pixel 1
+# exec --no-startup-id urxvt -name urxvt_scratchpad
+# bindsym $mod+z [instance="urxvt_scratchpad"] scratchpad show
+# bindsym $mod+Shift+z exec --no-startup-id urxvt -name urxvt_scratchpad
 
-exec --no-startup-id urxvt -name urxvt_scratchpad
-
-bindsym $mod+z [instance="urxvt_scratchpad"] scratchpad show
-bindsym $mod+Shift+z exec --no-startup-id urxvt -name urxvt_scratchpad
+for_window [instance="termite_scratchpad"] move container to scratchpad
+for_window [instance="termite_scratchpad"] border pixel 1
+exec --no-startup-id termite --name termite_scratchpad
+bindsym $mod+z [instance="termite_scratchpad"] scratchpad show
+bindsym $mod+Shift+z exec --no-startup-id termite --name termite_scratchpad
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+x move scratchpad
 
 # Show the first scratchpad window
 bindsym $mod+x scratchpad show;
-bindsym $mod+Shift+Return move position 0px 0px; resize set 1920 1080
-bindsym $mod+Shift+BackSpace move position 300px 100px; resize set 1320 880
+bindsym $mod+Shift+Return resize set 1920px 1060px; move position center
+bindsym $mod+Shift+BackSpace resize set 1800px 1000px; move position center
 
 ######################### KakaoTalk (wine)  #####################
-no_focus [class="^Wine$"]
+# no_focus [class="^Wine$"]
 # no_focus [class="^Wine$" title="^(?!.*KakaoTalk).*$"]
 
 #################################################################

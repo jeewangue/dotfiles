@@ -1,34 +1,41 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-rofi_command="rofi -theme /usr/share/rofi-menus-git/themes/powermenu.rasi"
+## Author : Aditya Shakya (adi1090x)
+## Mail : adi1090x@gmail.com
+## Github : @adi1090x
+## Reddit : @adi1090x
 
-### Options ###
-power_off=""
-reboot=""
-lock=""
+rofi_command="rofi -theme themes/powermenu.rasi"
+uptime=$(uptime -p | sed -e 's/up //g')
+
+# Options
+shutdown="襤"
+reboot="ﰇ"
+lock=""
 suspend="鈴"
-log_out=""
-# Variable passed to rofi
-options="$power_off\n$reboot\n$lock\n$suspend\n$log_out"
+logout=""
 
-chosen="$(echo -e "$options" | $rofi_command -dmenu -selected-row 2)"
+# Variable passed to rofi
+options="$shutdown\n$reboot\n$lock\n$suspend\n$logout"
+
+chosen="$(echo -e "$options" | $rofi_command -p "UP - $uptime" -dmenu -selected-row 2)"
 case $chosen in
-    $power_off)
+    $shutdown)
         systemctl poweroff
         ;;
     $reboot)
         systemctl reboot
         ;;
     $lock)
-        light-locker-command -l
+        i3lock
         ;;
     $suspend)
         mpc -q pause
         amixer set Master mute
         systemctl suspend
         ;;
-    $log_out)
-        i3-msg exit
+    $logout)
+        openbox --exit
         ;;
 esac
 

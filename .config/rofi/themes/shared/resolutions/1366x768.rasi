@@ -1,12 +1,24 @@
 * {
   /* General */
-  text-font:                            "Comfortaa 14";
+  prompt-text-font:                    "Hurmit Nerd Font Mono 18";
+  text-font:                            "Comfortaa Bold 14";
   text-font-mono:                       "RobotoMono Nerd Font Regular 14";
   icon-font:                            "Hurmit Nerd Font Mono 50";
   icon-font-small:                      "Hurmit Nerd Font Mono 24";
   inputbar-margin:                      4px 4px;
   prompt-padding:                       14px 18px;
   entry-padding:                        16px 14px 14px 0px;
+  /* promptmenu */
+  prompt-window-height:                300px;
+  prompt-window-width:                 600px;
+  prompt-window-border:                2px;
+  prompt-prompt-padding:               20px 30px;
+  prompt-prompt-margin:                8px;
+  prompt-listview-padding:             60px 114px 0px 114px;
+  /* Values bellow are 'no-padding' ones for a size 18 (@prompt-text-font) font, played around using this character: ■
+   * We then add add 30 actual padding around the text.
+   *                                    -4px  -1px  -6px  -28px */
+  prompt-element-padding:              26px  29px  24px  2px;
   /* list menus: appsmenu, networkmenu and nmvpnmenu */
   list-element-padding:                 13px;
   list-element-margin:                  @inputbar-margin;
@@ -37,4 +49,6 @@
   network-textbox-prompt-colon-padding: 12px 10px 8px 10px;
   /* nmvpnmenu */
   nmvpn-textbox-prompt-colon-padding:   @network-textbox-prompt-colon-padding;
+  /* i3keybindings */
+  i3keybindings-textbox-prompt-colon-padding: @network-textbox-prompt-colon-padding;
 }

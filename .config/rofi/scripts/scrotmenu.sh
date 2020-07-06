@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rofi_command="rofi -theme /usr/share/rofi-menus-git/themes/scrotmenu.rasi"
+rofi_command="rofi -theme themes/scrotmenu.rasi"
 
 ### Options ###
 screen=""

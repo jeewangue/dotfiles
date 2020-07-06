@@ -1,10 +1,10 @@
 #!/bin/bash
 
 disconnect() {
-    nmcli con down id "$active" && notify-send "Network Manager" "Disconnected from $active" || notify-send "Network Manager" "Error disconnecting from $active!"
+    nmcli con down id "$active" && notify-send "Network Manager" "Disconnected from <b>$active</b>" || notify-send "Network Manager" "Error disconnecting from <b>$active</b>!"
 }
 connect() {
-    nmcli con up id "$chosen" && notify-send "Network Manager" "Now connected to $chosen" || notify-send "Network Manager" "Error connecting to $chosen!"
+    nmcli con up id "$chosen" && notify-send "Network Manager" "Now connected to <b>$chosen</b>" || notify-send "Network Manager" "Error connecting to <b>$chosen</b>!"
 }
 
 # Get the active vpn connection if there's one
@@ -35,33 +35,30 @@ else
     options=${options::-2}
 fi
 
-chosen=$(echo -e "$options" | rofi -theme /usr/share/rofi-menus-git/themes/nmvpnmenu.rasi -theme-str "$status_style" -p "$status" -dmenu -i $special)
-if [ -n "$chosen" ]; then
-    if [ "$chosen" == "$active" ]; then
-        # Disconnect the active vpn
-        disconnect
-    else
-        take_action=false
-        # Check if the chosen option is in the list, to avoid taking action
-        # on the user pressing Escape for example
-        for i in "${!list[@]}"; do
-            [ "${list[i]}" == "$chosen" ] && { take_action=true; break; }
-        done
-        if $take_action; then
-            # A vpn is active
-            if [ -n "$active" ]; then
-                # Disconnect the active vpn
-                disconnect
-                wait
-                sleep 1
-                # Connect to the chosen one
-                connect
-            # No vpn is active
-            else
-                # Connect to the chosen one
-                connect
-            fi
+chosen=$(echo -e "$options" | rofi -theme themes/nmvpnmenu.rasi -theme-str "$status_style" -p "$status" -dmenu -i $special)
+if [ "$chosen" == "$active" ]; then
+    # Disconnect the active vpn
+    disconnect
+else
+    take_action=false
+    # Check if the chosen option is in the list, to avoid taking action
+    # on the user pressing Escape for example
+    for i in "${!list[@]}"; do
+        [ "${list[i]}" == "$chosen" ] && { take_action=true; break; }
+    done
+    if $take_action; then
+        # A vpn is active
+        if [ -n "$active" ]; then
+            # Disconnect the active vpn
+            disconnect
+            wait
+            sleep 1
+            # Connect to the chosen one
+            connect
+        # No vpn is active
+        else
+            # Connect to the chosen one
+            connect
         fi
     fi
 fi
-
