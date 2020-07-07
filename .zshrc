@@ -6,7 +6,7 @@ HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(zsh-syntax-highlighting zsh-autosuggestions zsh-completions vi-mode common-aliases)
-plugins+=(tmux git git-flow autojump dotenv timer)
+plugins+=(tmux git git-flow z dotenv timer)
 plugins+=(ssh-agent gpg-agent keychain)
 plugins+=(docker docker-compose kubectl helm)
 plugins+=(npm yarn)
@@ -99,4 +99,5 @@ complete -o nospace -F /usr/bin/mcli mcli
 
 complete -o nospace -C /usr/bin/kustomize kustomize
 
-
+# z
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
