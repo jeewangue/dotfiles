@@ -22,11 +22,17 @@ google-auth-oauthlib
 # An autocompletion tool for Python
 jedi
 
+# Python imaging library
+Pillow
+
 # Python development workflow for humans
 pipenv
 
 # Python code static checker
 pylint
+
+# Python client to neovim
+pynvim
 
 # A python refactoring library
 rope
@@ -34,8 +40,12 @@ rope
 # Command line tool for managing Amazon S3 and CloudFront services
 s3cmd
 
+# command line util to display images in combination with X11
+ueberzug
+
 # Command-line YAML/XML processer - jq wrapper
 yq
 
 # YouTube video downloader
 youtube-dl
+
