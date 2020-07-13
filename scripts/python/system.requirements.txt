@@ -1,0 +1,9 @@
+# Python client to neovim
+pynvim
+
+# command line util to display images in combination with X11
+ueberzug
+
+# Python imaging library
+Pillow
+

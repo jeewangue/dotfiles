@@ -1,0 +1,41 @@
+# A unified commnad line interface to Amazon Web Services
+awscli
+
+# Black is the uncompromising Python code formatter
+black
+
+# Command line interface creation kit
+click
+
+# Lightweight WSGI web application framework
+Flask
+
+# Python client library for Google's discovery based APIs
+google-api-python-client
+
+# Google authentication library
+google-auth
+
+# Oauthlib integration with google-auth
+google-auth-oauthlib
+
+# An autocompletion tool for Python
+jedi
+
+# Python development workflow for humans
+pipenv
+
+# Python code static checker
+pylint
+
+# A python refactoring library
+rope
+
+# Command line tool for managing Amazon S3 and CloudFront services
+s3cmd
+
+# Command-line YAML/XML processer - jq wrapper
+yq
+
+# YouTube video downloader
+youtube-dl
