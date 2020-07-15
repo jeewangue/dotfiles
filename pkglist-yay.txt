@@ -3,6 +3,7 @@ base16-manager
 conky-lua-nv
 eksctl-bin
 font-manager
+getmail
 google-chrome
 google-cloud-sdk
 htop-vim-git

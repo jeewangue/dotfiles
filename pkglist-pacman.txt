@@ -90,7 +90,6 @@ lua-lpeg
 luarocks
 mediainfo
 mpv
-mutt
 nccl
 net-tools
 networkmanager-openvpn
@@ -149,3 +148,8 @@ x11-ssh-askpass
 xclip
 yarn
 z
+
+#email
+neomutt
+notmuch
+procmail
