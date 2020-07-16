@@ -156,3 +156,5 @@ procmail
 aspell
 cyrus-sasl
 offlineimap
+msmtp
+msmtp-mta
