@@ -153,3 +153,6 @@ z
 neomutt
 notmuch
 procmail
+aspell
+cyrus-sasl
+offlineimap

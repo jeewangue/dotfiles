@@ -24,3 +24,6 @@ ttf-nanum
 virtualbox-ext-oracle
 yay
 zenmap
+
+# mail
+lbdb
