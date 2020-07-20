@@ -36,7 +36,7 @@ syntax on
 """ PLUG START
 call plug#begin('~/.vim/plugged')
 
-" sessions
+"--- sessions ---
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
@@ -50,56 +50,37 @@ Plug 'tpope/vim-commentary'
 Plug 'chrisbra/csv.vim'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 
-" langs
+"--- langs ---
 Plug 'udalov/kotlin-vim'
 Plug 'plytophogy/vim-virtualenv'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Neovim / Vim integration for Delve (Go debugger)
+Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
-Plug 'Shougo/neco-vim'
 Plug 'jparise/vim-graphql'
-Plug 'PProvost/vim-ps1'
 
-" syntax
+"--- syntax ---
 Plug 'towolf/vim-helm'
 Plug 'mustache/vim-mustache-handlebars'
 
-" theme
+"--- theme ---
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 
-" syntax / autocomplete
+"--- syntax / autocomplete ---
 Plug 'dense-analysis/ale'
+Plug 'neoclide/coc.nvim', { 'branch': 'release'}
+Plug 'antoinemadec/coc-fzf'
+Plug 'tjdevries/coc-zsh'
+Plug 'sheerun/vim-polyglot'
 
-Plug 'neoclide/coc.nvim',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-highlight',       { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-prettier',        { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-html',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-css',             { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-tsserver',        { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-eslint',          { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-python',          { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-solargraph',      { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-json',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-yaml',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-git',             { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-neco',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-snippets',        { 'do': 'yarn install --frozen-lockfile'}
-" Plug 'iamcco/coc-actions',           { 'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-lists',           { 'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-pyright',      { 'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-markdownlint', { 'do': 'yarn install --frozen-lockfile'}
-Plug 'weirongxu/coc-explorer',       { 'do': 'yarn install --frozen-lockfile'}
-Plug 'josa42/coc-go',                { 'do': 'yarn install --frozen-lockfile'}
-Plug 'josa42/coc-docker',            { 'do': 'yarn install --frozen-lockfile'}
-Plug 'antoinemadec/coc-fzf',         { 'do': 'yarn install --frozen-lockfile'}
-
-" tags explorer
+"--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
 
-" utils
+"--- utils ---
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
@@ -107,11 +88,10 @@ Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'junegunn/fzf',                 { 'do': './install --all' }
+Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'luochen1990/rainbow'
-" Plug 'jiangmiao/auto-pairs'
 Plug 'skanehira/docker-compose.vim'
 Plug 'vimwiki/vimwiki'
 Plug 'vim-pandoc/vim-pandoc'
@@ -120,8 +100,11 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 Plug 'Yggdroot/indentLine'
 Plug 'chrisbra/Colorizer'
 Plug 'lambdalisue/suda.vim' " write suda://PATH
+Plug 'diepm/vim-rest-console' " api console
+Plug 'neomutt/neomutt.vim' " email
+Plug 'felipec/notmuch-vim' " email
 
-" kubernetes
+"--- kubernetes ---
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
@@ -132,7 +115,15 @@ call plug#end()
 """ Plugin Configuration START
 
 " Coc Extensions
-let g:coc_global_extensions=[ 'coc-omnisharp' ]
+let g:coc_global_extensions=[
+			\ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
+			\ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
+			\ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
+			\ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
+			\ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
+			\ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
+      \ 'coc-lua'
+			\ ]
 
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -142,6 +133,7 @@ nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gl :Glog<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
+autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " ctrlp-obsession
 nnoremap <leader>ss :CtrlPObsession<CR>
@@ -196,8 +188,8 @@ command! -nargs=? -complete=dir AF
 			\ })))
 
 nnoremap <leader>, :AF<CR>
-nnoremap <leader>af :AFI<CR>
-nnoremap <leader>. :Buffers<CR>
+nnoremap <leader>. :AFI<CR>
+nnoremap <leader>/ :Buffers<CR>
 " ripgrep
 nnoremap <leader>rg :Rg<CR>
 
@@ -254,7 +246,7 @@ if has_key(g:plugs, 'coc.nvim')
 
 	let g:go_doc_keywordprg_enabled = 0
 
-	augroup coc-config
+	augroup coc_config
 		autocmd!
 		autocmd VimEnter * nmap <silent> g? <Plug>(coc-diagnostic-info)
 		autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -284,11 +276,21 @@ nmap <silent> <leader>f <Plug>(coc-format-selected)
 xmap <leader>fa <Plug>(coc-format)
 nmap <leader>fa <Plug>(coc-format)
 
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+	execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
+nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
+nmap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . 'line'<CR>
+
 " replaced by coc-actions
-xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
-nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
-nmap <silent> <leader>ac <Plug>(coc-codeaction)
+" xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+" nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
+" nmap <silent> <leader>ac <Plug>(coc-codeaction)
+"
 nmap <silent> <leader>qf <Plug>(coc-fix-current)
+nmap <silent> <leader>ci :<C-u>CocInfo<CR>
 nmap <silent> <leader>cc :<C-u>vs<CR>:<C-u>CocConfig<CR>
 nmap <silent> <leader>cd :<C-u>CocDiagnostics<CR>
 
@@ -318,6 +320,7 @@ nnoremap <silent> <leader><space>l  :<C-u>CocFzfList location<CR>
 nnoremap <silent> <leader><space>o  :<C-u>CocFzfList outline<CR>
 nnoremap <silent> <leader><space>s  :<C-u>CocFzfList symbols<CR>
 nnoremap <silent> <leader><space>S  :<C-u>CocFzfList services<CR>
+nnoremap <silent> <leader><space>y  :<C-u>CocFzfList yank<CR>
 nnoremap <silent> <leader><space>p  :<C-u>CocFzfListResume<CR>
 nnoremap <silent> <leader><space><space>  :<C-u>CocFzfList<CR>
 
@@ -338,7 +341,7 @@ let g:go_def_mapping_enabled = 0
 let g:rainbow_active = 1
 
 " vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/',
+let g:vimwiki_list = [{'path': '~/workspace/personal/data/vimwiki/',
 			\ 'automatic_nested_syntaxes': 1,
 			\ 'auto_toc': 1,
 			\ 'auto_tags': 1,
@@ -367,6 +370,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dock
 			\ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
 			\ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
 			\ "bash=sh", "literatehaskell=lhaskell"]
+let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
 " markdown-preview.nvim
@@ -427,24 +431,47 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 
 """ indent-line
-" let g:indentLine_char = ''
+" let g:indentLine_char = '|'
 
-"" Plugin Configuration END
+""" vim syntax
+let g:vimsyn_folding = 'af'
 
-autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
-autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
-autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+""" vim-rest-console
+let g:vrc_show_command = 1
+let g:vrc_curl_opts = {
+      \ '--connect-timeout' : 10,
+      \ '--max-time': 120,
+      \ '--cookie': '~/.vim/cookie.txt',
+      \ '--cookie-jar': '~/.vim/cookie.txt',
+      \ '--location': '',
+      \ '--include': '',
+      \ '--ipv4': '',
+      \ '--insecure': '',
+      \}
+
+
+""" Plugin Configuration END
+
+augroup filetype_visual_config
+	autocmd!
+	autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
+	autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+	autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+	autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+augroup END
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
+
 
 map <F1> <ESC>:help<CR>
 
@@ -458,8 +485,9 @@ nnoremap QQ :qall<CR>
 " fold shortcut
 nnoremap <space> za
 vnoremap <space> za
+
 " fold text
-function! MyFoldText() " {{{
+function! MyFoldText()
 	let line = getline(v:foldstart)
 	let nucolwidth = &fdc + &number * &numberwidth
 	let windowwidth = winwidth(0) - nucolwidth - 3
@@ -470,7 +498,7 @@ function! MyFoldText() " {{{
 	let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
 	let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
 	return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction " }}}
+endfunction
 
 set foldtext=MyFoldText()
 
@@ -481,6 +509,13 @@ else
 	source ~/.vim/colorscheme.vim
 endif
 
+
+" Mail
+command Mail e term://neomutt
+augroup mailfiletype
+  " Mail
+  autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
+augroup END
 
 
 " Simple Shortcut
