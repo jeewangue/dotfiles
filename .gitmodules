@@ -1,20 +1,20 @@
-[submodule ".oh-my-zsh/custom/themes/powerlevel10k"]
-	path = .oh-my-zsh/custom/themes/powerlevel10k
+[submodule "powerlevel10k"]
+	path = submodules/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
 	branch = master
-[submodule ".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
-	path = .oh-my-zsh/custom/plugins/zsh-autosuggestions
+[submodule "zsh-autosuggestions"]
+	path = submodules/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 	branch = master
-[submodule ".oh-my-zsh/custom/plugins/zsh-completions"]
-	path = .oh-my-zsh/custom/plugins/zsh-completions
+[submodule "zsh-completions"]
+	path = submodules/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
 	branch = master
-[submodule ".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-	path = .oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+[submodule "zsh-syntax-highlighting"]
+	path = submodules/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 	branch = master
 [submodule "ohmyzsh"]
-	path = ohmyzsh
+	path = submodules/ohmyzsh
 	url = https://github.com/ohmyzsh/ohmyzsh.git
 	branch = master
