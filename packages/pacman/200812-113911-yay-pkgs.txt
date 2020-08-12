@@ -1,21 +1,28 @@
 azure-cli
 base16-manager
+chrome-remote-desktop
 conky-lua-nv
 eksctl-bin
 font-manager
 getmail
+gitflow-avh
 google-chrome
 google-cloud-sdk
 htop-vim-git
 i3-gnome
 istio-bin
 jd-gui-bin
+lbdb
+minecraft
+mu
 nerd-fonts-complete
 nvm
 paman
 paper-gtk-theme-git
 paper-icon-theme-git
 polybar
+pscircle
+ripmime
 slack-desktop
 taskbook
 teams
@@ -24,7 +31,4 @@ ttf-nanum
 virtualbox-ext-oracle
 yay
 zenmap
-
-# mail
-lbdb
-ripmime
+zoom
