@@ -1,0 +1,138 @@
+{
+  "languageserver": {},
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "Markdown",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "python",
+    "ruby",
+    "graphql"
+  ],
+  "coc.preferences.extensionUpdateCheck": "weekly",
+  "codeLens.enable": true,
+  "eslint.autoFixOnSave": true,
+  "eslint.enable": true,
+  "eslint.packageManager": "yarn",
+  "eslint.filetypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "solargraph.checkGemVersion": false,
+  "solargraph.diagnostics": true,
+  "solargraph.autoformat": true,
+  "solargraph.formatting": true,
+  "solargraph.hover": true,
+  "solargraph.useBundler": false,
+  "solargraph.trace.server": "verbose",
+  "suggest.enablePreview": true,
+  "markdownlint.config": {
+    "default": true,
+    "line_length": false
+  },
+  "explorer.icon.enableNerdfont": true,
+  "explorer.presets": {
+    "panel": {
+      "sources": [
+        {
+          "name": "buffer",
+          "expand": true
+        },
+        {
+          "name": "file",
+          "expand": true
+        }
+      ],
+      "width": 40
+    },
+    "floating": {
+      "sources": [
+        {
+          "name": "buffer",
+          "expand": true
+        },
+        {
+          "name": "file",
+          "expand": true
+        }
+      ],
+      "position": "floating",
+      "floating-position": "center",
+      "floating-width": 60
+    },
+    "simplify": {
+      "file.child.template": "[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]"
+    }
+  },
+  "go.disable": {
+    "workspaceFolders": false
+  },
+  "go.enable": true,
+  "go.goplsOptions": {
+    "buildFlags": ["-tags"],
+    "usePlaceholders": true,
+    "completeUnimported": true,
+    "hoverKind": "FullDocumentation",
+    "staticcheck": true
+  },
+  "powershell.integratedConsole.showOnStartup": false,
+  "prettier.eslintIntegration": true,
+  "python.formatting.provider": "black",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.updateImportsOnFileMove.enable": true,
+  "javascript.suggestionActions.enabled": false,
+  "typescript.suggestionActions.enabled": false,
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": true,
+  "yaml.validate": true,
+  "yaml.hover": true,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    "kubernetes": "*.k8s.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/alertmanagers.monitoring.coreos.com.schema.json": "*.alertmanager.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/attributemanifests.config.istio.io.schema.json": "*.attributemanifest.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/authorizationpolicies.security.istio.io.schema.json": "*.authorizationpolicy.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/certificaterequests.cert-manager.io.schema.json": "*.certificaterequest.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/certificates.cert-manager.io.schema.json": "*.certificate.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/challenges.acme.cert-manager.io.schema.json": "*.challenge.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/clusterissuers.cert-manager.io.schema.json": "*.clusterissuer.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/clusterrbacconfigs.rbac.istio.io.schema.json": "*.clusterrbacconfig.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/destinationrules.networking.istio.io.schema.json": "*.destinationrule.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/eksctl.config.schema.json": "*.eksctl.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/envoyfilters.networking.istio.io.schema.json": "*.envoyfilter.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/gateways.networking.istio.io.schema.json": "*.gateway.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/handlers.config.istio.io.schema.json": "*.handler.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/httpapispecbindings.config.istio.io.schema.json": "*.httpapispecbinding.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/httpapispecs.config.istio.io.schema.json": "*.httpapispec.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/instances.config.istio.io.schema.json": "*.instance.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/issuers.cert-manager.io.schema.json": "*.issuer.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/meshpolicies.authentication.istio.io.schema.json": "*.meshpolicy.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/oas-v3.0.schema.json": "*.oas3.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/orders.acme.cert-manager.io.schema.json": "*.order.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/peerauthentications.security.istio.io.schema.json": "*.peerauthentication.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/podmonitors.monitoring.coreos.com.schema.json": "*.podmonitor.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/policies.authentication.istio.io.schema.json": "*.policy.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/prometheuses.monitoring.coreos.com.schema.json": "*.prometheus.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/prometheusrules.monitoring.coreos.com.schema.json": "*.prometheusrule.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/quotaspecbindings.config.istio.io.schema.json": "*.quotaspecbinding.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/quotaspecs.config.istio.io.schema.json": "*.quotaspec.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/rbacconfigs.rbac.istio.io.schema.json": "*.rbacconfig.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/requestauthentications.security.istio.io.schema.json": "*.requestauthentication.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/rules.config.istio.io.schema.json": "*.rule.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/serviceentries.networking.istio.io.schema.json": "*.serviceentry.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/servicemonitors.monitoring.coreos.com.schema.json": "*.servicemonitor.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/servicerolebindings.rbac.istio.io.schema.json": "*.servicerolebinding.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/serviceroles.rbac.istio.io.schema.json": "*.servicerole.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/sidecars.networking.istio.io.schema.json": "*.sidecar.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/thanosrulers.monitoring.coreos.com.schema.json": "*.thanosruler.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/virtualservices.networking.istio.io.schema.json": "*.virtualservice.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/docker-compose.schema.json": "docker-compose*.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/azure-pipelines.schema.json": "azure-pipelines.*"
+  },
+  "yaml.trace.server": "verbose"
+}
