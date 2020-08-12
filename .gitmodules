@@ -4,11 +4,11 @@
 	branch = master
 [submodule "zsh-autosuggestions"]
 	path = submodules/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
 	branch = master
 [submodule "zsh-completions"]
 	path = submodules/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
 	branch = master
 [submodule "zsh-syntax-highlighting"]
 	path = submodules/zsh-syntax-highlighting
