@@ -53,7 +53,6 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 "--- langs ---
 Plug 'udalov/kotlin-vim'
 Plug 'plytophogy/vim-virtualenv'
-Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " Neovim / Vim integration for Delve (Go debugger)
@@ -103,6 +102,10 @@ Plug 'lambdalisue/suda.vim' " write suda://PATH
 Plug 'diepm/vim-rest-console' " api console
 Plug 'neomutt/neomutt.vim' " email
 Plug 'felipec/notmuch-vim' " email
+Plug 'TheZoq2/neovim-auto-autoread' " Autoread
+
+"--- finder ---
+Plug 'liuchengxu/vim-clap'
 
 "--- kubernetes ---
 Plug 'c9s/helper.vim'
@@ -116,14 +119,14 @@ call plug#end()
 
 " Coc Extensions
 let g:coc_global_extensions=[
-			\ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
-			\ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
-			\ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
-			\ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
-			\ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
-			\ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
+      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
+      \ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
+      \ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
+      \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
+      \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
+      \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua'
-			\ ]
+      \ ]
 
 " vim-fugitive
 nnoremap <leader>gb :Gblame<CR>
@@ -140,7 +143,7 @@ nnoremap <leader>ss :CtrlPObsession<CR>
 
 " undotree
 if !isdirectory($HOME."/.vim/.undodir")
-	call mkdir($HOME."/.vim/.undodir", "", 0700)
+  call mkdir($HOME."/.vim/.undodir", "", 0700)
 endif
 set undodir=~/.vim/.undodir
 set undofile
@@ -152,40 +155,57 @@ nnoremap <F8> :TagbarToggle<CR>
 
 " vim-airline
 set laststatus=2
-let g:airline_theme = 'badwolf'
+let g:airline_theme = 'simple'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 0
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#coc#error_symbol = 'E:'
+let g:airline#extensions#coc#warning_symbol = 'W:'
+let g:airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
 " ale
+" let g:ale_set_highlights = 0
 " let g:ale_linters = {
-" 			\  'python': ['pylint']
+"       \  'javascript': ['eslint'],
+"       \  'typescript': ['eslint'],
+" 			\  'python': ['pylint'],
+"       \  'ruby': ['solargraph'],
+"       \  'zsh': ['shell'],
 " 			\}
 " let g:ale_fixers = {
-" 			\  'python': ['yapf'],
-" 			\  'ruby': ['rubocop']
-" 			\}
+"       \  'javascript': ['eslint'],
+"       \  'typescript': ['eslint'],
+"       \  'python': ['black'],
+"       \  'ruby': ['rubocop']
+"       \}
+
+" let g:ale_sign_error = '>>'
+" let g:ale_sign_warning = '--'
+
 """ Only run linters named in ale_linters settings.
 let g:ale_linters_explicit = 1
 
 " goyo / limelight
-map <C-f> <ESC>:Goyo<CR>
+map <C-g> <ESC>:Goyo<CR>
 
 " fzf
 if has('nvim') || has('gui_running')
-	let $FZF_DEFAULT_OPTS .= ' --inline-info'
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
 endif
 
 " fzf: All files
 command! -nargs=? -complete=dir AFI
-			\ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-			\   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
-			\ })))
+      \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+      \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
+      \ })))
 
 " fzf: All files & ignore
 command! -nargs=? -complete=dir AF
-			\ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-			\   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
-			\ })))
+      \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
+      \   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
+      \ })))
 
 nnoremap <leader>, :AF<CR>
 nnoremap <leader>. :AFI<CR>
@@ -194,19 +214,19 @@ nnoremap <leader>/ :Buffers<CR>
 nnoremap <leader>rg :Rg<CR>
 
 let g:fzf_colors =
-			\ { 'fg':      ['fg', 'Normal'],
-			\ 'bg':      ['bg', 'Normal'],
-			\ 'hl':      ['fg', 'Comment'],
-			\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-			\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-			\ 'hl+':     ['fg', 'Statement'],
-			\ 'info':    ['fg', 'PreProc'],
-			\ 'border':  ['fg', 'Ignore'],
-			\ 'prompt':  ['fg', 'Conditional'],
-			\ 'pointer': ['fg', 'Exception'],
-			\ 'marker':  ['fg', 'Keyword'],
-			\ 'spinner': ['fg', 'Label'],
-			\ 'header':  ['fg', 'Comment'] }
+      \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'border':  ['fg', 'Ignore'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
 
 " Terminal buffer options for fzf
 autocmd! FileType fzf
@@ -214,52 +234,52 @@ autocmd  FileType fzf set noshowmode noruler nonu
 
 " coc
 if has_key(g:plugs, 'coc.nvim')
-	function! s:check_back_space() abort
-		let col = col('.') - 1
-		return !col || getline('.')[col - 1]  =~# '\s'
-	endfunction
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
 
-	inoremap <silent><expr> <TAB>
-				\ pumvisible() ? "\<C-n>" :
-				\ <SID>check_back_space() ? "\<TAB>" :
-				\ coc#refresh()
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
 
-	inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-	inoremap <silent><expr> <C-space>
-				\ pumvisible() ? "\<C-n>" :
-				\ coc#refresh()
+  inoremap <silent><expr> <C-space>
+        \ pumvisible() ? "\<C-n>" :
+        \ coc#refresh()
 
-	inoremap <silent><expr> <C-S-space>
-				\ pumvisible() ? "\<C-p>" :
-				\ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
+  inoremap <silent><expr> <C-S-space>
+        \ pumvisible() ? "\<C-p>" :
+        \ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
 
-	function! s:show_documentation()
-		if (index(['vim', 'help'], &filetype) >= 0)
-			execute 'h' expand('<cword>')
-		else
-			call CocAction('doHover')
-		endif
-	endfunction
+  function! s:show_documentation()
+    if (index(['vim', 'help'], &filetype) >= 0)
+      execute 'h' expand('<cword>')
+    else
+      call CocAction('doHover')
+    endif
+  endfunction
 
-	nnoremap <silent> gh :call <SID>show_documentation()<CR>
+  nnoremap <silent> gh :call <SID>show_documentation()<CR>
 
-	let g:go_doc_keywordprg_enabled = 0
+  let g:go_doc_keywordprg_enabled = 0
 
-	augroup coc_config
-		autocmd!
-		autocmd VimEnter * nmap <silent> g? <Plug>(coc-diagnostic-info)
-		autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
-		autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  augroup coc_config
+    autocmd!
+    autocmd VimEnter * nmap <silent> g? <Plug>(coc-diagnostic-info)
+    autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-		autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
-		autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
-		autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
-		autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
-		autocmd VimEnter * nmap <silent> gp :call CocAction('showSignatureHelp')<CR>
-		autocmd VimEnter * imap <silent> <C-p> <ESC>:call CocAction('showSignatureHelp')<CR>a
-		autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-	augroup END
+    autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
+    autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
+    autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
+    autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
+    autocmd VimEnter * nmap <silent> gp :call CocAction('showSignatureHelp')<CR>
+    autocmd VimEnter * imap <silent> <C-p> <ESC>:call CocAction('showSignatureHelp')<CR>a
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  augroup END
 
 
 endif
@@ -278,7 +298,7 @@ nmap <leader>fa <Plug>(coc-format)
 
 " Remap for do codeAction of selected region
 function! s:cocActionsOpenFromSelected(type) abort
-	execute 'CocCommand actions.open ' . a:type
+  execute 'CocCommand actions.open ' . a:type
 endfunction
 xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
 nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
@@ -330,6 +350,11 @@ let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
 nnoremap <silent> <leader>ee :CocCommand explorer --preset floating<CR>
 
+" augroup openCocExplorer
+"   autocmd!
+"   autocmd SessionLoadPost * CocCommand explorer --preset panel
+" augroup END
+
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
@@ -341,25 +366,25 @@ let g:go_def_mapping_enabled = 0
 let g:rainbow_active = 1
 
 " vimwiki
-let g:vimwiki_list = [{'path': '~/workspace/personal/data/vimwiki/',
-			\ 'automatic_nested_syntaxes': 1,
-			\ 'auto_toc': 1,
-			\ 'auto_tags': 1,
-			\ 'auto_diary_index': 1,
-			\ 'syntax': 'markdown',
-			\ 'ext': '.md'}]
+let g:vimwiki_list = [{'path': '~/workspace/personal/repos/vimwiki/',
+      \ 'automatic_nested_syntaxes': 1,
+      \ 'auto_toc': 1,
+      \ 'auto_tags': 1,
+      \ 'auto_diary_index': 1,
+      \ 'syntax': 'markdown',
+      \ 'ext': '.md'}]
 let g:vimwiki_folding = 'expr'
 let g:vimwiki_auto_chdir = 1
 autocmd Filetype vimwiki set syntax=markdown.pandoc
 let g:tagbar_type_vimwiki = {
-			\ 'ctagstype': 'vimwiki'
-			\ , 'kinds': ['h:header']
-			\ , 'sro':'&&&'
-			\ , 'kind2scope':{'h':'header'}
-			\ , 'sort':0
-			\ , 'ctagsbin':'~/vimwiki/vwtags.py'
-			\ , 'ctagsargs': 'markdown'
-			\ }
+      \ 'ctagstype': 'vimwiki'
+      \ , 'kinds': ['h:header']
+      \ , 'sro':'&&&'
+      \ , 'kind2scope':{'h':'header'}
+      \ , 'sort':0
+      \ , 'ctagsbin':'~/vimwiki/vwtags.py'
+      \ , 'ctagsargs': 'markdown'
+      \ }
 
 
 " pandoc
@@ -367,9 +392,9 @@ let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
 let g:pandoc#folding#mode = ["syntax"]
 let g:pandoc#spell#enabled = 0
 let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html", 
-			\ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
-			\ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
-			\ "bash=sh", "literatehaskell=lhaskell"]
+      \ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
+      \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
+      \ "bash=sh", "literatehaskell=lhaskell"]
 let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
@@ -390,23 +415,31 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 
 " vista
 nnoremap <leader>vv :Vista!!<CR>
+nnoremap <leader>vc :Clap<CR>
 nnoremap <leader>vf :Vista finder<CR>
 
 let g:vista_default_executive = 'ctags'
 let g:vista_executive_for = {
-			\ 'markdown': 'coc',
-			\ 'html': 'coc',
-			\ 'ruby': 'coc',
-			\ 'python': 'coc',
-			\ 'haskell': 'coc',
-			\ 'go': 'coc',
-			\ 'javascript': 'coc',
-			\ 'typescript': 'coc',
-			\ 'typescript.tsx': 'coc',
-			\ 'json': 'coc',
-			\ 'yaml': 'coc',
-			\ }
+      \ 'vimwiki': 'markdown',
+      \ 'pandoc': 'markdown',
+      \ 'markdown': 'toc',
+      \ 'html': 'coc',
+      \ 'ruby': 'coc',
+      \ 'python': 'coc',
+      \ 'go': 'ctags',
+      \ 'javascript': 'coc',
+      \ 'typescript': 'coc',
+      \ 'typescript.tsx': 'coc',
+      \ 'json': 'coc',
+      \ 'yaml': 'coc',
+      \ }
+let g:vista_ctags_cmd = {
+      \ 'go': 'gotags',
+      \ }
 let g:vista_fzf_preview = ['right:50%']
+let g:vista_update_on_text_changed = 1
+let g:vista_update_on_text_changed_delay = 1000
+
 
 """ coc-list
 nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
@@ -453,20 +486,19 @@ let g:vrc_curl_opts = {
 """ Plugin Configuration END
 
 augroup filetype_visual_config
-	autocmd!
-	autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
-	autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype typescript.tsx setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-	autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
-	autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+  autocmd!
+  autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
+  autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+  autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
 augroup END
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
@@ -488,25 +520,25 @@ vnoremap <space> za
 
 " fold text
 function! MyFoldText()
-	let line = getline(v:foldstart)
-	let nucolwidth = &fdc + &number * &numberwidth
-	let windowwidth = winwidth(0) - nucolwidth - 3
-	let foldedlinecount = v:foldend - v:foldstart
-	" expand tabs into spaces
-	let onetab = strpart(' ', 0, &tabstop)
-	let line = substitute(line, '\t', onetab, 'g')
-	let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-	let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-	return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+  let line = getline(v:foldstart)
+  let nucolwidth = &fdc + &number * &numberwidth
+  let windowwidth = winwidth(0) - nucolwidth - 3
+  let foldedlinecount = v:foldend - v:foldstart
+  " expand tabs into spaces
+  let onetab = strpart(' ', 0, &tabstop)
+  let line = substitute(line, '\t', onetab, 'g')
+  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction
 
 set foldtext=MyFoldText()
 
 let base16colorspace=256
 if has('nvim')
-	source ~/.config/nvim/colorscheme.vim
+  source ~/.config/nvim/colorscheme.vim
 else
-	source ~/.vim/colorscheme.vim
+  source ~/.vim/colorscheme.vim
 endif
 
 
@@ -516,6 +548,7 @@ augroup mailfiletype
   " Mail
   autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
 augroup END
+
 
 
 " Simple Shortcut
