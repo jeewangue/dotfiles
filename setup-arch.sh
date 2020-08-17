@@ -4,7 +4,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-BASEDIR=$(dirname $0)
+BASEDIR=$(dirname ${BASH_SOURCE:-$0})
 
 # updated at 2020/04/09
 # general server packages

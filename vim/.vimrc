@@ -125,7 +125,7 @@ let g:coc_global_extensions=[
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
-      \ 'coc-lua'
+      \ 'coc-lua', 'coc-sh', 'coc-phpls'
       \ ]
 
 " vim-fugitive
@@ -559,3 +559,4 @@ nmap <C-n> :tabnew<CR>
 nmap <leader>qq :q<CR>
 nmap <leader>qa :qa<CR>
 
+autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
