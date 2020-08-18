@@ -10,8 +10,10 @@ if type nvim > /dev/null 2>&1; then
 fi
 
 unalias fd
+unalias k
 
-alias -g G='| grep --color'
+alias ka='k -a '
+
 alias -g XCLIP='| xclip -selection clipboard'
 
 function withlogs() {
@@ -28,3 +30,4 @@ function withlogs() {
 }
 
 alias gpa='git remote | xargs -L1 git push --all'
+alias gpat='git remote | xargs -L1 git push --tags'
