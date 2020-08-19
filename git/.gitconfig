@@ -23,3 +23,17 @@
 	name = Jee Wan Gue
 	email = jeewangue@gmail.com
 	signingkey = 8FDEE00DE488B259748C25D658CB05986498292E
+[color]
+	ui = true
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
