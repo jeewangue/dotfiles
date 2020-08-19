@@ -1,5 +1,7 @@
 [push]
 	default = simple
+[pull]
+	rebase = true
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	lga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative --show-signature --all
@@ -16,5 +18,7 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-[pull]
-	rebase = false
+[user]
+	name = Jee Wan Gue
+	email = jeewangue@gmail.com
+	signingkey = 8FDEE00DE488B259748C25D658CB05986498292E
