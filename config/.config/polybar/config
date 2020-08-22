@@ -1,0 +1,239 @@
+;==========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;==========================================================
+
+
+[colors]
+bg              = #282c34
+active-bg       = #3e4452
+text            = #abb2bf
+active-text     = ${colors.text}
+highlight       = #61afef
+highlight-text  = ${colors.bg}
+urgent          = #e5c07b
+urgent-text     = ${colors.bg}
+
+[monitors]
+# primary         = eDP-1-1
+# secondary       = HDMI-0
+
+[bar/base]
+width = 100%
+height = 27
+fixed-center = true
+
+background = ${colors.bg}
+foreground = ${colors.text}
+border-top-size = 1
+border-top-color = ${colors.bg}
+border-bottom-size = 1
+border-bottom-color = ${colors.bg}
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Noto Sans CJK KR:size=11;2
+font-1 = Font Awesome 5 Pro:size=11;2
+font-2 = Font Awesome 5 Pro Solid:size=11;2
+font-3 = Font Awesome 5 Brands:size=11;2
+font-4 = Weather Icons:size=11;2
+
+scroll-up = i3wm-wsnext
+scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+
+locale = en_US.UTF-8
+monitor-exact = true
+monitor-strict = true
+
+[bar/primary]
+inherit = bar/base
+monitor = ${env:MONITOR:}
+
+modules-left = i3 xwindow
+modules-center = date openweathermap-detailed
+modules-right = mpris updates redshift backlight pulseaudio bluetooth wlan eth battery
+
+tray-position = right
+tray-padding = 2
+
+[bar/secondary]
+inherit = bar/base
+monitor = ${env:MONITOR:}
+
+modules-left = i3
+modules-center = date
+modules-right =
+
+tray-position = none
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Icons
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-default = 
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = ${colors.urgent}
+label-mode-background = ${colors.urgent-text}
+
+; focused = Active workspace on focused monitor
+label-focused = %index% %icon%
+label-focused-background = ${colors.highlight}
+label-focused-foreground = ${colors.highlight-text}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index% %icon%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index% %icon%
+label-visible-background = ${colors.active-bg}
+label-visible-foreground = ${colors.active-text}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index% %icon%
+label-urgent-background = ${colors.urgent}
+label-urgent-foreground = ${colors.urgent-text}
+label-urgent-padding = 2
+
+[module/openweathermap-detailed]
+type = custom/script
+exec = ~/.config/polybar/modules/openweathermap-detailed.sh
+interval = 600
+label-font = 5
+
+[module/openweathermap-fullfeatured]
+type = custom/script
+exec = ~/.config/polybar/modules/openweathermap-fullfeatured.sh
+interval = 600
+label-font = 5
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:55:...%
+
+[module/mpris]
+type = custom/script
+exec = ~/.config/polybar/modules/player-mpris-tail.py -f '{icon} {artist} - {title}' --icon-playing  --icon-paused  -b vlc
+tail = true
+label = %output:0:35:...%
+
+[module/updates]
+type = custom/script
+interval = 600
+exec = ~/.config/polybar/modules/updates.sh
+label =  %output%
+
+[module/redshift]
+type = custom/script
+interval = 30
+exec = ~/.config/polybar/modules/redshift.sh
+label =  %output%
+click-left = ~/.config/polybar/modules/redshift.sh toggle
+
+[module/date]
+type = internal/date
+interval = 15
+
+date = %e %b
+time = %H:%M
+label =  %date%, %time%
+
+[module/backlight]
+type = custom/script
+exec = ~/.config/polybar/modules/light.sh
+tail = true
+scroll-up = ~/.config/polybar/modules/light.sh inc
+scroll-down = ~/.config/polybar/modules/light.sh dec
+label =  %output%%
+
+[module/pulseaudio]
+type = internal/pulseaudio
+use-ui-max = false
+format-volume = <label-volume>
+label-volume =  %percentage%%
+label-muted =  %percentage%%
+
+[module/bluetooth]
+type = custom/script
+exec = ~/.config/polybar/modules/system-bluetooth-buetoothctl.sh
+tail = true
+label =  %output%
+
+[module/wlan]
+type = internal/network
+interval = 3.0
+interface = wlo1
+
+label-connected =  %signal%% %essid%
+format-disconnected =
+
+[module/eth]
+type = internal/network
+interval = 3.0
+interface = enp61s0
+
+label-connected =  eth
+format-disconnected =
+
+[module/battery]
+type = internal/battery
+
+battery = BAT1
+adapter = ADP1
+full-at = 100
+
+time-format = %H:%M
+
+format-full = <ramp-capacity> <label-full>
+format-charging =  <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+label-full = %percentage%%
+label-charging = %percentage%%
+label-discharging = %percentage%%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+; vim:ft=dosini

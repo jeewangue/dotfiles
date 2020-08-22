@@ -1,0 +1,16 @@
+/** Configured For Applets **/
+
+configuration {
+  show-icons:         true;
+  icon-theme:         "Paper";
+  cycle:              true;
+  hide-scrollbar:     true;
+  disable-history:    false;
+  modi:               "window,run,ssh,drun,combi";
+  display-drun:       "apps";
+  columns: 2;
+//  icon-theme:         "Papirus";
+//  location: 5;
+//  yoffset: -50;
+//  xoffset: -20;
+}

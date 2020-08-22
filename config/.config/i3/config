@@ -1,0 +1,323 @@
+# i3 config file (v4)
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+
+font pango:monospace 10
+
+# DPI / Xrandr setup
+# exec_always --no-startup-id xrandr --dpi 141
+# exec_always --no-startup-id xrdb -merge ~/.Xresources
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+# bindsym $mod+Return exec urxvt
+bindsym $mod+Return exec termite
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start krunner (a program launcher)
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/scripts/appsmenu.sh
+
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# split in horizontal orientation
+bindsym $mod+bar split h
+
+# split in vertical orientation
+bindsym $mod+minus split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+f floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+bindsym $mod+Shift+a focus child
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch between workspaces
+bindsym $mod+Tab workspace back_and_forth
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# reload the configuration file
+bindsym $mod+Shift+t reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit Session
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/rofi/bin/menu_powermenu.sh
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	# These bindings trigger as soon as you enter the resize mode
+
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym h resize shrink width 10 px or 10 ppt
+	bindsym j resize grow height 10 px or 10 ppt
+	bindsym k resize shrink height 10 px or 10 ppt
+	bindsym l resize grow width 10 px or 10 ppt
+
+	bindsym Shift+h resize shrink width 50 px or 50 ppt
+	bindsym Shift+j resize grow height 50 px or 50 ppt
+	bindsym Shift+k resize shrink height 50 px or 50 ppt
+	bindsym Shift+l resize grow width 50 px or 50 ppt
+
+	# same bindings, but for the arrow keys
+	bindsym Left move left 50px
+	bindsym Down move down 50px
+	bindsym Up move up 50px
+	bindsym Right move right 50px
+
+	# back to normal: Enter or Escape or $mod+r
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+######################### Personal ##############################
+
+focus_follows_mouse no
+
+# Start picom compositor on background
+exec_always --no-startup-id picom -b
+
+# polybar
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
+# wallpaper (feh)
+exec_always --no-startup-id feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
+
+bindsym $mod+b exec --no-startup-id \
+					feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
+
+# (No) Title Bars
+for_window [class="^.*"] border pixel 0 
+
+# gaps configuration
+# gaps outer 5
+gaps inner 10
+
+smart_gaps on
+smart_borders no_gaps
+
+####################### Workspace-Screen Assignment #############
+
+set $monitor1 eDP-1
+set $monitor2 DP-1
+
+workspace $ws1  output $monitor1
+workspace $ws2  output $monitor1
+workspace $ws3  output $monitor1
+workspace $ws4  output $monitor2
+workspace $ws5  output $monitor2
+workspace $ws6  output $monitor1
+workspace $ws7  output $monitor1
+workspace $ws8  output $monitor1
+workspace $ws9  output $monitor1
+workspace $ws10 output $monitor2
+
+bindsym $mod+Shift+Left move workspace to output left
+bindsym $mod+Shift+Down move workspace to output down
+bindsym $mod+Shift+Up move workspace to output up
+bindsym $mod+Shift+Right move workspace to output right
+
+####################### Function Keys ###########################
+
+# volume control
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# backlight control
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
+
+######################### Screen Capture Mode ###################
+
+# set $mode_capture Capture: [b]ackground [r]egion [a]ctive-window
+
+# mode "$mode_capture" {
+# 	bindsym --release b exec --no-startup-id spectacle -b ; mode "default"
+# 	bindsym --release r exec --no-startup-id spectacle -br; mode "default"
+# 	bindsym --release a exec --no-startup-id spectacle -ba; mode "default"
+
+# 	bindsym Escape mode "default"
+# 	bindsym Return mode "default"
+# 	bindsym $mod+Shift+c mode "default"
+# }
+
+# bindsym $mod+Shift+c mode "$mode_capture"
+
+bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/bin/menu_screenshot.sh
+######################### Launcher Mode #########################
+
+set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]ubymine [s]lack [t]ypora [v]scode
+
+mode "$mode_launcher" {
+	bindsym --release a exec studio               ; mode "default"
+	bindsym --release c exec google-chrome-stable ; mode "default"
+	bindsym --release f exec firefox              ; mode "default"
+	bindsym --release n exec nautilus -w          ; mode "default"
+	bindsym --release r exec rubymine             ; mode "default"
+	bindsym --release s exec slack                ; mode "default"
+	bindsym --release t exec typora               ; mode "default"
+	bindsym --release v exec code                 ; mode "default"
+	bindsym --release k exec env WINEPREFIX="/home/wineuser/.wine32" LANG="ko_KR.UTF-8" wine /home/wineuser/.wine32/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
+
+	bindsym Escape mode "default"
+	bindsym Return mode "default"
+	bindsym $mod+o mode "default"
+}
+
+bindsym $mod+o mode "$mode_launcher"
+
+######################### Plasma Integration ####################
+
+exec --no-startup-id wmctrl -c Plasma
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
+
+# Avoid tiling popups, dropdown windows from plasma
+for_window [class="plasmashell"]     floating enable
+for_window [class="Plasma"]          floating enable; border none
+for_window [title="plasma-desktop"]  floating enable; border none
+for_window [title="win7"]            floating enable; border none
+for_window [class="krunner"]         floating enable; border none
+for_window [class="Kmix"]            floating enable; border none
+for_window [class="Klipper"]         floating enable; border none
+for_window [class="Plasmoidviewer"]  floating enable; border none
+for_window [class="(?i)*nextcloud*"] floating disable
+# no_focus [class="plasmashell"]
+
+######################### Floating ##############################
+
+for_window [title="Emulator"                                             ] floating enable
+for_window [                                  class="Wine"               ] floating enable
+for_window [                                  class="KakaoTalk"          ] floating enable
+for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"   ] floating enable
+for_window [title="^Confirm.*"                class="jetbrains-pycharm"  ] floating enable
+for_window [instance="electron"               class="Electron"           ] floating enable
+for_window [instance="qjackctl"               class="QjackCtl"           ] floating enable
+for_window [instance="qsynth"                 class="Qsynth"             ] floating enable
+for_window [instance="zoom"                   class="zoom"               ] floating enable
+for_window [instance="VirtualBox Manager"     class="VirtualBox Manager" ] floating enable
+for_window [instance="VirtualBox Machine"     class="VirtualBox Machine" ] floating enable
+for_window [instance="xclock"                 class="XClock"             ] floating enable
+
+assign [class="Microsoft Teams - Preview"] $ws4
+for_window [title="Microsoft Teams Notification"] floating enable
+no_focus [title="Microsoft Teams Notification"]
+
+######################### Workspace Mapping #####################
+
+assign [class="^VirtualBox Manager$"]      $ws1
+assign [class="^VirtualBox Machine$"]      $ws1
+assign [class="^Typora$"]                  $ws3
+assign [class="^Code$"]                    $ws4
+assign [class="^jetbrains-pycharm$"]       $ws4
+assign [class="^Slack$"]                   $ws5
+
+######################### Opacity Shortcuts #####################
+
+bindsym $mod+u exec --no-startup-id \
+					transset-df -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --dec 0.1
+bindsym $mod+Shift+u exec --no-startup-id \
+					transset-df -m 0.2 -i $(xprop -root _NET_ACTIVE_WINDOW | awk '{ print $5 }') --inc 0.1
+
+######################### Scratchpad Window #####################
+
+# for_window [instance="urxvt_scratchpad"] move container to scratchpad
+# for_window [instance="urxvt_scratchpad"] border pixel 1
+# exec --no-startup-id urxvt -name urxvt_scratchpad
+# bindsym $mod+z [instance="urxvt_scratchpad"] scratchpad show
+# bindsym $mod+Shift+z exec --no-startup-id urxvt -name urxvt_scratchpad
+
+for_window [instance="termite_scratchpad"] move container to scratchpad
+for_window [instance="termite_scratchpad"] border pixel 1
+exec --no-startup-id termite --name termite_scratchpad
+bindsym $mod+z [instance="termite_scratchpad"] scratchpad show
+bindsym $mod+Shift+z exec --no-startup-id termite --name termite_scratchpad
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+x move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+x scratchpad show;
+bindsym $mod+Shift+Return resize set 1920px 1060px; move position center
+bindsym $mod+Shift+BackSpace resize set 1800px 1000px; move position center
+
+######################### KakaoTalk (wine)  #####################
+# no_focus [class="^Wine$"]
+# no_focus [class="^Wine$" title="^(?!.*KakaoTalk).*$"]
+
+#################################################################
+
