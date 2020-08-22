@@ -11,3 +11,4 @@ Hidden=false
 Name[en_US]=start-conky
 Comment[en_US]=
 X-GNOME-Autostart-Delay=0
+Categories=System;Monitor;

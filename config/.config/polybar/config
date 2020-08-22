@@ -216,8 +216,8 @@ format-disconnected =
 [module/battery]
 type = internal/battery
 
-battery = BAT1
-adapter = ADP1
+battery = BAT0
+adapter = AC0
 full-at = 100
 
 time-format = %H:%M
