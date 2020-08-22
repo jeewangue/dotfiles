@@ -117,6 +117,11 @@ call plug#end()
 
 """ Plugin Configuration START
 
+" python_host_prog
+let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
+let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
+let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
+
 " Coc Extensions
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
@@ -366,14 +371,15 @@ let g:go_def_mapping_enabled = 0
 let g:rainbow_active = 1
 
 " vimwiki
-let g:vimwiki_list = [{'path': '~/workspace/personal/repos/vimwiki/',
+let g:vimwiki_list = [{'path': '~/vimwiki/',
       \ 'automatic_nested_syntaxes': 1,
       \ 'auto_toc': 1,
       \ 'auto_tags': 1,
       \ 'auto_diary_index': 1,
       \ 'syntax': 'markdown',
       \ 'ext': '.md'}]
-let g:vimwiki_folding = 'expr'
+let g:vimwiki_global_ext = 0
+" let g:vimwiki_folding = 'expr'
 let g:vimwiki_auto_chdir = 1
 autocmd Filetype vimwiki set syntax=markdown.pandoc
 let g:tagbar_type_vimwiki = {
@@ -396,6 +402,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dock
       \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
       \ "bash=sh", "literatehaskell=lhaskell"]
 let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
+let g:pandoc#formatting#mode = "hA"
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
 " markdown-preview.nvim
