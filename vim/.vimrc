@@ -59,6 +59,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
+Plug 'mattn/emmet-vim'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -71,7 +72,7 @@ Plug 'chriskempson/base16-vim'
 
 "--- syntax / autocomplete ---
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', { 'branch': 'release'}
+Plug 'neoclide/coc.nvim', { 'branch': 'master' }
 Plug 'antoinemadec/coc-fzf'
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
@@ -124,7 +125,7 @@ let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 " Coc Extensions
 let g:coc_global_extensions=[
-      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
+      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-emmet',
       \ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
       \ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
@@ -337,6 +338,7 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 nmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
 xmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
 
+""" coc-fzf
 nnoremap <silent> <leader><space>a  :<C-u>CocFzfList diagnostics<CR>
 nnoremap <silent> <leader><space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
 nnoremap <silent> <leader><space>c  :<C-u>CocFzfList commands<CR>
@@ -351,7 +353,7 @@ nnoremap <silent> <leader><space><space>  :<C-u>CocFzfList<CR>
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
 
-" coc-explorer
+""" coc-explorer
 nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
 nnoremap <silent> <leader>ee :CocCommand explorer --preset floating<CR>
 

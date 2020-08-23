@@ -1,0 +1,70 @@
+bind editor                     ^T complete
+bind editor                     <tab> complete-query
+bind editor                     <space> noop
+bind attach                     <space> view-mailcap
+
+#------------------------------------------------------------
+# Vi Key Bindings
+#------------------------------------------------------------
+
+# Moving around
+bind attach,browser,index       g   noop
+bind attach,browser,index       gg  first-entry
+bind attach,browser,index       G   last-entry
+bind pager                      g   noop
+bind pager                      gg  top
+bind pager                      G   bottom
+bind pager                      k   previous-line
+bind pager                      j   next-line
+
+# Scrolling
+bind attach,browser,pager,index \CF next-page
+bind attach,browser,pager,index \CB previous-page
+bind attach,browser,pager,index \Cu half-up
+bind attach,browser,pager,index \Cd half-down
+bind browser,pager              \Ce next-line
+bind browser,pager              \Cy previous-line
+bind index                      \Ce next-line
+bind index                      \Cy previous-line
+
+bind pager,index                d   noop
+bind pager,index                dd  delete-message
+
+# Mail & Reply
+bind pager,index                gr  group-reply
+
+# Threads
+bind browser,pager,index        N   search-opposite
+bind pager,index                dT  delete-thread
+bind pager,index                dt  delete-subthread
+bind pager,index                gt  next-thread
+bind pager,index                gT  previous-thread
+bind index                      za  collapse-thread
+bind index                      zA  collapse-all # Missing :folddisable/foldenable
+
+# Refreshing
+bind index                      \Cl imap-fetch-mail
+
+# Sidebar Navigation
+bind pager,index                <down>  sidebar-next
+bind pager,index                <up>    sidebar-prev
+bind pager,index                <right> sidebar-open
+
+# index and pager shortcuts
+bind pager,index                @ compose-to-sender
+bind pager,index                R group-reply
+bind index                      <tab> sync-mailbox
+bind index                      <space> collapse-thread
+
+# Save all attachments
+macro pager,index               S   "<pipe-message>ripmime -i - -d ~/Downloads && rm ~/Downloads/textfile*" "Save all non-text attachments using ripmime"
+
+# opening urls with urlscan
+macro pager,index               \cb "<pipe-message>urlscan<enter>" "call urlscan to extract URLs out of a message"
+
+# View attachments properly.
+bind attach                     <return> view-mailcap
+
+# Drafts
+bind compose                    P postpone-message
+bind index                      p recall-message

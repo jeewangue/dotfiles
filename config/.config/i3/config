@@ -201,8 +201,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 # backlight control
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
-bindsym Print exec --no-startup-id "scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 1000 \\"Screenshot Saved\\" $f'"
-bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 1000 \\"Screenshot Saved\\" $f'"
+bindsym Print exec --no-startup-id "scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
+bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
 
 ######################### Screen Capture Mode ###################
 
