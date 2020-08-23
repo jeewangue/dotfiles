@@ -1,0 +1,10 @@
+#
+# This is an automounter map and it has the following format
+# key [ -mount-options-separated-by-comma ] location
+# Details may be found in the autofs(5) manpage
+
+logs	-fstype=nfs	192.168.84.38:/volume1/logs
+docker	-fstype=nfs	192.168.84.38:/volume1/docker
+homes	-fstype=nfs	192.168.84.38:/volume1/homes
+data	-fstype=nfs	192.168.84.38:/volume1/data
+public	-fstype=nfs	192.168.84.38:/volume1/public
