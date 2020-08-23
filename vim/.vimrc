@@ -130,7 +130,7 @@ let g:coc_global_extensions=[
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
-      \ 'coc-lua', 'coc-sh', 'coc-phpls'
+      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab'
       \ ]
 
 " vim-fugitive

@@ -6,8 +6,8 @@
 #cell_width_scale = 1.0
 #clickable_url = true
 #dynamic_title = true
-font = Hack Nerd Font 10
-font = MesloLGMDZ Nerd Font 10
+font = Hack Nerd Font 12
+font = MesloLGMDZ Nerd Font 12
 #fullscreen = true
 #icon_name = terminal
 #mouse_autohide = false

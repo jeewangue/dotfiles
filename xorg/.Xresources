@@ -38,7 +38,7 @@
 *.color7:       #cbcdd2 
 *.color15:      #cbcdd2
 
-Xft.dpi: 96
+Xft.dpi: 283
 Xft.antialias: true
 Xft.hinting: true
 Xft.rgba: rgb
