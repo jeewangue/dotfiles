@@ -201,8 +201,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 # backlight control
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
-bindsym Print exec --no-startup-id "scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
-bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f $HOME/Pictures/screenshots/ ; xclip -selection clipboard -t \\"image/png\\" < $f ; notify-send -i $HOME/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
+bindsym Print exec --no-startup-id "scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'xclip -selection clipboard -t image/png < $f ; mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
+bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'xclip -selection clipboard -t image/png < $f ; mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
 
 ######################### Screen Capture Mode ###################
 
@@ -314,8 +314,8 @@ bindsym $mod+Shift+x move scratchpad
 
 # Show the first scratchpad window
 bindsym $mod+x scratchpad show;
-bindsym $mod+Shift+Return resize set 1920px 1060px; move position center
-bindsym $mod+Shift+BackSpace resize set 1800px 1000px; move position center
+bindsym $mod+Shift+Return resize set 2560px 1400px; move position center
+bindsym $mod+Shift+BackSpace resize set 2200px 1250px; move position center
 
 ######################### KakaoTalk (wine)  #####################
 # no_focus [class="^Wine$"]
