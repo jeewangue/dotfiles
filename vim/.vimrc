@@ -59,7 +59,6 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
-Plug 'mattn/emmet-vim'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -125,7 +124,7 @@ let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 " Coc Extensions
 let g:coc_global_extensions=[
-      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-emmet',
+      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css',
       \ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
       \ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
