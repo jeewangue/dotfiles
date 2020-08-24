@@ -37,7 +37,6 @@ syntax on
 call plug#begin('~/.vim/plugged')
 
 "--- sessions ---
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
 Plug 'gikmx/ctrlp-obsession'
@@ -83,7 +82,6 @@ Plug 'liuchengxu/vista.vim'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
@@ -103,6 +101,7 @@ Plug 'diepm/vim-rest-console' " api console
 Plug 'neomutt/neomutt.vim' " email
 Plug 'felipec/notmuch-vim' " email
 Plug 'TheZoq2/neovim-auto-autoread' " Autoread
+Plug 'voldikss/vim-floaterm'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -153,9 +152,6 @@ endif
 set undodir=~/.vim/.undodir
 set undofile
 nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
-
-" tagbar
-nnoremap <F8> :TagbarToggle<CR>
 
 
 " vim-airline
@@ -489,6 +485,17 @@ let g:vrc_curl_opts = {
       \ '--ipv4': '',
       \ '--insecure': '',
       \}
+
+""" vim-floaterm
+let g:floaterm_keymap_new    = '<F9>'
+let g:floaterm_keymap_prev   = '<F10>'
+let g:floaterm_keymap_next   = '<F11>'
+let g:floaterm_keymap_toggle = '<F12>'
+let g:floaterm_autoclose     = '2'
+
+let g:floaterm_width         = 0.8
+let g:floaterm_height        = 0.8
+let g:floaterm_winblend      = 0
 
 
 """ Plugin Configuration END
