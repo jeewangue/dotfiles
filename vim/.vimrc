@@ -102,6 +102,7 @@ Plug 'neomutt/neomutt.vim' " email
 Plug 'felipec/notmuch-vim' " email
 Plug 'TheZoq2/neovim-auto-autoread' " Autoread
 Plug 'voldikss/vim-floaterm'
+Plug 'kkoomen/vim-doge' " documentation generator
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -129,7 +130,7 @@ let g:coc_global_extensions=[
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
-      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab'
+      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor'
       \ ]
 
 " vim-fugitive
