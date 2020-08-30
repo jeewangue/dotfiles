@@ -9,8 +9,9 @@ if type nvim > /dev/null 2>&1; then
 	alias vim='nvim'
 fi
 
-unalias fd
-unalias k
+unalias fd  # for fd  command (https://github.com/sharkdp/fd)
+unalias k   # for k   command (https://github.com/supercrabtree/k)
+unalias grv # for grv command (https://github.com/rgburke/grv)
 
 alias ka='k -a '
 
