@@ -274,6 +274,7 @@ for_window [instance="zoom"                   class="zoom"               ] float
 for_window [instance="VirtualBox Manager"     class="VirtualBox Manager" ] floating enable
 for_window [instance="VirtualBox Machine"     class="VirtualBox Machine" ] floating enable
 for_window [instance="xclock"                 class="XClock"             ] floating enable
+for_window [instance="org.remmina.Remmina"    class="org.remmina.Remmina"] floating enable
 
 assign [class="Microsoft Teams - Preview"] $ws4
 for_window [title="Microsoft Teams Notification"] floating enable

@@ -1,0 +1,5 @@
+items:
+- checked: false
+  checkedicon: x
+  text: hello
+  uncheckedicon: ' '
