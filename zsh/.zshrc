@@ -39,4 +39,4 @@ bindkey '[B' history-beginning-search-forward
 ############### before prompt ############
 taskbook
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh

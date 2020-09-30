@@ -103,6 +103,7 @@ Plug 'felipec/notmuch-vim' " email
 Plug 'TheZoq2/neovim-auto-autoread' " Autoread
 Plug 'voldikss/vim-floaterm'
 Plug 'kkoomen/vim-doge' " documentation generator
+Plug 'ryanoasis/vim-devicons'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -130,7 +131,8 @@ let g:coc_global_extensions=[
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
-      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor'
+      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
+      \ 'coc-styled-components'
       \ ]
 
 " vim-fugitive
@@ -166,6 +168,14 @@ let g:airline#extensions#coc#error_symbol = 'E:'
 let g:airline#extensions#coc#warning_symbol = 'W:'
 let g:airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
+command! AirlineThemes call fzf#run({
+  \ 'source':  map(split(globpath(&rtp, 'autoload/airline/themes/*.vim'), "\n"),
+  \               "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+  \ 'sink':    'AirlineTheme',
+  \ 'options': '+m --prompt="Airline Themes> "',
+  \ 'down':    '~40%'
+  \ })
 
 " ale
 " let g:ale_set_highlights = 0

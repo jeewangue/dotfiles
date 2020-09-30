@@ -42,6 +42,8 @@ scrollback_lines = 100000
 #scrollbar = off
 
 [colors]
+# Base16 Woodland
+# Author: Jay Cornwall (https://jcornwall.com)
 
 foreground          = #cabcb1
 foreground_bold     = #cabcb1
