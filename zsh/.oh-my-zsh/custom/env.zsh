@@ -14,3 +14,9 @@ export GOBIN="$GOPATH/bin"
 export PATH="$PATH:$GOBIN"
 
 export HASTE_SERVER="https://haste.jeewangue.com"
+
+export PATH=$HOME/.pgo/pgo:$PATH
+export PGOUSER=$HOME/.pgo/pgo/pgouser
+export PGO_CA_CERT=$HOME/.pgo/pgo/client.crt
+export PGO_CLIENT_CERT=$HOME/.pgo/pgo/client.crt
+export PGO_CLIENT_KEY=$HOME/.pgo/pgo/client.key

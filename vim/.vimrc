@@ -93,6 +93,7 @@ Plug 'skanehira/docker-compose.vim'
 Plug 'vimwiki/vimwiki'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'greyblake/vim-preview'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 Plug 'Yggdroot/indentLine'
 Plug 'chrisbra/Colorizer'
@@ -410,7 +411,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dock
       \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
       \ "bash=sh", "literatehaskell=lhaskell"]
 let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
-let g:pandoc#formatting#mode = "hA"
+" let g:pandoc#formatting#mode = "hA"
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
 " markdown-preview.nvim
