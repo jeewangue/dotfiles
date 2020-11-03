@@ -33,6 +33,8 @@ set relativenumber
 let mapleader=","
 syntax on
 
+let g:pandoc#filetypes#pandoc_markdown = 0
+
 """ PLUG START
 call plug#begin('~/.vim/plugged')
 
@@ -70,7 +72,7 @@ Plug 'chriskempson/base16-vim'
 
 "--- syntax / autocomplete ---
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', { 'branch': 'master' }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf'
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
@@ -105,6 +107,8 @@ Plug 'TheZoq2/neovim-auto-autoread' " Autoread
 Plug 'voldikss/vim-floaterm'
 Plug 'kkoomen/vim-doge' " documentation generator
 Plug 'ryanoasis/vim-devicons'
+Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'

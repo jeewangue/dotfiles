@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BACKUP_DIR=/nas/data/backup/msi-20200809
+BACKUP_DIR=/nas/data/backup/asus-20201013
 LOG_DIR=/nas/data/logs
 
 # backup /etc
