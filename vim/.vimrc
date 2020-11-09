@@ -395,6 +395,7 @@ let g:vimwiki_global_ext = 0
 " let g:vimwiki_folding = 'expr'
 let g:vimwiki_auto_chdir = 1
 autocmd Filetype vimwiki set syntax=markdown.pandoc
+autocmd Filetype vimwiki syntax on
 let g:tagbar_type_vimwiki = {
       \ 'ctagstype': 'vimwiki'
       \ , 'kinds': ['h:header']
@@ -519,7 +520,7 @@ let g:floaterm_winblend      = 0
 augroup filetype_visual_config
   autocmd!
   autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype markdown       setlocal ts=4 sw=4 sts=4 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype markdown       setlocal ts=2 sw=2 sts=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
