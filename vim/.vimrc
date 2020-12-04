@@ -486,6 +486,8 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 """ indent-line
 " let g:indentLine_char = '|'
+" let g:indentLine_conceallevel = 0
+let g:indentLine_concealcursor = "n"
 
 """ vim syntax
 let g:vimsyn_folding = 'af'
