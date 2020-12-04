@@ -17,3 +17,35 @@ repositories:
   password: ""
   url: https://charts.helm.sh/incubator
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: jenkinsci
+  password: ""
+  url: https://charts.jenkins.io
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: traefik
+  password: ""
+  url: https://helm.traefik.io/traefik
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: loki
+  password: ""
+  url: https://grafana.github.io/loki/charts
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: grafana
+  password: ""
+  url: https://grafana.github.io/helm-charts
+  username: ""

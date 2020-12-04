@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BACKUP_DIR=/nas/data/backup/asus-20201013
+BACKUP_DIR=/nas/data/backup/asus-20201119
 LOG_DIR=/nas/data/logs
 
 # backup /etc
@@ -40,7 +40,6 @@ sudo rsync \
 	--exclude=".wine" \
 	--exclude=".azure" \
 	--exclude=".bundle" \
-	--exclude=".bundle" \
 	--exclude=".yarn" \
 	--exclude=dist \
 	--exclude=cache \
@@ -49,6 +48,9 @@ sudo rsync \
 	--exclude=Build \
 	--exclude=AURs \
 	--exclude=AURs-yay \
+	--exclude="/home/jeewangue/go" \
+	--exclude="/home/jeewangue/mail" \
+	--exclude="/home/jeewangue/GPUCache" \
 	--exclude="VirtualBox VMs" \
 	--log-file="${LOG_DIR}/$(date +%F-%H:%M:%S)-rsync.log" \
 	"${HOME}/" "${BACKUP_DIR}/home"

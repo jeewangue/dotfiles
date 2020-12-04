@@ -5,7 +5,6 @@ CLOUD_SDK_HOME=/opt/google-cloud-sdk
 
 init_sources=(
 	$HOME/.fzf.zsh
-	$HOME/.eksctl.zsh
 	$HOME/.config/tabtab/__tabtab.zsh
 	/usr/share/nvm/init-nvm.sh
 	${CLOUD_SDK_HOME}/completion.zsh.inc

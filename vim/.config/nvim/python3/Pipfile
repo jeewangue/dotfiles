@@ -7,6 +7,10 @@ verify_ssl = true
 
 [packages]
 pynvim = "*"
+neovim = "*"
+neovim-remote = "*"
+black = "*"
+pylint = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"
