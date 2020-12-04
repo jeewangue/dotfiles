@@ -1,0 +1,3 @@
+#!/bin/bash
+xhost +SI:localuser:wineuser
+sudo -u wineuser env HOME=/home/wineuser USER=wineuser USERNAME=wineuser LOGNAME=wineuser WINEARCH=win32 WINEPREFIX=/home/wineuser/win32 "$@"
