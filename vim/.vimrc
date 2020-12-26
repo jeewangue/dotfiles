@@ -64,6 +64,7 @@ Plug 'jparise/vim-graphql'
 "--- syntax ---
 Plug 'towolf/vim-helm'
 Plug 'mustache/vim-mustache-handlebars'
+Plug 'jeewangue/vim-protobuf'
 
 "--- theme ---
 Plug 'vim-airline/vim-airline'
@@ -137,7 +138,7 @@ let g:coc_global_extensions=[
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components'
+      \ 'coc-styled-components', 'coc-swagger'
       \ ]
 
 " vim-fugitive
@@ -328,6 +329,7 @@ nmap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . 'line'<CR>
 "
 nmap <silent> <leader>qf <Plug>(coc-fix-current)
 nmap <silent> <leader>ci :<C-u>CocInfo<CR>
+nmap <silent> <leader>cr :<C-u>CocRestart<CR>
 nmap <silent> <leader>cc :<C-u>vs<CR>:<C-u>CocConfig<CR>
 nmap <silent> <leader>cd :<C-u>CocDiagnostics<CR>
 
@@ -379,6 +381,10 @@ nmap ga <Plug>(EasyAlign)
 
 " vim-go
 let g:go_def_mapping_enabled = 0
+let g:go_metalinter_command = 'golangci-lint'
+let g:go_metalinter_autosave = 1
+let g:go_auto_type_info = 1
+let g:go_auto_sameids = 1
 
 " rainbow
 let g:rainbow_active = 1
@@ -533,6 +539,7 @@ augroup filetype_visual_config
   autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
   autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
+  autocmd Filetype proto          setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
 augroup END
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx

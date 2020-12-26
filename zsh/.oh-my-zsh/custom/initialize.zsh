@@ -10,6 +10,7 @@ init_sources=(
 	${CLOUD_SDK_HOME}/completion.zsh.inc
 	/usr/share/z/z.sh
 	/etc/bash_completion.d/azure-cli
+	/usr/share/bash-completion/completions/gwhisper
 )
 
 for i in $init_sources; do

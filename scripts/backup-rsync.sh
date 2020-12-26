@@ -7,6 +7,7 @@ LOG_DIR=/nas/data/logs
 sudo rsync \
 	-auvhpHAXS \
 	--partial --delete --info=progress2 \
+	--partial-dir=.rsync-partial \
 	--log-file="${LOG_DIR}/$(date +%F-%H:%M:%S)-rsync.log" \
 	/etc/ "${BACKUP_DIR}/etc"
 
@@ -14,6 +15,7 @@ sudo rsync \
 sudo rsync \
 	-auvhpHAXS \
 	--partial --info=progress2 \
+	--partial-dir=.rsync-partial \
 	--exclude=Dropbox \
 	--exclude=node_modules \
 	--exclude=".stack" \

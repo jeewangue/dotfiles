@@ -14,6 +14,11 @@
   ],
   "coc.preferences.extensionUpdateCheck": "weekly",
   "codeLens.enable": true,
+  "diagnostic.errorSign": "✖",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
+  "diagnostic.checkCurrentLine": true,
   "eslint.autoFixOnSave": true,
   "eslint.enable": true,
   "eslint.packageManager": "yarn",
@@ -70,18 +75,23 @@
       "file.child.template": "[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]"
     }
   },
-  "go.disable": {
-    "workspaceFolders": false
-  },
-  "go.enable": true,
+  "go.trace.server": "verbose",
+  "go.goplsArgs": ["-rpc.trace"],
+  "go.goplsPath": "/home/jeewangue/go/bin/gopls",
+  "go.goplsUseDaemon": true,
   "go.goplsOptions": {
-    "buildFlags": ["-tags"],
     "usePlaceholders": true,
     "completeUnimported": true,
+    "completionDocumentation": true,
+    "deepCompletion": true,
     "hoverKind": "FullDocumentation",
+    "gofumpt": true,
+    "expandWorkspaceToModule": true,
+    "experimentalWorkspaceModule": true,
+    "matcher": "Fuzzy",
+    "semanticTokens": true,
     "staticcheck": true
   },
-  "omnisharp.useDotnet": true,
   "powershell.integratedConsole.showOnStartup": false,
   "prettier.eslintIntegration": true,
   "python.formatting.provider": "black",
@@ -149,7 +159,12 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresqls.acid.zalan.do.schema.json": "*postgres.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/docker-compose.schema.json": "*docker-compose*.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/azure-pipelines.schema.json": "*azure-pipelines*.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/pgclusters.crunchydata.com.schema.json": "*pgcluster.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/pgclusters.crunchydata.com.schema.json": "*pgcluster.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kongplugins.configuration.konghq.com.schema.json": "*kongplugin.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kongconsumers.configuration.konghq.com.schema.json": "*kongconsumer.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kongingresses.configuration.konghq.com.schema.json": "*kongingress.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kongclusterplugins.configuration.konghq.com.schema.json": "*kongclusterplugin.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/tcpingresses.configuration.konghq.com.schema.json": "*tcpingress.yaml"
   },
   "yaml.trace.server": "verbose"
 }
