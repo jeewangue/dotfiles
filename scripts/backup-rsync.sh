@@ -1,27 +1,20 @@
 #! /bin/bash
 
-BACKUP_DIR=/nas/data/backup/asus-20201119
-LOG_DIR=/nas/data/logs
-
-# backup /etc
-sudo rsync \
-	-auvhpHAXS \
-	--partial --delete --info=progress2 \
-	--partial-dir=.rsync-partial \
-	--log-file="${LOG_DIR}/$(date +%F-%H:%M:%S)-rsync.log" \
-	/etc/ "${BACKUP_DIR}/etc"
+BACKUP_DIR=rsync://jeewangue@192.168.84.38/data/backup/asus-20210104
 
 # backup /home
 sudo rsync \
-	-auvhpHAXS \
-	--partial --info=progress2 \
-	--partial-dir=.rsync-partial \
+	-auvHXS \
+	-hh \
+	--partial \
+	--stats \
+	--info=progress2 \
+	--delete \
 	--exclude=Dropbox \
 	--exclude=node_modules \
 	--exclude=".stack" \
 	--exclude=".vagrant.d" \
 	--exclude=".cache" \
-	--exclude=".vim" \
 	--exclude=".rvm" \
 	--exclude=".meteor" \
 	--exclude=".dropbox" \
@@ -32,11 +25,7 @@ sudo rsync \
 	--exclude=".p2" \
 	--exclude=".RFCs" \
 	--exclude=".pyenv" \
-	--exclude=".CLion2019.3" \
-	--exclude=".hoogle" \
-	--exclude=".garden" \
 	--exclude=".nvm" \
-	--exclude=".RubyMine2019.3" \
 	--exclude=".dotnet" \
 	--exclude=".gphotos-cdp" \
 	--exclude=".wine" \
@@ -46,14 +35,18 @@ sudo rsync \
 	--exclude=dist \
 	--exclude=cache \
 	--exclude=Cache \
+	--exclude=GPUCache \
 	--exclude=build \
 	--exclude=Build \
-	--exclude=AURs \
-	--exclude=AURs-yay \
-	--exclude="/home/jeewangue/go" \
-	--exclude="/home/jeewangue/mail" \
-	--exclude="/home/jeewangue/GPUCache" \
+	--exclude=AUR \
 	--exclude="VirtualBox VMs" \
-	--log-file="${LOG_DIR}/$(date +%F-%H:%M:%S)-rsync.log" \
-	"${HOME}/" "${BACKUP_DIR}/home"
+	--include="/etc" \
+	--include="/etc/**" \
+	--include="/var" \
+	--include="/var/log" \
+	--include="/var/log/**" \
+	--include="/home" \
+	--include="/home/**" \
+	--exclude="*" \
+	/ "${BACKUP_DIR}"
 
