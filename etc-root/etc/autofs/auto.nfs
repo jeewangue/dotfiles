@@ -3,8 +3,9 @@
 # key [ -mount-options-separated-by-comma ] location
 # Details may be found in the autofs(5) manpage
 
-logs	-fstype=nfs,_netdev	192.168.84.38:/volume1/logs
-docker	-fstype=nfs,_netdev	192.168.84.38:/volume1/docker
-homes	-fstype=nfs,_netdev	192.168.84.38:/volume1/homes
-data	-fstype=nfs,_netdev	192.168.84.38:/volume1/data
-public	-fstype=nfs,_netdev	192.168.84.38:/volume1/public
+logs	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/logs
+docker	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/docker
+homes	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/homes
+data	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/data
+public	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/public
+

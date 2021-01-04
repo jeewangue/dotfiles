@@ -73,3 +73,11 @@ repositories:
   password: ""
   url: https://aws.github.io/eks-charts
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: kuma
+  password: ""
+  url: https://kumahq.github.io/charts
+  username: ""

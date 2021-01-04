@@ -1,5 +1,9 @@
 items:
 - checked: false
   checkedicon: x
+  text: asdf
+  uncheckedicon: ' '
+- checked: false
+  checkedicon: X
   text: hello
   uncheckedicon: ' '

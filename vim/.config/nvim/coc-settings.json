@@ -90,7 +90,7 @@
     "experimentalWorkspaceModule": true,
     "matcher": "Fuzzy",
     "semanticTokens": true,
-    "staticcheck": true
+    "staticcheck": false
   },
   "powershell.integratedConsole.showOnStartup": false,
   "prettier.eslintIntegration": true,
