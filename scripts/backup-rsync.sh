@@ -4,7 +4,7 @@ BACKUP_DIR=rsync://jeewangue@192.168.84.38/data/backup/asus-20210104
 
 # backup /home
 sudo rsync \
-	-auvHXS \
+	-auHXS \
 	-hh \
 	--partial \
 	--stats \
