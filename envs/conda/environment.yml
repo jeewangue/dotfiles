@@ -1,0 +1,32 @@
+name: code1234
+channels:
+  - defaults
+dependencies:
+  - intel::python=3
+  - intel::intelpython3_core
+  - intel::numpy
+  - pytorch::pytorch
+  - pytorch::torchvision
+  - conda-forge::pyqt5-sip
+  - conda-forge::psycopg2
+  - conda-forge::libprotobuf # required for opencv-python (or opencv-contrib-python)
+  - conda-forge::pandas
+  - conda-forge::lxml
+  - conda-forge::pyxb
+  - conda-forge::psutil
+  - conda-forge::ipython
+  - conda-forge::jupyterlab
+  - conda-forge::jupyterlab-lsp
+  - SimpleITK::SimpleITK
+  - cudatoolkit=11.0
+  - aiohttp
+  - h5py
+  - PyYAML
+  - pip
+  - pip:
+    - scikit_image
+    - pydicom
+    - screeninfo
+    - ismrmrd
+    - opencv-contrib-python
+    - python-language-server[all]

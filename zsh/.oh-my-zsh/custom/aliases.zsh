@@ -12,6 +12,7 @@ fi
 unalias fd  # for fd  command (https://github.com/sharkdp/fd)
 unalias k   # for k   command (https://github.com/supercrabtree/k)
 unalias grv # for grv command (https://github.com/rgburke/grv)
+unalias gm  # for gm  command (graphicsmagick)
 
 alias ka='k -a '
 

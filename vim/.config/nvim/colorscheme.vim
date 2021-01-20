@@ -1,1 +1,1 @@
-colorscheme base16-woodland
+colorscheme base16-tomorrow-night

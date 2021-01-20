@@ -42,52 +42,55 @@ scrollback_lines = 100000
 #scrollbar = off
 
 [colors]
+# Base16 Tomorrow Night
+# Author: Chris Kempson (http://chriskempson.com)
 
-foreground          = #cabcb1
-foreground_bold     = #cabcb1
-cursor              = #cabcb1
-cursor_foreground   = #231e18
-background          = #231e18
+foreground          = #c5c8c6
+foreground_bold     = #c5c8c6
+cursor              = #c5c8c6
+cursor_foreground   = #1d1f21
+background          = #1d1f21
 
 # 16 color space
 
 # Black, Gray, Silver, White
-color0  = #231e18
-color8  = #9d8b70
-color7  = #cabcb1
-color15 = #e4d4c8
+color0  = #1d1f21
+color8  = #969896
+color7  = #c5c8c6
+color15 = #ffffff
 
 # Red
-color1  = #d35c5c
-color9  = #d35c5c
+color1  = #cc6666
+color9  = #cc6666
 
 # Green
-color2  = #b7ba53
-color10 = #b7ba53
+color2  = #b5bd68
+color10 = #b5bd68
 
 # Yellow
-color3  = #e0ac16
-color11 = #e0ac16
+color3  = #f0c674
+color11 = #f0c674
 
 # Blue
-color4  = #88a4d3
-color12 = #88a4d3
+color4  = #81a2be
+color12 = #81a2be
 
 # Purple
-color5  = #bb90e2
-color13 = #bb90e2
+color5  = #b294bb
+color13 = #b294bb
 
 # Teal
-color6  = #6eb958
-color14 = #6eb958
+color6  = #8abeb7
+color14 = #8abeb7
 
 # Extra colors
-color16 = #ca7f32
-color17 = #b49368
-color18 = #302b25
-color19 = #48413a
-color20 = #b4a490
-color21 = #d7c8bc
+color16 = #de935f
+color17 = #a3685a
+color18 = #282a2e
+color19 = #373b41
+color20 = #b4b7b4
+color21 = #e0e0e0
+
 
 [hints]
 #font = Monospace 12

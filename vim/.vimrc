@@ -2,19 +2,14 @@
 unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
-let s:darwin = has('mac')
-
 set nocompatible
-
-" crypto method
-silent! set cryptmethod=blowfish2
-
 set encoding=UTF-8
 set fileencoding=UTF-8
 set fileencodings=utf8,euc-kr,cp949,cp932,euc-jp,shift-jis,big5,latin1,ucs-2le
 set visualbell
 set backspace=indent,eol,start
 set tabstop=2
+set softtabstop=2
 set shiftwidth=2
 set cindent
 set autoindent
@@ -22,17 +17,36 @@ set smartindent
 set ruler
 set showcmd
 set hlsearch
-set background=dark
+set incsearch
 set number
+set relativenumber
+set background=dark
 set swapfile
 set wildmenu
-set ignorecase
 set cursorline
-set relativenumber
+set ignorecase
+set smartcase
+set mouse=a
+set hidden
+set cmdheight=2
+set updatetime=300
+set termguicolors
+
+if has('nvim')
+  set signcolumn=auto:4
+else
+  set signcolumn=auto
+endif
 
 let mapleader=","
 syntax on
 
+" python_host_prog
+let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
+let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
+let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
+
+" disable pandoc's filetype overwrite
 let g:pandoc#filetypes#pandoc_markdown = 0
 
 """ PLUG START
@@ -44,13 +58,6 @@ Plug 'dhruvasagar/vim-prosession'
 Plug 'gikmx/ctrlp-obsession'
 Plug 'mbbill/undotree'
 
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-haml'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-commentary'
-Plug 'chrisbra/csv.vim'
-Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
-
 "--- langs ---
 Plug 'udalov/kotlin-vim'
 Plug 'plytophogy/vim-virtualenv'
@@ -60,6 +67,9 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
+Plug 'plasticboy/vim-markdown'
+Plug 'puremourning/vimspector'
+Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -72,9 +82,8 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'chriskempson/base16-vim'
 
 "--- syntax / autocomplete ---
-Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'antoinemadec/coc-fzf'
+Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 
@@ -82,13 +91,18 @@ Plug 'sheerun/vim-polyglot'
 Plug 'liuchengxu/vista.vim'
 
 "--- utils ---
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-haml'
+Plug 'tpope/vim-commentary'
+Plug 'chrisbra/csv.vim'
+Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'junegunn/fzf', { 'do': './install --all' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'luochen1990/rainbow'
@@ -108,7 +122,6 @@ Plug 'TheZoq2/neovim-auto-autoread' " Autoread
 Plug 'voldikss/vim-floaterm'
 Plug 'kkoomen/vim-doge' " documentation generator
 Plug 'ryanoasis/vim-devicons'
-Plug 'plasticboy/vim-markdown'
 Plug 'godlygeek/tabular'
 
 "--- finder ---
@@ -122,17 +135,10 @@ Plug 'c9s/vikube.vim'
 call plug#end()
 """ PLUG END
 
-""" Plugin Configuration START
-
-" python_host_prog
-let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
-let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
-let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
-
-" Coc Extensions
+""" Coc Extensions
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
-      \ 'coc-tsserver', 'coc-eslint', 'coc-python', 'coc-solargraph',
+      \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
@@ -165,16 +171,16 @@ nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
 
 " vim-airline
 set laststatus=2
-let g:airline_theme = 'simple'
+let g:airline_theme = 'base16_tomorrow'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#ale#enabled = 0
 let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#coc#error_symbol = 'E:'
 let g:airline#extensions#coc#warning_symbol = 'W:'
 let g:airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
+" vim-airline-themes
 command! AirlineThemes call fzf#run({
   \ 'source':  map(split(globpath(&rtp, 'autoload/airline/themes/*.vim'), "\n"),
   \               "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
@@ -183,27 +189,6 @@ command! AirlineThemes call fzf#run({
   \ 'down':    '~40%'
   \ })
 
-" ale
-" let g:ale_set_highlights = 0
-" let g:ale_linters = {
-"       \  'javascript': ['eslint'],
-"       \  'typescript': ['eslint'],
-" 			\  'python': ['pylint'],
-"       \  'ruby': ['solargraph'],
-"       \  'zsh': ['shell'],
-" 			\}
-" let g:ale_fixers = {
-"       \  'javascript': ['eslint'],
-"       \  'typescript': ['eslint'],
-"       \  'python': ['black'],
-"       \  'ruby': ['rubocop']
-"       \}
-
-" let g:ale_sign_error = '>>'
-" let g:ale_sign_warning = '--'
-
-""" Only run linters named in ale_linters settings.
-let g:ale_linters_explicit = 1
 
 " goyo / limelight
 map <C-g> <ESC>:Goyo<CR>
@@ -252,11 +237,7 @@ autocmd  FileType fzf set noshowmode noruler nonu
 
 " coc
 if has_key(g:plugs, 'coc.nvim')
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-
+  
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
         \ <SID>check_back_space() ? "\<TAB>" :
@@ -264,6 +245,12 @@ if has_key(g:plugs, 'coc.nvim')
 
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " Use <c-space> to trigger completion.
   inoremap <silent><expr> <C-space>
         \ pumvisible() ? "\<C-n>" :
         \ coc#refresh()
@@ -272,62 +259,60 @@ if has_key(g:plugs, 'coc.nvim')
         \ pumvisible() ? "\<C-p>" :
         \ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
 
+  " Use `[g` and `]g` to navigate diagnostics
+  " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+  nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+  " GoTo code navigation.
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
   function! s:show_documentation()
     if (index(['vim', 'help'], &filetype) >= 0)
-      execute 'h' expand('<cword>')
+      execute 'h ' expand('<cword>')
+    elseif (coc#rpc#ready())
+      call CocActionAsync('doHover')
     else
-      call CocAction('doHover')
+      execute '!' . &keywordprg . " " . expand('<cword>')
     endif
   endfunction
 
   nnoremap <silent> gh :call <SID>show_documentation()<CR>
+  nmap <silent> gp :call CocActionAsync('showSignatureHelp')<CR>
+  imap <silent> <C-p> <ESC>:call CocActionAsync('showSignatureHelp')<CR>a
 
   let g:go_doc_keywordprg_enabled = 0
 
   augroup coc_config
     autocmd!
-    autocmd VimEnter * nmap <silent> g? <Plug>(coc-diagnostic-info)
-    autocmd VimEnter * nmap <silent> [g <Plug>(coc-diagnostic-prev)
-    autocmd VimEnter * nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-    autocmd VimEnter * nmap <silent> gd <Plug>(coc-definition)
-    autocmd VimEnter * nmap <silent> gy <Plug>(coc-type-definition)
-    autocmd VimEnter * nmap <silent> gi <Plug>(coc-implementation)
-    autocmd VimEnter * nmap <silent> gr <Plug>(coc-references)
-    autocmd VimEnter * nmap <silent> gp :call CocAction('showSignatureHelp')<CR>
-    autocmd VimEnter * imap <silent> <C-p> <ESC>:call CocAction('showSignatureHelp')<CR>a
     autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    autocmd CursorHold * silent call CocActionAsync('highlight')
   augroup END
 
+  command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
+  nmap <leader>rn <Plug>(coc-rename)
+  xmap <leader>f <Plug>(coc-format-selected)
+  vmap <leader>f <Plug>(coc-format-selected)
+  nmap <leader>f <Plug>(coc-format-selected)
 endif
-
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-nmap <leader>rn <Plug>(coc-rename)
-
-xmap <silent> <leader>f <Plug>(coc-format-selected)
-vmap <silent> <leader>f <Plug>(coc-format-selected)
-nmap <silent> <leader>f <Plug>(coc-format-selected)
 
 xmap <leader>fa <Plug>(coc-format)
 nmap <leader>fa <Plug>(coc-format)
 
-" Remap for do codeAction of selected region
-function! s:cocActionsOpenFromSelected(type) abort
-  execute 'CocCommand actions.open ' . a:type
-endfunction
-xmap <silent> <leader>a :<C-u>execute 'CocCommand actions.open ' . visualmode()<CR>
-nmap <silent> <leader>a :<C-u>set operatorfunc=<SID>cocActionsOpenFromSelected<CR>g@
-nmap <silent> <leader>ac :<C-u>execute 'CocCommand actions.open ' . 'line'<CR>
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
 
-" replaced by coc-actions
-" xmap <silent> <leader>a <Plug>(coc-codeaction-selected)
-" nmap <silent> <leader>a <Plug>(coc-codeaction-selected)
-" nmap <silent> <leader>ac <Plug>(coc-codeaction)
-"
-nmap <silent> <leader>qf <Plug>(coc-fix-current)
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf <Plug>(coc-fix-current)
+
 nmap <silent> <leader>ci :<C-u>CocInfo<CR>
 nmap <silent> <leader>cr :<C-u>CocRestart<CR>
 nmap <silent> <leader>cc :<C-u>vs<CR>:<C-u>CocConfig<CR>
@@ -344,12 +329,27 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
 " Use CTRL-S for selections ranges.
 " Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
 nmap <silent> <C-s> <Plug>(coc-range-select)
 xmap <silent> <C-s> <Plug>(coc-range-select)
 nmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
 xmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 """ coc-fzf
 nnoremap <silent> <leader><space>a  :<C-u>CocFzfList diagnostics<CR>
@@ -433,13 +433,14 @@ let g:tagbar_type_vimwiki = {
 " pandoc
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
 let g:pandoc#folding#mode = ["syntax"]
-let g:pandoc#spell#enabled = 0
-let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html", 
+let g:pandoc#spell#enabled = 1
+let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html",
       \ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
       \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
       \ "bash=sh", "literatehaskell=lhaskell"]
 let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
-" let g:pandoc#formatting#mode = "hA"
+let g:pandoc#formatting#mode = "a"
+let g:pandoc#formatting#textwidth = 120
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
 " markdown-preview.nvim
@@ -529,15 +530,28 @@ let g:vrc_curl_opts = {
       \}
 
 """ vim-floaterm
-let g:floaterm_keymap_new    = '<F9>'
-let g:floaterm_keymap_prev   = '<F10>'
-let g:floaterm_keymap_next   = '<F11>'
-let g:floaterm_keymap_toggle = '<F12>'
+"let g:floaterm_keymap_new    = '<Leader>fc'
+"let g:floaterm_keymap_prev   = '<Leader>fp'
+"let g:floaterm_keymap_next   = '<Leader>fn'
+let g:floaterm_keymap_toggle = '<C-t>'
 let g:floaterm_autoclose     = '2'
 
 let g:floaterm_width         = 0.8
 let g:floaterm_height        = 0.8
 let g:floaterm_winblend      = 0
+
+""" vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+nmap <F12>         <Plug>VimspectorStepInto
+nmap <leader><F12> <Plug>VimspectorStepOut
+nmap <leader><F3>  :<C-u>VimspectorReset<CR>
+
+" Mail
+command Mail e term://neomutt
+augroup mailfiletype
+  " Mail
+  autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
+augroup END
 
 
 """ Plugin Configuration END
@@ -592,29 +606,22 @@ endfunction
 
 set foldtext=MyFoldText()
 
+""" Color Scheme
 let base16colorspace=256
-if has('nvim')
-  source ~/.config/nvim/colorscheme.vim
-else
-  source ~/.vim/colorscheme.vim
-endif
+colorscheme base16-tomorrow-night
 
+""" Simple Shortcuts
+nnoremap <C-l> :tabnext<CR>
+nnoremap <C-h> :tabprevious<CR>
+nnoremap <C-n> :tabnew<CR>
 
-" Mail
-command Mail e term://neomutt
-augroup mailfiletype
-  " Mail
-  autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
-augroup END
+nnoremap qq :<C-u>q<CR>
+nnoremap qa :<C-u>qa<CR>
 
+" copy the content in a visual block to clipboard
+vnoremap <silent><Leader>y "cy <Bar> :call system('xclip -selection clipboard', @c)<CR>
+xnoremap <silent><Leader>y "cy <Bar> :call system('xclip -selection clipboard', @c)<CR>
 
-
-" Simple Shortcut
-nmap <C-l> :tabnext<CR>
-nmap <C-h> :tabprevious<CR>
-nmap <C-n> :tabnew<CR>
-
-nmap <leader>qq :q<CR>
-nmap <leader>qa :qa<CR>
-
+" disable syntax if the file size is too big.
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+

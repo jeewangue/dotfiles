@@ -20,14 +20,14 @@
   "diagnostic.hintSign": "➤",
   "diagnostic.checkCurrentLine": true,
   "eslint.autoFixOnSave": true,
-  "eslint.enable": true,
   "eslint.packageManager": "yarn",
-  "eslint.filetypes": [
+  "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
+  "jedi.executable.command": "jedi-language-server",
   "solargraph.checkGemVersion": false,
   "solargraph.diagnostics": true,
   "solargraph.autoformat": true,
@@ -40,6 +40,7 @@
     "default": true,
     "line_length": false
   },
+  "coc.preferences.enableMarkdown": false,
   "explorer.icon.enableNerdfont": true,
   "explorer.icon.enableVimDevicons": true,
   "explorer.presets": {
@@ -88,20 +89,20 @@
     "gofumpt": true,
     "expandWorkspaceToModule": true,
     "experimentalWorkspaceModule": true,
-    "matcher": "Fuzzy",
     "semanticTokens": true,
     "staticcheck": false
   },
   "powershell.integratedConsole.showOnStartup": false,
   "prettier.eslintIntegration": true,
-  "python.formatting.provider": "black",
   "latex.lint.onSave": true,
   "latex.lint.onChange": false,
   "latex.build.args": ["-pdf", "-interaction=nonstopmode", "-synctex=1", "-pv"],
   "latex.build.onSave": true,
   "latex.forwardSearch.executable": "okular",
   "latex.forwardSearch.args": ["--unique", "file:%p#src:%l%f"],
+  "tsserver.log": "verbose",
   "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enable": true,
   "xml.format.enabled": true,
   "xml.format.preserveEmptyContent": true,
@@ -164,7 +165,17 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kongconsumers.configuration.konghq.com.schema.json": "*kongconsumer.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kongingresses.configuration.konghq.com.schema.json": "*kongingress.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kongclusterplugins.configuration.konghq.com.schema.json": "*kongclusterplugin.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/tcpingresses.configuration.konghq.com.schema.json": "*tcpingress.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/tcpingresses.configuration.konghq.com.schema.json": "*tcpingress.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkas.kafka.strimzi.io.schema.json": "*kafka.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkausers.kafka.strimzi.io.schema.json": "*kafkauser.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkatopics.kafka.strimzi.io.schema.json": "*kafkatopic.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkabridges.kafka.strimzi.io.schema.json": "*kafkabridge.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkaconnects.kafka.strimzi.io.schema.json": "*kafkaconnect.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkaconnects2is.kafka.strimzi.io.schema.json": "*kafkaconnects2i.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkaconnectors.kafka.strimzi.io.schema.json": "*kafkaconnector.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkarebalances.kafka.strimzi.io.schema.json": "*kafkarebalance.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormakers.kafka.strimzi.io.schema.json": "*kafkamirrormaker.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormaker2s.kafka.strimzi.io.schema.json": "*kafkamirrormaker2.yaml"
   },
   "yaml.trace.server": "verbose"
 }
