@@ -21,9 +21,9 @@ Install dependencies as follows.
 
 ```bash
 # create
-conda create -n code1234 -f environment.yml
+conda env create -n code1234 -f environment.yml
 
 # update
-conda update -n code1234 -f environment.yml
+conda env update -n code1234 -f environment.yml
 ```
 

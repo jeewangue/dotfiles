@@ -20,6 +20,7 @@ typeset -U path
 path+=($HOME/bin $HOME/.yarn/bin $HOME/.local/bin $HOME/.dotnet/tools $HOME/.luarocks/bin)
 fpath+=($ZSH/custom/completions)
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export GPG_TTY=$(tty)
 

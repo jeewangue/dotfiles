@@ -1,32 +1,66 @@
 name: code1234
 channels:
+  - conda-forge
   - defaults
 dependencies:
+  # General purpose programming language
   - intel::python=3
+  # Intel Distribution for Python
   - intel::intelpython3_core
+  # Array processing for numbers, strings, records, and objects.
   - intel::numpy
+  # YAML parser and emitter for Python
+  - intel::PyYAML
+  # PyTorch is an optimized tensor library for deep learning using GPUs and CPUs.
   - pytorch::pytorch
+  # image and video datasets and models for torch deep learning
   - pytorch::torchvision
+  # Python binding of the cross-platform GUI toolkit Qt.
   - conda-forge::pyqt5-sip
+  # PostgreSQL database adapter for Python
   - conda-forge::psycopg2
-  - conda-forge::libprotobuf # required for opencv-python (or opencv-contrib-python)
+  # Protocol Buffers - Google's data interchange format. C++ Libraries
+  # required for opencv-python (or opencv-contrib-python)
+  - conda-forge::libprotobuf
+  # High-performance, easy-to-use data structures and data analysis tools.
   - conda-forge::pandas
+  # Pythonic binding for the C libraries libxml2 and libxslt.
   - conda-forge::lxml
+  # PyXB ("pixbee") is a pure Python package that generates Python source code for classes that correspond to data structures defined by XMLSchema.
   - conda-forge::pyxb
+  # A cross-platform process and system utilities module for Python
   - conda-forge::psutil
+  # IPython: Productive Interactive Computing
   - conda-forge::ipython
+  # An autocompletion tool for Python that can be used for text editors. 
+  - conda-forge::jedi
+  # An extensible environment for interactive and reproducible computing, based on the Jupyter Notebook and Architecture.
   - conda-forge::jupyterlab
+  # Language Server Protocol integration for JupyterLab
   - conda-forge::jupyterlab-lsp
+  - conda-forge::jupyter-lsp-python
+  # Read and write HDF5 files from Python
+  - conda-forge::h5py
+  # Async http client/server framework (asyncio)
+  - conda-forge::aiohttp
+  # Pure python package for DICOM medical file reading and writing
+  - conda-forge::pydicom
+  # A Python language server exclusively for Jedi.
+  - conda-forge::jedi-language-server
+  # An implementation of the Language Server Protocol for Python
+  - conda-forge::python-language-server
+  # Simplified interface to the Insight Toolkit for image registration and segmentation
   - SimpleITK::SimpleITK
-  - cudatoolkit=11.0
-  - aiohttp
-  - h5py
-  - PyYAML
+  # CUDA Toolkit - Including CUDA runtime and headers
+  - anaconda::cudatoolkit=11.0
+  # PyPA recommended tool for installing Python packages
   - pip
   - pip:
+    # Image processing in Python
     - scikit_image
-    - pydicom
+    # Fetch location and size of physical screens.
     - screeninfo
+    # ISMRM Raw Data Format
     - ismrmrd
+    # Open Source Computer Vision Library
     - opencv-contrib-python
-    - python-language-server[all]
