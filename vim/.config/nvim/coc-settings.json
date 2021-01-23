@@ -42,13 +42,12 @@
   },
   "coc.preferences.enableMarkdown": false,
   "explorer.icon.enableNerdfont": true,
-  "explorer.icon.enableVimDevicons": true,
   "explorer.presets": {
     "panel": {
       "sources": [
         {
           "name": "buffer",
-          "expand": true
+          "expand": false
         },
         {
           "name": "file",
