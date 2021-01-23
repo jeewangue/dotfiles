@@ -172,18 +172,19 @@ smart_borders no_gaps
 
 ####################### Workspace-Screen Assignment #############
 
-set $monitor1 eDP-1
-set $monitor2 DP-1
+set $monitor1 eDP1
+set $monitor2 HDMI-1-0
+set $monitor3 DP-1-0
 
 workspace $ws1  output $monitor1
 workspace $ws2  output $monitor1
 workspace $ws3  output $monitor1
 workspace $ws4  output $monitor2
-workspace $ws5  output $monitor2
-workspace $ws6  output $monitor1
-workspace $ws7  output $monitor1
-workspace $ws8  output $monitor1
-workspace $ws9  output $monitor1
+workspace $ws5  output $monitor3
+workspace $ws6  output $monitor2
+workspace $ws7  output $monitor3
+workspace $ws8  output $monitor3
+workspace $ws9  output $monitor3
 workspace $ws10 output $monitor2
 
 bindsym $mod+Shift+Left move workspace to output left

@@ -1,0 +1,8 @@
+session_name: monit
+windows:
+- window_name: monit
+  layout: tiled
+  shell_command_before:
+    - cd ~/                    # run as a first command in all panes
+  panes:
+    - watch -n 3 -d nvidia-smi
