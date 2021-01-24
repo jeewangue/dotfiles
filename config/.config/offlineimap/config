@@ -1,0 +1,124 @@
+[general]
+# List of accounts to be synced, separated by a comma.
+accounts = jeewangue@gmail.com,jee.wangue@airsmed.com,treenson@snu.ac.kr
+# Controls how many accounts may be synced simultaneously
+maxsyncaccounts = 3
+# Path to file with arbitrary Python code to be loaded
+pythonfile = ~/.config/offlineimap/offlineimap.py
+
+############################## account: jeewangue@gmail.com ###################################
+
+[Account jeewangue@gmail.com]
+# Identifier for the local repository; e.g. the maildir to be synced via IMAP.
+localrepository = jeewangue@gmail.com-local
+# Identifier for the remote repository; i.e. the actual IMAP, usually non-local.
+remoterepository = jeewangue@gmail.com-remote
+# Minutes between syncs
+autorefresh = 2
+# Quick-syncs do not update if the only changes were to IMAP flags.
+# autorefresh=0.5 together with quick=10 yields
+# 10 quick refreshes between each full refresh, with 0.5 minutes between every 
+# refresh, regardless of type.
+quick = 10
+postsynchook = ~/.config/offlineimap/postsynchook.sh
+
+
+[Repository jeewangue@gmail.com-local]
+# OfflineIMAP supports Maildir, GmailMaildir, and IMAP for local repositories.
+type = Maildir
+# Where should the mail be placed?
+localfolders = ~/mail/jeewangue@gmail.com
+nametrans = lambda f: '[Gmail]/' + f if f in ['Drafts', 'Starred', 'Important', 'Spam', 'Trash', 'All Mail', 'Sent Mail', 'Sent'] else f
+
+[Repository jeewangue@gmail.com-remote]
+# Remote repos can be IMAP or Gmail, the latter being a preconfigured IMAP.
+type = Gmail
+remoteuser = jeewangue@gmail.com
+remotepasseval = get_pass('~/workspace/secrets/jeewangue@gmail.com_gmail.asc')
+createfolders = False
+realdelete = no
+nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+# Necessary as of OfflineIMAP 6.5.4
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+# Necessary to work around https://github.com/OfflineIMAP/offlineimap/issues/573 (versions 7.0.12, 7.2.1)
+ssl_version = tls1_2
+# # Instead of closing the connection once a sync is complete, offlineimap will
+# # send empty data to the server to hold the connection open. A value of 60
+# # attempts to hold the connection for a minute between syncs (both quick and
+# # autorefresh).This setting has no effect if autorefresh and holdconnectionopen
+# # are not both set.
+# keepalive = 300
+# # OfflineIMAP normally closes IMAP server connections between refreshes if
+# # the global option autorefresh is specified.  If you wish it to keep the
+# # connection open, set this to true. This setting has no effect if autorefresh
+# # is not set.
+# holdconnectionopen = yes
+
+############################## account: jee.wangue@airsmed.com ###################################
+
+[Account jee.wangue@airsmed.com]
+localrepository = jee.wangue@airsmed.com-local
+remoterepository = jee.wangue@airsmed.com-remote
+autorefresh = 2
+quick = 10
+synclabels = yes
+# postsynchook = ~/.offlineimap/postsynchook.sh
+
+[Repository jee.wangue@airsmed.com-local]
+type = Maildir
+localfolders = ~/mail/jee.wangue@airsmed.com
+
+[Repository jee.wangue@airsmed.com-remote]
+type = IMAP
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+ssl_version = tls1_2
+auth_mechanisms = PLAIN
+remotehost = outlook.office365.com
+remoteuser = jee.wangue@airsmed.com
+remotepasseval = get_pass('~/workspace/secrets/jee.wangue@airsmed.com_outlook.asc')
+
+createfolders = False
+realdelete = no
+folderfilter = lambda foldername: foldername in [ 'INBOX', 'Drafts', 'Sent Items', 'Snoozed', 'Notes', 'Deleted Items', 'Outbox', 'Archive' ]
+# keepalive = 300
+# holdconnectionopen = yes
+
+############################## account: treenson@snu.ac.kr ###################################
+
+[Account treenson@snu.ac.kr]
+localrepository = treenson@snu.ac.kr-local
+remoterepository = treenson@snu.ac.kr-remote
+autorefresh = 2
+quick = 10
+# postsynchook = ~/.offlineimap/postsynchook.sh
+
+[Repository treenson@snu.ac.kr-local]
+# OfflineIMAP supports Maildir, GmailMaildir, and IMAP for local repositories.
+type = Maildir
+localfolders = ~/mail/treenson@snu.ac.kr
+nametrans = lambda f: '[Gmail]/' + f if f in ['Drafts', 'Starred', 'Important', 'Spam', 'Trash', 'All Mail', 'Sent Mail', 'Sent'] else f
+
+[Repository treenson@snu.ac.kr-remote]
+# Remote repos can be IMAP or Gmail, the latter being a preconfigured IMAP.
+type = Gmail
+remoteuser = treenson@snu.ac.kr
+remotepasseval = get_pass('~/workspace/secrets/treenson@snu.ac.kr_gmail.asc')
+createfolders = False
+realdelete = no
+nametrans = lambda f: f.replace('[Gmail]/', '') if f.startswith('[Gmail]/') else f
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+ssl_version = tls1_2
+# keepalive = 300
+# holdconnectionopen = yes
+
+################################### misc ############################################
+[mbnames]
+enabled = yes
+filename = ~/.config/neomutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"
