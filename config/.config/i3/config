@@ -266,6 +266,7 @@ for_window [class="(?i)*nextcloud*"] floating disable
 for_window [title="Emulator"                                             ] floating enable
 for_window [                                  class="Wine"               ] floating enable
 for_window [                                  class="KakaoTalk"          ] floating enable
+for_window [                                  class="jetbrains-toolbox"  ] floating enable
 for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"   ] floating enable
 for_window [title="^Confirm.*"                class="jetbrains-pycharm"  ] floating enable
 for_window [instance="electron"               class="Electron"           ] floating enable
