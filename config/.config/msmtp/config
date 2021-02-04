@@ -13,5 +13,13 @@ from           jeewangue@gmail.com
 user           jeewangue
 passwordeval   "gpg -dq ~/workspace/secrets/jeewangue@gmail.com_gmail.asc"
 
+# Outlook
+account        jee.wangue@airsmed.com
+host           smtp.office365.com
+port           587
+from           jee.wangue@airsmed.com
+user           jee.wangue@airsmed.com
+passwordeval   "gpg -dq ~/workspace/secrets/jee.wangue@airsmed.com_outlook.asc"
+
 # Set a default account
-account default : jeewangue@gmail.com
+account default : jee.wangue@airsmed.com

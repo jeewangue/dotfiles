@@ -120,7 +120,7 @@ Plug 'neomutt/neomutt.vim' " email
 Plug 'felipec/notmuch-vim' " email
 Plug 'TheZoq2/neovim-auto-autoread' " Autoread
 Plug 'voldikss/vim-floaterm'
-Plug 'kkoomen/vim-doge' " documentation generator
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } } " documentation generator
 Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
 
@@ -439,7 +439,7 @@ let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dock
       \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
       \ "bash=sh", "literatehaskell=lhaskell"]
 let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
-let g:pandoc#formatting#mode = "a"
+" let g:pandoc#formatting#mode = "a"
 let g:pandoc#formatting#textwidth = 120
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
@@ -457,6 +457,10 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+" vim-doge
+let g:doge_mapping = '<Leader>d'
+let g:doge_doc_standard_python = 'google'
 
 " vista
 nnoremap <leader>vv :Vista!!<CR>
