@@ -550,6 +550,9 @@ nmap <F12>         <Plug>VimspectorStepInto
 nmap <leader><F12> <Plug>VimspectorStepOut
 nmap <leader><F3>  :<C-u>VimspectorReset<CR>
 
+""" tabular
+nmap <leader>tf :<C-u>TableFormat<CR>
+
 " Mail
 command Mail e term://neomutt
 augroup mailfiletype
