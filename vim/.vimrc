@@ -544,6 +544,10 @@ let g:floaterm_width         = 0.8
 let g:floaterm_height        = 0.8
 let g:floaterm_winblend      = 0
 
+""" Colorizer
+let g:colorizer_auto_color = 1
+let g:colorizer_use_virtual_text = 1
+
 """ vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
 nmap <F12>         <Plug>VimspectorStepInto
