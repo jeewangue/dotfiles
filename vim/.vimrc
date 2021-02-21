@@ -31,6 +31,9 @@ set hidden
 set cmdheight=2
 set updatetime=300
 set termguicolors
+" vim true-color problem
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 if has('nvim')
   set signcolumn=auto:4

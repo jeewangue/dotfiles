@@ -10,10 +10,18 @@
 	dt = difftool
 	s = status
 [core]
-	editor = vim
+	editor = nvim
 	pager = diff-so-fancy | less --tabs=4 -RFX
 [diff]
 	tool = vimdiff
+[difftool]
+  prompt = false
+[merge]
+	tool = vimdiff
+[mergetool]
+	prompt = true
+[mergetool "vimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
@@ -33,6 +41,7 @@
 [color "diff"]
 	meta = 11
 	frag = magenta bold
+	func = 146 bold
 	commit = yellow bold
 	old = red bold
 	new = green bold
