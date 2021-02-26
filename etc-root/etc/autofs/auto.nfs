@@ -3,12 +3,12 @@
 # key [ -mount-options-separated-by-comma ] location
 # Details may be found in the autofs(5) manpage
 
-logs	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/logs
-docker	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/docker
-homes	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/homes
-data	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/data
-public	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/public
-airsfs  -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data
-airsfs2 -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data2
-airsfs3 -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data3
+#logs	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/logs
+#docker	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/docker
+#homes	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/homes
+#data	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/data
+#public	-fstype=nfs,_netdev,x-systemd.requires=network.target	192.168.84.38:/volume1/public
+#airsfs  -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data
+#airsfs2 -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data2
+#airsfs3 -fstype=nfs,_netdev,x-systemd.requires=network.target	10.0.3.5:/home/airsfs/data3
 

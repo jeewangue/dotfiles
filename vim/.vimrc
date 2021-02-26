@@ -78,6 +78,7 @@ Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build'
 Plug 'towolf/vim-helm'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'jeewangue/vim-protobuf'
+Plug 'google/vim-jsonnet'
 
 "--- theme ---
 Plug 'vim-airline/vim-airline'
