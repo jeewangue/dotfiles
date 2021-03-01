@@ -19,16 +19,13 @@ alias ka='k -a '
 alias -g XCLIP='| xclip -selection clipboard'
 
 function withlogs() {
-	if [[ -d ./logs ]]; then
-		LogDatePrefix=$(date +%F-%H%M%S)
-		LogOutFile="./logs/${LogDatePrefix}-${1}-out.log"
-		LogErrFile="./logs/${LogDatePrefix}-${1}-err.log"
-		echo "${${@:q}}" >> ${LogOutFile}
-		echo "${${@:q}}" >> ${LogErrFile}
-		script --quiet --command "${${@:q}}" --append --log-out ${LogOutFile} 2>> ${LogErrFile}
-	else
-		echo "no logs directory"
+	if [[ ! -d ./logs ]]; then
+		mkdir -v ./logs
 	fi
+	LogDatePrefix=$(date +%F-%H%M%S)
+	LogOutFile="./logs/${LogDatePrefix}-${1}.log"
+	echo "${${@:q}}" >> ${LogOutFile}
+	script --quiet --command "${${@:q}}" --append --log-out ${LogOutFile}
 }
 
 alias gpa='git remote | xargs -L1 git push --all'

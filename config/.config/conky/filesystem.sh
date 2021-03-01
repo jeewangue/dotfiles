@@ -16,7 +16,7 @@ filesystem_template () {
 
 }
 
-df -h -t ext4 -t vfat -t fuse -t ntfs -t nfs -t nfs4 --output=target,pcent,avail | grep -v "boot" | tail -n +2 | \
+df -h -t ext4 -t vfat -t fuse -t ntfs -t nfs -t nfs4 -t btrfs --output=target,pcent,avail | grep -v "boot" | tail -n +2 | \
     while read -r target pcent avail ; do
         filesystem_template $target ${pcent%\%}
     done

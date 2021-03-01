@@ -1,23 +1,18 @@
-[submodule "powerlevel10k"]
-	path = submodules/powerlevel10k
+[submodule "zsh/.oh-my-zsh/custom/themes/powerlevel10k"]
+	path = zsh/.oh-my-zsh/custom/themes/powerlevel10k
 	url = https://github.com/romkatv/powerlevel10k.git
-	branch = master
-[submodule "zsh-autosuggestions"]
-	path = submodules/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
-	branch = master
-[submodule "zsh-completions"]
-	path = submodules/zsh-completions
-	url = https://github.com/zsh-users/zsh-completions.git
-	branch = master
-[submodule "zsh-syntax-highlighting"]
-	path = submodules/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-	branch = master
-[submodule "ohmyzsh"]
-	path = submodules/ohmyzsh
-	url = https://github.com/ohmyzsh/ohmyzsh.git
-	branch = master
-[submodule "k"]
-	path = submodules/k
+[submodule "zsh/.oh-my-zsh/custom/plugins/zsh-z"]
+	path = zsh/.oh-my-zsh/custom/plugins/zsh-z
+	url = https://github.com/agkozak/zsh-z.git
+[submodule "zsh/.oh-my-zsh/custom/plugins/k"]
+	path = zsh/.oh-my-zsh/custom/plugins/k
 	url = https://github.com/supercrabtree/k.git
+[submodule "zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
+	path = zsh/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "zsh/.oh-my-zsh/custom/plugins/zsh-completions"]
+	path = zsh/.oh-my-zsh/custom/plugins/zsh-completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "zsh/.oh-my-zsh/custom/plugins/zsh-autosuggestions"]
+	path = zsh/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
