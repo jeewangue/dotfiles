@@ -73,6 +73,7 @@ Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
 Plug 'puremourning/vimspector'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+Plug 'tpope/vim-rvm'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -119,7 +120,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 Plug 'Yggdroot/indentLine'
 Plug 'chrisbra/Colorizer'
 Plug 'lambdalisue/suda.vim' " write suda://PATH
-Plug 'diepm/vim-rest-console' " api console
+Plug 'jeewangue/vim-rest-console' " api console
 Plug 'neomutt/neomutt.vim' " email
 Plug 'felipec/notmuch-vim' " email
 Plug 'TheZoq2/neovim-auto-autoread' " Autoread
@@ -127,6 +128,7 @@ Plug 'voldikss/vim-floaterm'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } } " documentation generator
 Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
+Plug 'jkramer/vim-checkbox'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -218,6 +220,7 @@ nnoremap <leader>, :AF<CR>
 nnoremap <leader>. :AFI<CR>
 nnoremap <leader>/ :Buffers<CR>
 " ripgrep
+nnoremap <leader>ag :Ag<CR>
 nnoremap <leader>rg :Rg<CR>
 
 let g:fzf_colors =
@@ -525,6 +528,7 @@ let g:indentLine_concealcursor = "n"
 let g:vimsyn_folding = 'af'
 
 """ vim-rest-console
+let g:vrc_response_default_content_type = 'application/json'
 let g:vrc_show_command = 1
 let g:vrc_curl_opts = {
       \ '--connect-timeout' : 10,
@@ -535,7 +539,10 @@ let g:vrc_curl_opts = {
       \ '--include': '',
       \ '--ipv4': '',
       \ '--insecure': '',
+      \ '--silent': '',
       \}
+" for form data
+" let g:vrc_split_request_body = 1
 
 """ vim-floaterm
 "let g:floaterm_keymap_new    = '<Leader>fc'
@@ -577,7 +584,7 @@ augroup filetype_visual_config
   autocmd Filetype markdown       setlocal ts=2 sw=2 sts=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=indent foldlevel=99
   autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
   autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99

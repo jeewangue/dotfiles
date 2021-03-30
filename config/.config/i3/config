@@ -154,11 +154,15 @@ exec_always --no-startup-id picom -b
 # polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
+
 # wallpaper (feh)
 exec_always --no-startup-id feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
 
 bindsym $mod+b exec --no-startup-id \
 					feh --recursive --randomize --bg-fill ~/Pictures/wallpapers
+
+# joplin
+exec --no-startup-id joplin-desktop
 
 # (No) Title Bars
 for_window [class="^.*"] border pixel 0 

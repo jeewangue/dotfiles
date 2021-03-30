@@ -1,5 +1,6 @@
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/.krew/bin"
 
 # Base16 Shell
 BASE16_SHELL="$HOME/.config/base16-shell/"

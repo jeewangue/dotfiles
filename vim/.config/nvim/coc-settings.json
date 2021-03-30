@@ -1,5 +1,10 @@
 {
   "languageserver": {},
+  "coc.preferences.rootPatterns": [
+    ".git",
+    ".hg",
+    ".projections.json"
+  ],
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "Markdown",
@@ -10,7 +15,8 @@
     "json",
     "python",
     "ruby",
-    "graphql"
+    "graphql",
+    "go"
   ],
   "coc.preferences.extensionUpdateCheck": "weekly",
   "codeLens.enable": true,
@@ -28,6 +34,11 @@
     "typescriptreact"
   ],
   "jedi.executable.command": "jedi-language-server",
+  "pyright.organizeimports.provider": "isort",
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintArgs": ["--generate-members"],
+  "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
   "solargraph.checkGemVersion": false,
   "solargraph.diagnostics": true,
   "solargraph.autoformat": true,
@@ -175,7 +186,9 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkaconnectors.kafka.strimzi.io.schema.json": "*kafkaconnector.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkarebalances.kafka.strimzi.io.schema.json": "*kafkarebalance.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormakers.kafka.strimzi.io.schema.json": "*kafkamirrormaker.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormaker2s.kafka.strimzi.io.schema.json": "*kafkamirrormaker2.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormaker2s.kafka.strimzi.io.schema.json": "*kafkamirrormaker2.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/notebooks.kubeflow.org.schema.json": "*notebook.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/poddefaults.kubeflow.org.schema.json": "*poddefault.yaml"
   },
   "yaml.trace.server": "verbose"
 }
