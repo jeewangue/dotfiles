@@ -56,7 +56,7 @@
     pyenv                   # python environment (https://github.com/pyenv/pyenv)
     # goenv                 # go environment (https://github.com/syndbg/goenv)
     # nodenv                # node.js version from nodenv (https://github.com/nodenv/nodenv)
-    # nvm                   # node.js version from nvm (https://github.com/nvm-sh/nvm)
+    nvm                     # node.js version from nvm (https://github.com/nvm-sh/nvm)
     # nodeenv               # node.js environment (https://github.com/ekalinin/nodeenv)
     node_version            # node.js version
     go_version              # go version (https://golang.org)
@@ -93,7 +93,7 @@
     # disk_usage            # disk usage
     # ram                   # free RAM
     # swap                  # used swap
-    # todo                    # todo items (https://github.com/todotxt/todo.txt-cli)
+    # todo                  # todo items (https://github.com/todotxt/todo.txt-cli)
     # timewarrior           # timewarrior tracking status (https://timewarrior.net/)
     # taskwarrior           # taskwarrior task count (https://taskwarrior.org/)
     time                    # current time

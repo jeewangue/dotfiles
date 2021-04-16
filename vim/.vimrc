@@ -129,6 +129,7 @@ Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } } " documentation generat
 Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
 Plug 'jkramer/vim-checkbox'
+Plug 'kshenoy/vim-signature'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -177,7 +178,7 @@ nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
 
 " vim-airline
 set laststatus=2
-let g:airline_theme = 'base16_tomorrow'
+let g:airline_theme = 'base16_tomorrow_night'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
@@ -185,6 +186,7 @@ let g:airline#extensions#coc#error_symbol = 'E:'
 let g:airline#extensions#coc#warning_symbol = 'W:'
 let g:airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+
 
 " vim-airline-themes
 command! AirlineThemes call fzf#run({
