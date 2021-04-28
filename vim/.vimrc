@@ -74,6 +74,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'puremourning/vimspector'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
 Plug 'tpope/vim-rvm'
+Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -577,6 +578,10 @@ augroup mailfiletype
   autocmd BufRead,BufNewFile *mutt-*      setfiletype mail
 augroup END
 
+" vim-shfmt
+let g:shfmt_extra_args = '-i 2'
+let g:shfmt_fmt_on_save = 0
+
 
 """ Plugin Configuration END
 
@@ -598,6 +603,13 @@ augroup filetype_visual_config
 augroup END
 
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+
+augroup filetype_go_config
+  autocmd FileType go nmap gta :CocCommand go.tags.add.prompt<cr>
+  autocmd FileType go nmap gtj :CocCommand go.tags.add json<cr>
+  autocmd FileType go nmap gty :CocCommand go.tags.add yaml<cr>
+  autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
+augroup END
 
 
 

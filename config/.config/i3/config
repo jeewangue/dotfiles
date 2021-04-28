@@ -274,6 +274,7 @@ for_window [                                  class="jetbrains-toolbox"  ] float
 for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"   ] floating enable
 for_window [title="^Confirm.*"                class="jetbrains-pycharm"  ] floating enable
 for_window [instance="electron"               class="Electron"           ] floating enable
+for_window [instance="swiftmr"                class="SwiftMR"            ] floating enable
 for_window [instance="qjackctl"               class="QjackCtl"           ] floating enable
 for_window [instance="qsynth"                 class="Qsynth"             ] floating enable
 for_window [instance="zoom"                   class="zoom"               ] floating enable
