@@ -132,7 +132,7 @@
   "yaml.hover": true,
   "yaml.completion": true,
   "yaml.schemas": {
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/kubernetes-v1.20.5-strict/all.json": "*k8s.yaml",
+    "kubernetes": "*k8s.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/alertmanagers.monitoring.coreos.com.schema.json": "*alertmanager.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/attributemanifests.config.istio.io.schema.json": "*attributemanifest.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/authorizationpolicies.security.istio.io.schema.json": "*authorizationpolicy.yaml",
@@ -191,7 +191,12 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/kafkamirrormaker2s.kafka.strimzi.io.schema.json": "*kafkamirrormaker2.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/notebooks.kubeflow.org.schema.json": "*notebook.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/poddefaults.kubeflow.org.schema.json": "*poddefault.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/rabbitmqclusters.rabbitmq.com.schema.json": "*rabbitmqcluster.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/rabbitmqclusters.rabbitmq.com.schema.json": "*rabbitmqcluster.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloaks.keycloak.org.schema.json": "*keycloak.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakrealms.keycloak.org.schema.json": "*keycloakrealm.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakclients.keycloak.org.schema.json": "*keycloakclient.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakbackups.keycloak.org.schema.json": "*keycloakbackup.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakusers.keycloak.org.schema.json": "*keycloakuser.yaml"
   },
   "yaml.trace.server": "verbose"
 }

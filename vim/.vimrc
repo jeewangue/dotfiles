@@ -92,6 +92,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
+Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -140,6 +141,7 @@ Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 
+
 call plug#end()
 """ PLUG END
 
@@ -147,7 +149,7 @@ call plug#end()
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
-      \ 'coc-vimlsp', 'coc-json', 'coc-yaml', 'coc-git', 'coc-yank',
+      \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
@@ -393,7 +395,7 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+" let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
 let g:go_jump_to_error = 0
@@ -564,9 +566,12 @@ let g:colorizer_use_virtual_text = 1
 
 """ vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
-nmap <F12>         <Plug>VimspectorStepInto
-nmap <leader><F12> <Plug>VimspectorStepOut
-nmap <leader><F3>  :<C-u>VimspectorReset<CR>
+nmap <F2>             <Plug>VimspectorStepInto
+nmap <leader><F3>      :<C-u>VimspectorReset<CR>
+nmap <leader>di        <Plug>VimspectorBalloonEval
+xmap <leader>di        <Plug>VimspectorBalloonEval
+nmap <leader><S-F10>   <Plug>VimspectorUpFrame
+nmap <leader><S-F12>   <Plug>VimspectorDownFrame
 
 """ tabular
 nmap <leader>tf :<C-u>TableFormat<CR>
