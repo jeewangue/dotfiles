@@ -218,6 +218,7 @@ command! -nargs=? -complete=dir AF
       \   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
       \ })))
 
+" SessionsList: list sessions from obsession & procession
 function! SessionsList()
     let flist = glob(fnamemodify(g:prosession_dir, ':p').'*.vim', 0, 1)
     let flist = map(flist, "fnamemodify(v:val, ':t:r')")
@@ -225,6 +226,7 @@ function! SessionsList()
     return flist
 endfunction
 
+" SessionsSelect: replace session
 function! SessionsSelect(str)
   execute 'Prosession' a:str
 endfunction
@@ -232,7 +234,8 @@ endfunction
 " fzf: All Sessions
 command! -nargs=? -complete=dir FZFSESS
       \ call fzf#run(fzf#wrap({
-      \   'source': SessionsList()
+      \   'source': SessionsList(),
+      \   'sink': function('SessionsSelect'),
       \ }))
 
 nnoremap <leader>, :AF<CR>
