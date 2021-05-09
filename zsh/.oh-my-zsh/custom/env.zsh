@@ -22,3 +22,5 @@ export PGO_CA_CERT=$HOME/.pgo/pgo/client.crt
 export PGO_CLIENT_CERT=$HOME/.pgo/pgo/client.crt
 export PGO_CLIENT_KEY=$HOME/.pgo/pgo/client.key
 
+export DELTA_PAGER="less --mouse --wheel-lines=5"
+export BAT_PAGER="less --mouse --wheel-lines=5"

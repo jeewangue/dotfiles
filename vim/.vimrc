@@ -58,7 +58,6 @@ call plug#begin('~/.vim/plugged')
 "--- sessions ---
 Plug 'tpope/vim-obsession'
 Plug 'dhruvasagar/vim-prosession'
-Plug 'gikmx/ctrlp-obsession'
 Plug 'mbbill/undotree'
 
 "--- langs ---
@@ -93,6 +92,7 @@ Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -151,7 +151,7 @@ let g:coc_global_extensions=[
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
-      \ 'coc-markdownlint', 'coc-explorer', 'coc-go', 'coc-docker',
+      \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
       \ 'coc-styled-components', 'coc-swagger'
@@ -167,9 +167,6 @@ nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-" ctrlp-obsession
-nnoremap <leader>ss :CtrlPObsession<CR>
-
 " undotree
 if !isdirectory($HOME."/.vim/.undodir")
   call mkdir($HOME."/.vim/.undodir", "", 0700)
@@ -181,7 +178,7 @@ nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
 
 " vim-airline
 set laststatus=2
-let g:airline_theme = 'base16_tomorrow_night'
+let g:airline_theme = 'base16_tomorrow'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
@@ -221,9 +218,27 @@ command! -nargs=? -complete=dir AF
       \   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
       \ })))
 
+function! SessionsList()
+    let flist = glob(fnamemodify(g:prosession_dir, ':p').'*.vim', 0, 1)
+    let flist = map(flist, "fnamemodify(v:val, ':t:r')")
+    let flist = map(flist, "substitute(v:val, '%', '/', 'g')")
+    return flist
+endfunction
+
+function! SessionsSelect(str)
+  execute 'Prosession' a:str
+endfunction
+
+" fzf: All Sessions
+command! -nargs=? -complete=dir FZFSESS
+      \ call fzf#run(fzf#wrap({
+      \   'source': SessionsList()
+      \ }))
+
 nnoremap <leader>, :AF<CR>
 nnoremap <leader>. :AFI<CR>
 nnoremap <leader>/ :Buffers<CR>
+nnoremap <leader>ss :FZFSESS<CR>
 " ripgrep
 nnoremap <leader>ag :Ag<CR>
 nnoremap <leader>rg :Rg<CR>

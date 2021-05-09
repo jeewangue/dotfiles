@@ -1,7 +1,9 @@
+[include]
+	path = /home/jeewangue/.themes.gitconfig
 [push]
 	default = simple
 [pull]
-	rebase = true
+	rebase = false
 [alias]
 	lg = log --pretty=format:'%C(red)%h%Creset %C(magenta)%G?%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(bold blue)<%an>%Creset' --graph
 	lga = log --pretty=format:'%C(red)%h%Creset %C(magenta)%G?%Creset -%C(yellow)%d%Creset %s %C(green)(%cr) %C(bold blue)<%an>%Creset' --graph --all
@@ -12,17 +14,21 @@
 	ls = !git-ls
 [core]
 	editor = nvim
-	pager = diff-so-fancy | less --tabs=4 -RFX
+	pager = delta
+[delta]
+	features = collared-trogon
+[interactive]
+	diffFilter = delta --color-only
 [diff]
 	tool = vimdiff
 [difftool]
-  prompt = false
+	prompt = false
 [merge]
 	tool = vimdiff
 [mergetool]
 	prompt = true
 [mergetool "vimdiff"]
-  cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process

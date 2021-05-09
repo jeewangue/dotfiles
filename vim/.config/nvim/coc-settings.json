@@ -102,6 +102,7 @@
     "gofumpt": true,
     "expandWorkspaceToModule": true,
     "experimentalWorkspaceModule": true,
+    "experimentalTemplateSupport": true,
     "semanticTokens": true,
     "staticcheck": false
   },
