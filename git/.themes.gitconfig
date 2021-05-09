@@ -42,9 +42,11 @@
     line-numbers-plus-style = "#003300"
     line-numbers-right-style = "#022b45"
     line-numbers-zero-style = "#999999"
-    minus-emph-style = normal "#80002a"
-    minus-style = normal "#330011"
+    minus-emph-style = dim normal "#80002a"
+    minus-non-emph-style = dim normal "#330011"
+    minus-style = dim normal "#330011"
     plus-emph-style = syntax "#003300"
+    plus-non-emph-style = syntax "#001a00"
     plus-style = syntax "#001a00"
     syntax-theme = Nord
 
