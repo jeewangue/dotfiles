@@ -14,12 +14,12 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: swiftmr-dev
-  currentCluster: swiftmr-dev
+  currentContext: swiftmr-prod
+  currentCluster: swiftmr-prod
   clusters:
     swiftmr-dev:
       namespace:
-        active: keycloak
+        active: ""
         favorites:
         - monitoring
         - cert-manager
@@ -28,7 +28,26 @@ k9s:
         - dev
         - default
       view:
-        active: svc
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    swiftmr-prod:
+      namespace:
+        active: ""
+        favorites:
+        - all
+        - default
+      view:
+        active: po
       featureGates:
         nodeShell: false
       shellPod:

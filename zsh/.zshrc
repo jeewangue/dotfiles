@@ -6,7 +6,7 @@ HISTSIZE=100000
 HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(zsh-syntax-highlighting zsh-autosuggestions zsh-completions vi-mode common-aliases)
-plugins+=(tmux git git-flow k zsh-z dotenv timer)
+plugins+=(tmux git git-flow zsh-z dotenv timer)
 plugins+=(gpg-agent)
 plugins+=(docker docker-compose kubectl helm)
 plugins+=(npm yarn)

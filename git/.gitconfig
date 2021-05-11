@@ -17,6 +17,7 @@
 	pager = delta
 [delta]
 	features = collared-trogon
+	; side-by-side = true
 [interactive]
 	diffFilter = delta --color-only
 [diff]

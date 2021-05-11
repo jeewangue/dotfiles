@@ -9,7 +9,6 @@ if type nvim > /dev/null 2>&1; then
 	alias vim='nvim'
 fi
 
-unalias k   # for k   command (https://github.com/supercrabtree/k)
 unalias grv # for grv command (https://github.com/rgburke/grv)
 unalias gm  # for gm  command (graphicsmagick)
 
