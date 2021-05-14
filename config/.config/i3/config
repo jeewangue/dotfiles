@@ -125,10 +125,10 @@ mode "resize" {
 	bindsym k resize shrink height 10 px or 10 ppt
 	bindsym l resize grow width 10 px or 10 ppt
 
-	bindsym Shift+h resize shrink width 50 px or 50 ppt
-	bindsym Shift+j resize grow height 50 px or 50 ppt
-	bindsym Shift+k resize shrink height 50 px or 50 ppt
-	bindsym Shift+l resize grow width 50 px or 50 ppt
+	bindsym Shift+h resize shrink width 60 px or 60 ppt; move right 30 px
+	bindsym Shift+j resize grow height 60 px or 60 ppt; move up 30 px
+	bindsym Shift+k resize shrink height 60 px or 60 ppt; move down 30 px
+	bindsym Shift+l resize grow width 60 px or 60 ppt; move left 30 px
 
 	# same bindings, but for the arrow keys
 	bindsym Left move left 50px
@@ -323,8 +323,8 @@ bindsym $mod+Shift+x move scratchpad
 
 # Show the first scratchpad window
 bindsym $mod+x scratchpad show;
-bindsym $mod+Shift+Return resize set 2560px 1400px; move position center
-bindsym $mod+Shift+BackSpace resize set 2200px 1250px; move position center
+bindsym $mod+Shift+Return resize set 3600px 2000px; move position center
+bindsym $mod+Shift+BackSpace resize set 2520px 1400px; move position center
 
 ######################### KakaoTalk (wine)  #####################
 # no_focus [class="^Wine$"]

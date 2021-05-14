@@ -14,13 +14,14 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: swiftmr-prod
-  currentCluster: swiftmr-prod
+  currentContext: swiftmr-dev
+  currentCluster: swiftmr-dev
   clusters:
     swiftmr-dev:
       namespace:
         active: ""
         favorites:
+        - kube-system
         - monitoring
         - cert-manager
         - keycloak
@@ -28,7 +29,7 @@ k9s:
         - dev
         - default
       view:
-        active: pod
+        active: keycloakuser
       featureGates:
         nodeShell: false
       shellPod:
@@ -47,7 +48,7 @@ k9s:
         - all
         - default
       view:
-        active: po
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:

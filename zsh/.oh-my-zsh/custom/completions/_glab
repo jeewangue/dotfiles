@@ -1,0 +1,3294 @@
+# bash completion for glab                                 -*- shell-script -*-
+
+__glab_debug()
+{
+    if [[ -n ${BASH_COMP_DEBUG_FILE} ]]; then
+        echo "$*" >> "${BASH_COMP_DEBUG_FILE}"
+    fi
+}
+
+# Homebrew on Macs have version 1.3 of bash-completion which doesn't include
+# _init_completion. This is a very minimal version of that function.
+__glab_init_completion()
+{
+    COMPREPLY=()
+    _get_comp_words_by_ref "$@" cur prev words cword
+}
+
+__glab_index_of_word()
+{
+    local w word=$1
+    shift
+    index=0
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+        index=$((index+1))
+    done
+    index=-1
+}
+
+__glab_contains_word()
+{
+    local w word=$1; shift
+    for w in "$@"; do
+        [[ $w = "$word" ]] && return
+    done
+    return 1
+}
+
+__glab_handle_go_custom_completion()
+{
+    __glab_debug "${FUNCNAME[0]}: cur is ${cur}, words[*] is ${words[*]}, #words[@] is ${#words[@]}"
+
+    local shellCompDirectiveError=1
+    local shellCompDirectiveNoSpace=2
+    local shellCompDirectiveNoFileComp=4
+    local shellCompDirectiveFilterFileExt=8
+    local shellCompDirectiveFilterDirs=16
+
+    local out requestComp lastParam lastChar comp directive args
+
+    # Prepare the command to request completions for the program.
+    # Calling ${words[0]} instead of directly glab allows to handle aliases
+    args=("${words[@]:1}")
+    requestComp="${words[0]} __completeNoDesc ${args[*]}"
+
+    lastParam=${words[$((${#words[@]}-1))]}
+    lastChar=${lastParam:$((${#lastParam}-1)):1}
+    __glab_debug "${FUNCNAME[0]}: lastParam ${lastParam}, lastChar ${lastChar}"
+
+    if [ -z "${cur}" ] && [ "${lastChar}" != "=" ]; then
+        # If the last parameter is complete (there is a space following it)
+        # We add an extra empty parameter so we can indicate this to the go method.
+        __glab_debug "${FUNCNAME[0]}: Adding extra empty parameter"
+        requestComp="${requestComp} \"\""
+    fi
+
+    __glab_debug "${FUNCNAME[0]}: calling ${requestComp}"
+    # Use eval to handle any environment variables and such
+    out=$(eval "${requestComp}" 2>/dev/null)
+
+    # Extract the directive integer at the very end of the output following a colon (:)
+    directive=${out##*:}
+    # Remove the directive
+    out=${out%:*}
+    if [ "${directive}" = "${out}" ]; then
+        # There is not directive specified
+        directive=0
+    fi
+    __glab_debug "${FUNCNAME[0]}: the completion directive is: ${directive}"
+    __glab_debug "${FUNCNAME[0]}: the completions are: ${out[*]}"
+
+    if [ $((directive & shellCompDirectiveError)) -ne 0 ]; then
+        # Error code.  No completion.
+        __glab_debug "${FUNCNAME[0]}: received error from custom completion go code"
+        return
+    else
+        if [ $((directive & shellCompDirectiveNoSpace)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __glab_debug "${FUNCNAME[0]}: activating no space"
+                compopt -o nospace
+            fi
+        fi
+        if [ $((directive & shellCompDirectiveNoFileComp)) -ne 0 ]; then
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                __glab_debug "${FUNCNAME[0]}: activating no file completion"
+                compopt +o default
+            fi
+        fi
+    fi
+
+    if [ $((directive & shellCompDirectiveFilterFileExt)) -ne 0 ]; then
+        # File extension filtering
+        local fullFilter filter filteringCmd
+        # Do not use quotes around the $out variable or else newline
+        # characters will be kept.
+        for filter in ${out[*]}; do
+            fullFilter+="$filter|"
+        done
+
+        filteringCmd="_filedir $fullFilter"
+        __glab_debug "File filtering command: $filteringCmd"
+        $filteringCmd
+    elif [ $((directive & shellCompDirectiveFilterDirs)) -ne 0 ]; then
+        # File completion for directories only
+        local subDir
+        # Use printf to strip any trailing newline
+        subdir=$(printf "%s" "${out[0]}")
+        if [ -n "$subdir" ]; then
+            __glab_debug "Listing directories in $subdir"
+            __glab_handle_subdirs_in_dir_flag "$subdir"
+        else
+            __glab_debug "Listing directories in ."
+            _filedir -d
+        fi
+    else
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${out[*]}" -- "$cur")
+    fi
+}
+
+__glab_handle_reply()
+{
+    __glab_debug "${FUNCNAME[0]}"
+    local comp
+    case $cur in
+        -*)
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                compopt -o nospace
+            fi
+            local allflags
+            if [ ${#must_have_one_flag[@]} -ne 0 ]; then
+                allflags=("${must_have_one_flag[@]}")
+            else
+                allflags=("${flags[*]} ${two_word_flags[*]}")
+            fi
+            while IFS='' read -r comp; do
+                COMPREPLY+=("$comp")
+            done < <(compgen -W "${allflags[*]}" -- "$cur")
+            if [[ $(type -t compopt) = "builtin" ]]; then
+                [[ "${COMPREPLY[0]}" == *= ]] || compopt +o nospace
+            fi
+
+            # complete after --flag=abc
+            if [[ $cur == *=* ]]; then
+                if [[ $(type -t compopt) = "builtin" ]]; then
+                    compopt +o nospace
+                fi
+
+                local index flag
+                flag="${cur%=*}"
+                __glab_index_of_word "${flag}" "${flags_with_completion[@]}"
+                COMPREPLY=()
+                if [[ ${index} -ge 0 ]]; then
+                    PREFIX=""
+                    cur="${cur#*=}"
+                    ${flags_completion[${index}]}
+                    if [ -n "${ZSH_VERSION}" ]; then
+                        # zsh completion needs --flag= prefix
+                        eval "COMPREPLY=( \"\${COMPREPLY[@]/#/${flag}=}\" )"
+                    fi
+                fi
+            fi
+            return 0;
+            ;;
+    esac
+
+    # check if we are handling a flag with special work handling
+    local index
+    __glab_index_of_word "${prev}" "${flags_with_completion[@]}"
+    if [[ ${index} -ge 0 ]]; then
+        ${flags_completion[${index}]}
+        return
+    fi
+
+    # we are parsing a flag and don't have a special handler, no completion
+    if [[ ${cur} != "${words[cword]}" ]]; then
+        return
+    fi
+
+    local completions
+    completions=("${commands[@]}")
+    if [[ ${#must_have_one_noun[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_noun[@]}")
+    elif [[ -n "${has_completion_function}" ]]; then
+        # if a go completion function is provided, defer to that function
+        __glab_handle_go_custom_completion
+    fi
+    if [[ ${#must_have_one_flag[@]} -ne 0 ]]; then
+        completions+=("${must_have_one_flag[@]}")
+    fi
+    while IFS='' read -r comp; do
+        COMPREPLY+=("$comp")
+    done < <(compgen -W "${completions[*]}" -- "$cur")
+
+    if [[ ${#COMPREPLY[@]} -eq 0 && ${#noun_aliases[@]} -gt 0 && ${#must_have_one_noun[@]} -ne 0 ]]; then
+        while IFS='' read -r comp; do
+            COMPREPLY+=("$comp")
+        done < <(compgen -W "${noun_aliases[*]}" -- "$cur")
+    fi
+
+    if [[ ${#COMPREPLY[@]} -eq 0 ]]; then
+		if declare -F __glab_custom_func >/dev/null; then
+			# try command name qualified custom func
+			__glab_custom_func
+		else
+			# otherwise fall back to unqualified for compatibility
+			declare -F __custom_func >/dev/null && __custom_func
+		fi
+    fi
+
+    # available in bash-completion >= 2, not always present on macOS
+    if declare -F __ltrim_colon_completions >/dev/null; then
+        __ltrim_colon_completions "$cur"
+    fi
+
+    # If there is only 1 completion and it is a flag with an = it will be completed
+    # but we don't want a space after the =
+    if [[ "${#COMPREPLY[@]}" -eq "1" ]] && [[ $(type -t compopt) = "builtin" ]] && [[ "${COMPREPLY[0]}" == --*= ]]; then
+       compopt -o nospace
+    fi
+}
+
+# The arguments should be in the form "ext1|ext2|extn"
+__glab_handle_filename_extension_flag()
+{
+    local ext="$1"
+    _filedir "@(${ext})"
+}
+
+__glab_handle_subdirs_in_dir_flag()
+{
+    local dir="$1"
+    pushd "${dir}" >/dev/null 2>&1 && _filedir -d && popd >/dev/null 2>&1 || return
+}
+
+__glab_handle_flag()
+{
+    __glab_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    # if a command required a flag, and we found it, unset must_have_one_flag()
+    local flagname=${words[c]}
+    local flagvalue
+    # if the word contained an =
+    if [[ ${words[c]} == *"="* ]]; then
+        flagvalue=${flagname#*=} # take in as flagvalue after the =
+        flagname=${flagname%=*} # strip everything after the =
+        flagname="${flagname}=" # but put the = back
+    fi
+    __glab_debug "${FUNCNAME[0]}: looking for ${flagname}"
+    if __glab_contains_word "${flagname}" "${must_have_one_flag[@]}"; then
+        must_have_one_flag=()
+    fi
+
+    # if you set a flag which only applies to this command, don't show subcommands
+    if __glab_contains_word "${flagname}" "${local_nonpersistent_flags[@]}"; then
+      commands=()
+    fi
+
+    # keep flag value with flagname as flaghash
+    # flaghash variable is an associative array which is only supported in bash > 3.
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        if [ -n "${flagvalue}" ] ; then
+            flaghash[${flagname}]=${flagvalue}
+        elif [ -n "${words[ $((c+1)) ]}" ] ; then
+            flaghash[${flagname}]=${words[ $((c+1)) ]}
+        else
+            flaghash[${flagname}]="true" # pad "true" for bool flag
+        fi
+    fi
+
+    # skip the argument to a two word flag
+    if [[ ${words[c]} != *"="* ]] && __glab_contains_word "${words[c]}" "${two_word_flags[@]}"; then
+			  __glab_debug "${FUNCNAME[0]}: found a flag ${words[c]}, skip the next argument"
+        c=$((c+1))
+        # if we are looking for a flags value, don't show commands
+        if [[ $c -eq $cword ]]; then
+            commands=()
+        fi
+    fi
+
+    c=$((c+1))
+
+}
+
+__glab_handle_noun()
+{
+    __glab_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    if __glab_contains_word "${words[c]}" "${must_have_one_noun[@]}"; then
+        must_have_one_noun=()
+    elif __glab_contains_word "${words[c]}" "${noun_aliases[@]}"; then
+        must_have_one_noun=()
+    fi
+
+    nouns+=("${words[c]}")
+    c=$((c+1))
+}
+
+__glab_handle_command()
+{
+    __glab_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+
+    local next_command
+    if [[ -n ${last_command} ]]; then
+        next_command="_${last_command}_${words[c]//:/__}"
+    else
+        if [[ $c -eq 0 ]]; then
+            next_command="_glab_root_command"
+        else
+            next_command="_${words[c]//:/__}"
+        fi
+    fi
+    c=$((c+1))
+    __glab_debug "${FUNCNAME[0]}: looking for ${next_command}"
+    declare -F "$next_command" >/dev/null && $next_command
+}
+
+__glab_handle_word()
+{
+    if [[ $c -ge $cword ]]; then
+        __glab_handle_reply
+        return
+    fi
+    __glab_debug "${FUNCNAME[0]}: c is $c words[c] is ${words[c]}"
+    if [[ "${words[c]}" == -* ]]; then
+        __glab_handle_flag
+    elif __glab_contains_word "${words[c]}" "${commands[@]}"; then
+        __glab_handle_command
+    elif [[ $c -eq 0 ]]; then
+        __glab_handle_command
+    elif __glab_contains_word "${words[c]}" "${command_aliases[@]}"; then
+        # aliashash variable is an associative array which is only supported in bash > 3.
+        if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+            words[c]=${aliashash[${words[c]}]}
+            __glab_handle_command
+        else
+            __glab_handle_noun
+        fi
+    else
+        __glab_handle_noun
+    fi
+    __glab_handle_word
+}
+
+_glab_alias_delete()
+{
+    last_command="glab_alias_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_alias_list()
+{
+    last_command="glab_alias_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_alias_set()
+{
+    last_command="glab_alias_set"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--shell")
+    flags+=("-s")
+    local_nonpersistent_flags+=("--shell")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_alias()
+{
+    last_command="glab_alias"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("delete")
+    commands+=("list")
+    commands+=("set")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_api()
+{
+    last_command="glab_api"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--field=")
+    two_word_flags+=("--field")
+    two_word_flags+=("-F")
+    local_nonpersistent_flags+=("--field")
+    local_nonpersistent_flags+=("--field=")
+    local_nonpersistent_flags+=("-F")
+    flags+=("--header=")
+    two_word_flags+=("--header")
+    two_word_flags+=("-H")
+    local_nonpersistent_flags+=("--header")
+    local_nonpersistent_flags+=("--header=")
+    local_nonpersistent_flags+=("-H")
+    flags+=("--hostname=")
+    two_word_flags+=("--hostname")
+    local_nonpersistent_flags+=("--hostname")
+    local_nonpersistent_flags+=("--hostname=")
+    flags+=("--include")
+    flags+=("-i")
+    local_nonpersistent_flags+=("--include")
+    local_nonpersistent_flags+=("-i")
+    flags+=("--input=")
+    two_word_flags+=("--input")
+    local_nonpersistent_flags+=("--input")
+    local_nonpersistent_flags+=("--input=")
+    flags+=("--method=")
+    two_word_flags+=("--method")
+    two_word_flags+=("-X")
+    local_nonpersistent_flags+=("--method")
+    local_nonpersistent_flags+=("--method=")
+    local_nonpersistent_flags+=("-X")
+    flags+=("--paginate")
+    local_nonpersistent_flags+=("--paginate")
+    flags+=("--raw-field=")
+    two_word_flags+=("--raw-field")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--raw-field")
+    local_nonpersistent_flags+=("--raw-field=")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--silent")
+    local_nonpersistent_flags+=("--silent")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_auth_login()
+{
+    last_command="glab_auth_login"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--hostname=")
+    two_word_flags+=("--hostname")
+    two_word_flags+=("-h")
+    local_nonpersistent_flags+=("--hostname")
+    local_nonpersistent_flags+=("--hostname=")
+    local_nonpersistent_flags+=("-h")
+    flags+=("--stdin")
+    local_nonpersistent_flags+=("--stdin")
+    flags+=("--token=")
+    two_word_flags+=("--token")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--token")
+    local_nonpersistent_flags+=("--token=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_auth_status()
+{
+    last_command="glab_auth_status"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--hostname=")
+    two_word_flags+=("--hostname")
+    two_word_flags+=("-h")
+    local_nonpersistent_flags+=("--hostname")
+    local_nonpersistent_flags+=("--hostname=")
+    local_nonpersistent_flags+=("-h")
+    flags+=("--show-token")
+    flags+=("-t")
+    local_nonpersistent_flags+=("--show-token")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_auth()
+{
+    last_command="glab_auth"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("login")
+    commands+=("status")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_check-update()
+{
+    last_command="glab_check-update"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_delete()
+{
+    last_command="glab_ci_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--status=")
+    two_word_flags+=("--status")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--status")
+    local_nonpersistent_flags+=("--status=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_lint()
+{
+    last_command="glab_ci_lint"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_list()
+{
+    last_command="glab_ci_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--orderBy=")
+    two_word_flags+=("--orderBy")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--orderBy")
+    local_nonpersistent_flags+=("--orderBy=")
+    local_nonpersistent_flags+=("-o")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--sort=")
+    two_word_flags+=("--sort")
+    local_nonpersistent_flags+=("--sort")
+    local_nonpersistent_flags+=("--sort=")
+    flags+=("--status=")
+    two_word_flags+=("--status")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--status")
+    local_nonpersistent_flags+=("--status=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_run()
+{
+    last_command="glab_ci_run"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--branch=")
+    two_word_flags+=("--branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--branch")
+    local_nonpersistent_flags+=("--branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--variables=")
+    two_word_flags+=("--variables")
+    local_nonpersistent_flags+=("--variables")
+    local_nonpersistent_flags+=("--variables=")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_status()
+{
+    last_command="glab_ci_status"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--branch=")
+    two_word_flags+=("--branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--branch")
+    local_nonpersistent_flags+=("--branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--live")
+    flags+=("-l")
+    local_nonpersistent_flags+=("--live")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_trace()
+{
+    last_command="glab_ci_trace"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--branch=")
+    two_word_flags+=("--branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--branch")
+    local_nonpersistent_flags+=("--branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci_view()
+{
+    last_command="glab_ci_view"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--branch=")
+    two_word_flags+=("--branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--branch")
+    local_nonpersistent_flags+=("--branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_ci()
+{
+    last_command="glab_ci"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("delete")
+    commands+=("lint")
+    commands+=("list")
+    commands+=("run")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("create")
+        aliashash["create"]="run"
+    fi
+    commands+=("status")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("stats")
+        aliashash["stats"]="status"
+    fi
+    commands+=("trace")
+    commands+=("view")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_completion()
+{
+    last_command="glab_completion"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--shell=")
+    two_word_flags+=("--shell")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--shell")
+    local_nonpersistent_flags+=("--shell=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_config_get()
+{
+    last_command="glab_config_get"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    flags+=("-g")
+    local_nonpersistent_flags+=("--global")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--host=")
+    two_word_flags+=("--host")
+    two_word_flags+=("-h")
+    local_nonpersistent_flags+=("--host")
+    local_nonpersistent_flags+=("--host=")
+    local_nonpersistent_flags+=("-h")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_config_set()
+{
+    last_command="glab_config_set"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    flags+=("-g")
+    local_nonpersistent_flags+=("--global")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--host=")
+    two_word_flags+=("--host")
+    two_word_flags+=("-h")
+    local_nonpersistent_flags+=("--host")
+    local_nonpersistent_flags+=("--host=")
+    local_nonpersistent_flags+=("-h")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_config()
+{
+    last_command="glab_config"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("get")
+    commands+=("set")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--global")
+    flags+=("-g")
+    local_nonpersistent_flags+=("--global")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_help()
+{
+    last_command="glab_help"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    has_completion_function=1
+    noun_aliases=()
+}
+
+_glab_issue_board_create()
+{
+    last_command="glab_issue_board_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--name")
+    local_nonpersistent_flags+=("--name=")
+    local_nonpersistent_flags+=("-n")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_board_view()
+{
+    last_command="glab_issue_board_view"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_board()
+{
+    last_command="glab_issue_board"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("create")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("new")
+        aliashash["new"]="create"
+    fi
+    commands+=("view")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_close()
+{
+    last_command="glab_issue_close"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_create()
+{
+    last_command="glab_issue_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--confidential")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--confidential")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--link-type=")
+    two_word_flags+=("--link-type")
+    local_nonpersistent_flags+=("--link-type")
+    local_nonpersistent_flags+=("--link-type=")
+    flags+=("--linked-issues=")
+    two_word_flags+=("--linked-issues")
+    local_nonpersistent_flags+=("--linked-issues")
+    local_nonpersistent_flags+=("--linked-issues=")
+    flags+=("--linked-mr=")
+    two_word_flags+=("--linked-mr")
+    local_nonpersistent_flags+=("--linked-mr")
+    local_nonpersistent_flags+=("--linked-mr=")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--no-editor")
+    local_nonpersistent_flags+=("--no-editor")
+    flags+=("--title=")
+    two_word_flags+=("--title")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--title")
+    local_nonpersistent_flags+=("--title=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--web")
+    local_nonpersistent_flags+=("--web")
+    flags+=("--weight=")
+    two_word_flags+=("--weight")
+    two_word_flags+=("-w")
+    local_nonpersistent_flags+=("--weight")
+    local_nonpersistent_flags+=("--weight=")
+    local_nonpersistent_flags+=("-w")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    local_nonpersistent_flags+=("-y")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_delete()
+{
+    last_command="glab_issue_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_list()
+{
+    last_command="glab_issue_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    flags+=("-A")
+    local_nonpersistent_flags+=("--all")
+    local_nonpersistent_flags+=("-A")
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--author=")
+    two_word_flags+=("--author")
+    local_nonpersistent_flags+=("--author")
+    local_nonpersistent_flags+=("--author=")
+    flags+=("--closed")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--closed")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--confidential")
+    flags+=("-C")
+    local_nonpersistent_flags+=("--confidential")
+    local_nonpersistent_flags+=("-C")
+    flags+=("--in=")
+    two_word_flags+=("--in")
+    local_nonpersistent_flags+=("--in")
+    local_nonpersistent_flags+=("--in=")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--not-assignee=")
+    two_word_flags+=("--not-assignee")
+    local_nonpersistent_flags+=("--not-assignee")
+    local_nonpersistent_flags+=("--not-assignee=")
+    flags+=("--not-author=")
+    two_word_flags+=("--not-author")
+    local_nonpersistent_flags+=("--not-author")
+    local_nonpersistent_flags+=("--not-author=")
+    flags+=("--not-label=")
+    two_word_flags+=("--not-label")
+    local_nonpersistent_flags+=("--not-label")
+    local_nonpersistent_flags+=("--not-label=")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--search=")
+    two_word_flags+=("--search")
+    local_nonpersistent_flags+=("--search")
+    local_nonpersistent_flags+=("--search=")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_note()
+{
+    last_command="glab_issue_note"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--message=")
+    two_word_flags+=("--message")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--message")
+    local_nonpersistent_flags+=("--message=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_reopen()
+{
+    last_command="glab_issue_reopen"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_subscribe()
+{
+    last_command="glab_issue_subscribe"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_unsubscribe()
+{
+    last_command="glab_issue_unsubscribe"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_update()
+{
+    last_command="glab_issue_update"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--confidential")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--confidential")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--lock-discussion")
+    local_nonpersistent_flags+=("--lock-discussion")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--public")
+    flags+=("-p")
+    local_nonpersistent_flags+=("--public")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--title=")
+    two_word_flags+=("--title")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--title")
+    local_nonpersistent_flags+=("--title=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--unassign")
+    local_nonpersistent_flags+=("--unassign")
+    flags+=("--unlabel=")
+    two_word_flags+=("--unlabel")
+    two_word_flags+=("-u")
+    local_nonpersistent_flags+=("--unlabel")
+    local_nonpersistent_flags+=("--unlabel=")
+    local_nonpersistent_flags+=("-u")
+    flags+=("--unlock-discussion")
+    local_nonpersistent_flags+=("--unlock-discussion")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue_view()
+{
+    last_command="glab_issue_view"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--comments")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--comments")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--system-logs")
+    flags+=("-s")
+    local_nonpersistent_flags+=("--system-logs")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--web")
+    flags+=("-w")
+    local_nonpersistent_flags+=("--web")
+    local_nonpersistent_flags+=("-w")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_issue()
+{
+    last_command="glab_issue"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("board")
+    commands+=("close")
+    commands+=("create")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("new")
+        aliashash["new"]="create"
+    fi
+    commands+=("delete")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("del")
+        aliashash["del"]="delete"
+    fi
+    commands+=("list")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ls")
+        aliashash["ls"]="list"
+    fi
+    commands+=("note")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("comment")
+        aliashash["comment"]="note"
+    fi
+    commands+=("reopen")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("open")
+        aliashash["open"]="reopen"
+    fi
+    commands+=("subscribe")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("sub")
+        aliashash["sub"]="subscribe"
+    fi
+    commands+=("unsubscribe")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("unsub")
+        aliashash["unsub"]="unsubscribe"
+    fi
+    commands+=("update")
+    commands+=("view")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("show")
+        aliashash["show"]="view"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_label_create()
+{
+    last_command="glab_label_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--color=")
+    two_word_flags+=("--color")
+    two_word_flags+=("-c")
+    local_nonpersistent_flags+=("--color")
+    local_nonpersistent_flags+=("--color=")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--name")
+    local_nonpersistent_flags+=("--name=")
+    local_nonpersistent_flags+=("-n")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--name=")
+    must_have_one_flag+=("-n")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_label_list()
+{
+    last_command="glab_label_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_label()
+{
+    last_command="glab_label"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("create")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("new")
+        aliashash["new"]="create"
+    fi
+    commands+=("list")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ls")
+        aliashash["ls"]="list"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_approve()
+{
+    last_command="glab_mr_approve"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--sha=")
+    two_word_flags+=("--sha")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--sha")
+    local_nonpersistent_flags+=("--sha=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_approvers()
+{
+    last_command="glab_mr_approvers"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_checkout()
+{
+    last_command="glab_mr_checkout"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--branch=")
+    two_word_flags+=("--branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--branch")
+    local_nonpersistent_flags+=("--branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--set-upstream-to=")
+    two_word_flags+=("--set-upstream-to")
+    two_word_flags+=("-u")
+    local_nonpersistent_flags+=("--set-upstream-to")
+    local_nonpersistent_flags+=("--set-upstream-to=")
+    local_nonpersistent_flags+=("-u")
+    flags+=("--track")
+    flags+=("-t")
+    local_nonpersistent_flags+=("--track")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_close()
+{
+    last_command="glab_mr_close"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_create()
+{
+    last_command="glab_mr_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-collaboration")
+    local_nonpersistent_flags+=("--allow-collaboration")
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--create-source-branch")
+    local_nonpersistent_flags+=("--create-source-branch")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--draft")
+    local_nonpersistent_flags+=("--draft")
+    flags+=("--fill")
+    flags+=("-f")
+    local_nonpersistent_flags+=("--fill")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--head=")
+    two_word_flags+=("--head")
+    two_word_flags+=("-H")
+    local_nonpersistent_flags+=("--head")
+    local_nonpersistent_flags+=("--head=")
+    local_nonpersistent_flags+=("-H")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--no-editor")
+    local_nonpersistent_flags+=("--no-editor")
+    flags+=("--push")
+    local_nonpersistent_flags+=("--push")
+    flags+=("--remove-source-branch")
+    local_nonpersistent_flags+=("--remove-source-branch")
+    flags+=("--source-branch=")
+    two_word_flags+=("--source-branch")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--source-branch")
+    local_nonpersistent_flags+=("--source-branch=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--target-branch=")
+    two_word_flags+=("--target-branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--target-branch")
+    local_nonpersistent_flags+=("--target-branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--title=")
+    two_word_flags+=("--title")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--title")
+    local_nonpersistent_flags+=("--title=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--web")
+    flags+=("-w")
+    local_nonpersistent_flags+=("--web")
+    local_nonpersistent_flags+=("-w")
+    flags+=("--wip")
+    local_nonpersistent_flags+=("--wip")
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    local_nonpersistent_flags+=("-y")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_delete()
+{
+    last_command="glab_mr_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_diff()
+{
+    last_command="glab_mr_diff"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--color=")
+    two_word_flags+=("--color")
+    local_nonpersistent_flags+=("--color")
+    local_nonpersistent_flags+=("--color=")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_for()
+{
+    last_command="glab_mr_for"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--allow-collaboration")
+    local_nonpersistent_flags+=("--allow-collaboration")
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--draft")
+    local_nonpersistent_flags+=("--draft")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--remove-source-branch")
+    local_nonpersistent_flags+=("--remove-source-branch")
+    flags+=("--target-branch=")
+    two_word_flags+=("--target-branch")
+    two_word_flags+=("-b")
+    local_nonpersistent_flags+=("--target-branch")
+    local_nonpersistent_flags+=("--target-branch=")
+    local_nonpersistent_flags+=("-b")
+    flags+=("--wip")
+    local_nonpersistent_flags+=("--wip")
+    flags+=("--with-labels")
+    local_nonpersistent_flags+=("--with-labels")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_issues()
+{
+    last_command="glab_mr_issues"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_list()
+{
+    last_command="glab_mr_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    flags+=("-A")
+    local_nonpersistent_flags+=("--all")
+    local_nonpersistent_flags+=("-A")
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--author=")
+    two_word_flags+=("--author")
+    local_nonpersistent_flags+=("--author")
+    local_nonpersistent_flags+=("--author=")
+    flags+=("--closed")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--closed")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--draft")
+    flags+=("-d")
+    local_nonpersistent_flags+=("--draft")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--merged")
+    flags+=("-M")
+    local_nonpersistent_flags+=("--merged")
+    local_nonpersistent_flags+=("-M")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--not-label=")
+    two_word_flags+=("--not-label")
+    local_nonpersistent_flags+=("--not-label")
+    local_nonpersistent_flags+=("--not-label=")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--search=")
+    two_word_flags+=("--search")
+    local_nonpersistent_flags+=("--search")
+    local_nonpersistent_flags+=("--search=")
+    flags+=("--source-branch=")
+    two_word_flags+=("--source-branch")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--source-branch")
+    local_nonpersistent_flags+=("--source-branch=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--target-branch=")
+    two_word_flags+=("--target-branch")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--target-branch")
+    local_nonpersistent_flags+=("--target-branch=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_merge()
+{
+    last_command="glab_mr_merge"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--message=")
+    two_word_flags+=("--message")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--message")
+    local_nonpersistent_flags+=("--message=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--remove-source-branch")
+    flags+=("-d")
+    local_nonpersistent_flags+=("--remove-source-branch")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--sha=")
+    two_word_flags+=("--sha")
+    local_nonpersistent_flags+=("--sha")
+    local_nonpersistent_flags+=("--sha=")
+    flags+=("--squash")
+    flags+=("-s")
+    local_nonpersistent_flags+=("--squash")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--squash-message=")
+    two_word_flags+=("--squash-message")
+    local_nonpersistent_flags+=("--squash-message")
+    local_nonpersistent_flags+=("--squash-message=")
+    flags+=("--when-pipeline-succeeds")
+    local_nonpersistent_flags+=("--when-pipeline-succeeds")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_note()
+{
+    last_command="glab_mr_note"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--message=")
+    two_word_flags+=("--message")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--message")
+    local_nonpersistent_flags+=("--message=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_rebase()
+{
+    last_command="glab_mr_rebase"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_reopen()
+{
+    last_command="glab_mr_reopen"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_revoke()
+{
+    last_command="glab_mr_revoke"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_subscribe()
+{
+    last_command="glab_mr_subscribe"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_todo()
+{
+    last_command="glab_mr_todo"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_unsubscribe()
+{
+    last_command="glab_mr_unsubscribe"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_update()
+{
+    last_command="glab_mr_update"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--assignee=")
+    two_word_flags+=("--assignee")
+    two_word_flags+=("-a")
+    local_nonpersistent_flags+=("--assignee")
+    local_nonpersistent_flags+=("--assignee=")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--draft")
+    local_nonpersistent_flags+=("--draft")
+    flags+=("--label=")
+    two_word_flags+=("--label")
+    two_word_flags+=("-l")
+    local_nonpersistent_flags+=("--label")
+    local_nonpersistent_flags+=("--label=")
+    local_nonpersistent_flags+=("-l")
+    flags+=("--lock-discussion")
+    local_nonpersistent_flags+=("--lock-discussion")
+    flags+=("--milestone=")
+    two_word_flags+=("--milestone")
+    two_word_flags+=("-m")
+    local_nonpersistent_flags+=("--milestone")
+    local_nonpersistent_flags+=("--milestone=")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--ready")
+    flags+=("-r")
+    local_nonpersistent_flags+=("--ready")
+    local_nonpersistent_flags+=("-r")
+    flags+=("--remove-source-branch")
+    local_nonpersistent_flags+=("--remove-source-branch")
+    flags+=("--target-branch=")
+    two_word_flags+=("--target-branch")
+    local_nonpersistent_flags+=("--target-branch")
+    local_nonpersistent_flags+=("--target-branch=")
+    flags+=("--title=")
+    two_word_flags+=("--title")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--title")
+    local_nonpersistent_flags+=("--title=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--unassign")
+    local_nonpersistent_flags+=("--unassign")
+    flags+=("--unlabel=")
+    two_word_flags+=("--unlabel")
+    two_word_flags+=("-u")
+    local_nonpersistent_flags+=("--unlabel")
+    local_nonpersistent_flags+=("--unlabel=")
+    local_nonpersistent_flags+=("-u")
+    flags+=("--unlock-discussion")
+    local_nonpersistent_flags+=("--unlock-discussion")
+    flags+=("--wip")
+    local_nonpersistent_flags+=("--wip")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr_view()
+{
+    last_command="glab_mr_view"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--comments")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--comments")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--system-logs")
+    flags+=("-s")
+    local_nonpersistent_flags+=("--system-logs")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--web")
+    flags+=("-w")
+    local_nonpersistent_flags+=("--web")
+    local_nonpersistent_flags+=("-w")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_mr()
+{
+    last_command="glab_mr"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("approve")
+    commands+=("approvers")
+    commands+=("checkout")
+    commands+=("close")
+    commands+=("create")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("new")
+        aliashash["new"]="create"
+    fi
+    commands+=("delete")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("del")
+        aliashash["del"]="delete"
+    fi
+    commands+=("diff")
+    commands+=("for")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("create-for")
+        aliashash["create-for"]="for"
+        command_aliases+=("for-issue")
+        aliashash["for-issue"]="for"
+        command_aliases+=("new-for")
+        aliashash["new-for"]="for"
+    fi
+    commands+=("issues")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("issue")
+        aliashash["issue"]="issues"
+    fi
+    commands+=("list")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ls")
+        aliashash["ls"]="list"
+    fi
+    commands+=("merge")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("accept")
+        aliashash["accept"]="merge"
+    fi
+    commands+=("note")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("comment")
+        aliashash["comment"]="note"
+    fi
+    commands+=("rebase")
+    commands+=("reopen")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("open")
+        aliashash["open"]="reopen"
+    fi
+    commands+=("revoke")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("unapprove")
+        aliashash["unapprove"]="revoke"
+    fi
+    commands+=("subscribe")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("sub")
+        aliashash["sub"]="subscribe"
+    fi
+    commands+=("todo")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("add-todo")
+        aliashash["add-todo"]="todo"
+    fi
+    commands+=("unsubscribe")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("unsub")
+        aliashash["unsub"]="unsubscribe"
+    fi
+    commands+=("update")
+    commands+=("view")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("show")
+        aliashash["show"]="view"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_release_list()
+{
+    last_command="glab_release_list"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--tag=")
+    two_word_flags+=("--tag")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--tag")
+    local_nonpersistent_flags+=("--tag=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_release()
+{
+    last_command="glab_release"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("list")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("ls")
+        aliashash["ls"]="list"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_archive()
+{
+    last_command="glab_repo_archive"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--format=")
+    two_word_flags+=("--format")
+    two_word_flags+=("-f")
+    local_nonpersistent_flags+=("--format")
+    local_nonpersistent_flags+=("--format=")
+    local_nonpersistent_flags+=("-f")
+    flags+=("--sha=")
+    two_word_flags+=("--sha")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--sha")
+    local_nonpersistent_flags+=("--sha=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_clone()
+{
+    last_command="glab_repo_clone"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--group=")
+    two_word_flags+=("--group")
+    two_word_flags+=("-g")
+    local_nonpersistent_flags+=("--group")
+    local_nonpersistent_flags+=("--group=")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--preserve-namespace")
+    flags+=("-p")
+    local_nonpersistent_flags+=("--preserve-namespace")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--archived")
+    flags+=("-a")
+    local_nonpersistent_flags+=("--archived")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--include-subgroups")
+    flags+=("-G")
+    local_nonpersistent_flags+=("--include-subgroups")
+    local_nonpersistent_flags+=("-G")
+    flags+=("--mine")
+    flags+=("-m")
+    local_nonpersistent_flags+=("--mine")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--visibility=")
+    two_word_flags+=("--visibility")
+    two_word_flags+=("-v")
+    local_nonpersistent_flags+=("--visibility")
+    local_nonpersistent_flags+=("--visibility=")
+    local_nonpersistent_flags+=("-v")
+    flags+=("--with-issues-enabled")
+    flags+=("-I")
+    local_nonpersistent_flags+=("--with-issues-enabled")
+    local_nonpersistent_flags+=("-I")
+    flags+=("--with-mr-enabled")
+    flags+=("-M")
+    local_nonpersistent_flags+=("--with-mr-enabled")
+    local_nonpersistent_flags+=("-M")
+    flags+=("--with-shared")
+    flags+=("-S")
+    local_nonpersistent_flags+=("--with-shared")
+    local_nonpersistent_flags+=("-S")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_contributors()
+{
+    last_command="glab_repo_contributors"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--order=")
+    two_word_flags+=("--order")
+    two_word_flags+=("-o")
+    local_nonpersistent_flags+=("--order")
+    local_nonpersistent_flags+=("--order=")
+    local_nonpersistent_flags+=("-o")
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--sort=")
+    two_word_flags+=("--sort")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--sort")
+    local_nonpersistent_flags+=("--sort=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_create()
+{
+    last_command="glab_repo_create"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--defaultBranch=")
+    two_word_flags+=("--defaultBranch")
+    local_nonpersistent_flags+=("--defaultBranch")
+    local_nonpersistent_flags+=("--defaultBranch=")
+    flags+=("--description=")
+    two_word_flags+=("--description")
+    two_word_flags+=("-d")
+    local_nonpersistent_flags+=("--description")
+    local_nonpersistent_flags+=("--description=")
+    local_nonpersistent_flags+=("-d")
+    flags+=("--group=")
+    two_word_flags+=("--group")
+    two_word_flags+=("-g")
+    local_nonpersistent_flags+=("--group")
+    local_nonpersistent_flags+=("--group=")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--internal")
+    local_nonpersistent_flags+=("--internal")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--name")
+    local_nonpersistent_flags+=("--name=")
+    local_nonpersistent_flags+=("-n")
+    flags+=("--private")
+    flags+=("-p")
+    local_nonpersistent_flags+=("--private")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--public")
+    flags+=("-P")
+    local_nonpersistent_flags+=("--public")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--readme")
+    local_nonpersistent_flags+=("--readme")
+    flags+=("--tag=")
+    two_word_flags+=("--tag")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--tag")
+    local_nonpersistent_flags+=("--tag=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_delete()
+{
+    last_command="glab_repo_delete"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--yes")
+    flags+=("-y")
+    local_nonpersistent_flags+=("--yes")
+    local_nonpersistent_flags+=("-y")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_fork()
+{
+    last_command="glab_repo_fork"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--clone")
+    flags+=("-c")
+    local_nonpersistent_flags+=("--clone")
+    local_nonpersistent_flags+=("-c")
+    flags+=("--name=")
+    two_word_flags+=("--name")
+    two_word_flags+=("-n")
+    local_nonpersistent_flags+=("--name")
+    local_nonpersistent_flags+=("--name=")
+    local_nonpersistent_flags+=("-n")
+    flags+=("--path=")
+    two_word_flags+=("--path")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--path")
+    local_nonpersistent_flags+=("--path=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--remote")
+    local_nonpersistent_flags+=("--remote")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo_search()
+{
+    last_command="glab_repo_search"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--page=")
+    two_word_flags+=("--page")
+    two_word_flags+=("-p")
+    local_nonpersistent_flags+=("--page")
+    local_nonpersistent_flags+=("--page=")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--per-page=")
+    two_word_flags+=("--per-page")
+    two_word_flags+=("-P")
+    local_nonpersistent_flags+=("--per-page")
+    local_nonpersistent_flags+=("--per-page=")
+    local_nonpersistent_flags+=("-P")
+    flags+=("--search=")
+    two_word_flags+=("--search")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--search")
+    local_nonpersistent_flags+=("--search=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_flag+=("--search=")
+    must_have_one_flag+=("-s")
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_repo()
+{
+    last_command="glab_repo"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("archive")
+    commands+=("clone")
+    commands+=("contributors")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("users")
+        aliashash["users"]="contributors"
+    fi
+    commands+=("create")
+    commands+=("delete")
+    commands+=("fork")
+    commands+=("search")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("find")
+        aliashash["find"]="search"
+        command_aliases+=("lookup")
+        aliashash["lookup"]="search"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_user_events()
+{
+    last_command="glab_user_events"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--all")
+    flags+=("-a")
+    local_nonpersistent_flags+=("--all")
+    local_nonpersistent_flags+=("-a")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_user()
+{
+    last_command="glab_user"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("events")
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_variable_set()
+{
+    last_command="glab_variable_set"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--group=")
+    two_word_flags+=("--group")
+    two_word_flags+=("-g")
+    local_nonpersistent_flags+=("--group")
+    local_nonpersistent_flags+=("--group=")
+    local_nonpersistent_flags+=("-g")
+    flags+=("--masked")
+    flags+=("-m")
+    local_nonpersistent_flags+=("--masked")
+    local_nonpersistent_flags+=("-m")
+    flags+=("--protected")
+    flags+=("-p")
+    local_nonpersistent_flags+=("--protected")
+    local_nonpersistent_flags+=("-p")
+    flags+=("--scope=")
+    two_word_flags+=("--scope")
+    two_word_flags+=("-s")
+    local_nonpersistent_flags+=("--scope")
+    local_nonpersistent_flags+=("--scope=")
+    local_nonpersistent_flags+=("-s")
+    flags+=("--type=")
+    two_word_flags+=("--type")
+    two_word_flags+=("-t")
+    local_nonpersistent_flags+=("--type")
+    local_nonpersistent_flags+=("--type=")
+    local_nonpersistent_flags+=("-t")
+    flags+=("--value=")
+    two_word_flags+=("--value")
+    two_word_flags+=("-v")
+    local_nonpersistent_flags+=("--value")
+    local_nonpersistent_flags+=("--value=")
+    local_nonpersistent_flags+=("-v")
+    flags+=("--help")
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_variable()
+{
+    last_command="glab_variable"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("set")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("create")
+        aliashash["create"]="set"
+        command_aliases+=("new")
+        aliashash["new"]="set"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--repo=")
+    two_word_flags+=("--repo")
+    two_word_flags+=("-R")
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_version()
+{
+    last_command="glab_version"
+
+    command_aliases=()
+
+    commands=()
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+_glab_root_command()
+{
+    last_command="glab"
+
+    command_aliases=()
+
+    commands=()
+    commands+=("alias")
+    commands+=("api")
+    commands+=("auth")
+    commands+=("check-update")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("update")
+        aliashash["update"]="check-update"
+    fi
+    commands+=("ci")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("pipe")
+        aliashash["pipe"]="ci"
+        command_aliases+=("pipeline")
+        aliashash["pipeline"]="ci"
+    fi
+    commands+=("completion")
+    commands+=("config")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("conf")
+        aliashash["conf"]="config"
+    fi
+    commands+=("help")
+    commands+=("issue")
+    commands+=("label")
+    commands+=("mr")
+    commands+=("release")
+    commands+=("repo")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("project")
+        aliashash["project"]="repo"
+    fi
+    commands+=("user")
+    commands+=("variable")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("var")
+        aliashash["var"]="variable"
+    fi
+    commands+=("version")
+    if [[ -z "${BASH_VERSION}" || "${BASH_VERSINFO[0]}" -gt 3 ]]; then
+        command_aliases+=("v")
+        aliashash["v"]="version"
+    fi
+
+    flags=()
+    two_word_flags=()
+    local_nonpersistent_flags=()
+    flags_with_completion=()
+    flags_completion=()
+
+    flags+=("--help")
+    flags+=("--version")
+    flags+=("-v")
+    local_nonpersistent_flags+=("--version")
+    local_nonpersistent_flags+=("-v")
+
+    must_have_one_flag=()
+    must_have_one_noun=()
+    noun_aliases=()
+}
+
+__start_glab()
+{
+    local cur prev words cword
+    declare -A flaghash 2>/dev/null || :
+    declare -A aliashash 2>/dev/null || :
+    if declare -F _init_completion >/dev/null 2>&1; then
+        _init_completion -s || return
+    else
+        __glab_init_completion -n "=" || return
+    fi
+
+    local c=0
+    local flags=()
+    local two_word_flags=()
+    local local_nonpersistent_flags=()
+    local flags_with_completion=()
+    local flags_completion=()
+    local commands=("glab")
+    local must_have_one_flag=()
+    local must_have_one_noun=()
+    local has_completion_function
+    local last_command
+    local nouns=()
+
+    __glab_handle_word
+}
+
+if [[ $(type -t compopt) = "builtin" ]]; then
+    complete -o default -F __start_glab glab
+else
+    complete -o default -o nospace -F __start_glab glab
+fi
+
+# ex: ts=4 sw=4 et filetype=sh
