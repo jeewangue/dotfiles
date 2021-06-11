@@ -165,7 +165,7 @@ bindsym $mod+b exec --no-startup-id \
 exec --no-startup-id joplin-desktop
 
 # (No) Title Bars
-for_window [class="^.*"] border pixel 0 
+for_window [class="^.*"] border pixel 0
 
 # gaps configuration
 # gaps outer 5
@@ -283,6 +283,7 @@ for_window [instance="VirtualBox Machine"     class="VirtualBox Machine" ] float
 for_window [instance="xclock"                 class="XClock"             ] floating enable
 for_window [instance="org.remmina.Remmina"    class="org.remmina.Remmina"] floating enable
 for_window [instance="resolve"                class="resolve"            ] floating enable
+for_window [instance="matplotlib"             class="Matplotlib"         ] floating enable
 
 assign [class="Microsoft Teams - Preview"] $ws4
 for_window [title="Microsoft Teams Notification"] floating enable

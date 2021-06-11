@@ -14,22 +14,24 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: swiftmr-dev
-  currentCluster: swiftmr-dev
+  currentContext: swiftmr-prod
+  currentCluster: swiftmr-prod
   clusters:
     swiftmr-dev:
       namespace:
         active: ""
         favorites:
+        - kong
+        - demo
+        - prod
         - kube-system
         - monitoring
         - cert-manager
         - keycloak
         - all
         - dev
-        - default
       view:
-        active: keycloakuser
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
@@ -43,12 +45,19 @@ k9s:
       portForwardAddress: localhost
     swiftmr-prod:
       namespace:
-        active: ""
+        active: monitoring
         favorites:
+        - kube-system
+        - keycloak
+        - monitoring
+        - cert-manager
+        - rook-ceph
+        - prod
+        - gitlab-managed-apps
         - all
         - default
       view:
-        active: pod
+        active: po
       featureGates:
         nodeShell: false
       shellPod:

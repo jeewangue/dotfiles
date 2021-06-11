@@ -132,6 +132,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
 Plug 'jkramer/vim-checkbox'
 Plug 'kshenoy/vim-signature'
+Plug 'tpope/vim-dadbod'
+Plug 'kristijanhusak/vim-dadbod-ui'
 
 "--- finder ---
 Plug 'liuchengxu/vim-clap'
@@ -149,8 +151,8 @@ call plug#end()
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
-      \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-omnisharp', 'coc-pyright',
+      \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
+      \ 'coc-snippets', 'coc-lists', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
@@ -413,7 +415,7 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-" let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_enabled = []
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
 let g:go_jump_to_error = 0

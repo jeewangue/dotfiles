@@ -66,6 +66,8 @@ k9s:
     # Charts skins...
     charts:
       bgColor: default
+      dialBgColor: default
+      chartBgColor: default
       defaultDialColors:
         - *magenta
         - *red

@@ -105,6 +105,8 @@
     "semanticTokens": true,
     "staticcheck": false
   },
+  "omnisharp.version": "v1.37.3",
+  "omnisharp.trace.server": "verbose",
   "powershell.integratedConsole.showOnStartup": false,
   "prettier.eslintIntegration": true,
   "latex.lint.onSave": true,
@@ -196,7 +198,13 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakrealms.keycloak.org.schema.json": "*keycloakrealm.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakclients.keycloak.org.schema.json": "*keycloakclient.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakbackups.keycloak.org.schema.json": "*keycloakbackup.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakusers.keycloak.org.schema.json": "*keycloakuser.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/keycloakusers.keycloak.org.schema.json": "*keycloakuser.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephnfses.ceph.rook.io.schema.json": "*cephnfs.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephclients.ceph.rook.io.schema.json": "*cephclient.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephclusters.ceph.rook.io.schema.json": "*cephcluster.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephblockpools.ceph.rook.io.schema.json": "*cephblockpool.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephrbdmirrors.ceph.rook.io.schema.json": "*cephrbdmirror.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephfilesystems.ceph.rook.io.schema.json": "*cephfilesystem.yaml"
   },
   "yaml.trace.server": "verbose"
 }

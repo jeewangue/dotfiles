@@ -3,6 +3,7 @@ alias c='clear -x'
 alias ta='tmux attach -t '
 alias tb='taskbook'
 alias pm='pulsemixer'
+alias dcp='docker-compose'
 
 # nvim alias
 if type nvim > /dev/null 2>&1; then
@@ -28,3 +29,9 @@ function withlogs() {
 
 alias gpa='git remote | xargs -L1 git push --all'
 alias gpat='git remote | xargs -L1 git push --tags'
+
+# https://github.com/stedolan/jq/issues/884#issuecomment-525574290
+# Use `jq` with both JSON and non-JSON lines.
+function jjq {
+    jq -R -r "${1:-.} as \$line | try fromjson catch \$line"
+}
