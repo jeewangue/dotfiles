@@ -45,7 +45,7 @@ k9s:
       portForwardAddress: localhost
     swiftmr-prod:
       namespace:
-        active: monitoring
+        active: ""
         favorites:
         - kube-system
         - keycloak

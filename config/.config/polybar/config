@@ -70,7 +70,7 @@ monitor = ${env:MONITOR:}
 
 modules-left = i3 xwindow
 modules-center = date openweathermap-detailed
-modules-right = mpris updates redshift backlight pulseaudio bluetooth wlan eth battery
+modules-right = updates redshift backlight pulseaudio bluetooth wlan eth battery
 
 tray-position = right
 tray-padding = 2
