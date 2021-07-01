@@ -17,19 +17,37 @@ k9s:
   currentContext: swiftmr-prod
   currentCluster: swiftmr-prod
   clusters:
+    digitalocean-jeewangue:
+      namespace:
+        active: ""
+        favorites:
+        - default
+      view:
+        active: pod
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
     swiftmr-dev:
       namespace:
         active: ""
         favorites:
+        - monitoring
+        - cert-manager
+        - rook-ceph
+        - all
+        - dev
+        - olm
         - kong
         - demo
         - prod
-        - kube-system
-        - monitoring
-        - cert-manager
-        - keycloak
-        - all
-        - dev
       view:
         active: pod
       featureGates:
@@ -47,17 +65,17 @@ k9s:
       namespace:
         active: ""
         favorites:
-        - kube-system
-        - keycloak
-        - monitoring
-        - cert-manager
-        - rook-ceph
-        - prod
-        - gitlab-managed-apps
-        - all
         - default
+        - rook-ceph
+        - kube-system
+        - all
+        - db-staging
+        - workers-prod
+        - db-prod
+        - apps-prod
+        - operators
       view:
-        active: po
+        active: svc
       featureGates:
         nodeShell: false
       shellPod:

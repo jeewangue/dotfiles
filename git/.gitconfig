@@ -56,6 +56,8 @@
 	whitespace = red reverse
 [init]
 	defaultBranch = master
+[includeIf "gitdir:~/workspace/airs/"]
+	path = ~/workspace/airs/.gitconfig
 ; [url "ssh://git@github.com/"]
 ; 	insteadOf = https://github.com/
 ; [url "ssh://git@gitlab.com/"]

@@ -129,3 +129,11 @@ repositories:
   password: ""
   url: https://kubernetes-sigs.github.io/aws-ebs-csi-driver
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: hashicorp
+  password: ""
+  url: https://helm.releases.hashicorp.com
+  username: ""
