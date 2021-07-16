@@ -14,8 +14,8 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: swiftmr-prod
-  currentCluster: swiftmr-prod
+  currentContext: swiftmr-dev
+  currentCluster: swiftmr-dev
   clusters:
     digitalocean-jeewangue:
       namespace:
@@ -37,8 +37,9 @@ k9s:
       portForwardAddress: localhost
     swiftmr-dev:
       namespace:
-        active: ""
+        active: monitoring
         favorites:
+        - operators
         - monitoring
         - cert-manager
         - rook-ceph
@@ -47,9 +48,8 @@ k9s:
         - olm
         - kong
         - demo
-        - prod
       view:
-        active: pod
+        active: po
       featureGates:
         nodeShell: false
       shellPod:
@@ -65,17 +65,15 @@ k9s:
       namespace:
         active: ""
         favorites:
+        - monitoring
+        - apps-prod
         - default
         - rook-ceph
         - kube-system
         - all
-        - db-staging
-        - workers-prod
-        - db-prod
-        - apps-prod
         - operators
       view:
-        active: svc
+        active: po
       featureGates:
         nodeShell: false
       shellPod:

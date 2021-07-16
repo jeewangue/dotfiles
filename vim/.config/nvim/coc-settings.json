@@ -88,7 +88,8 @@
       "file.child.template": "[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]"
     }
   },
-  "explorer.file.autoReveal": true,
+  "explorer.file.reveal.auto": true,
+  "explorer.previewAction.onHover": "content",
   "go.trace.server": "verbose",
   "go.goplsArgs": ["-rpc.trace"],
   "go.goplsPath": "/home/jeewangue/go/bin/gopls",
