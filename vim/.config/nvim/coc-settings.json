@@ -36,11 +36,13 @@
     "typescriptreact"
   ],
   "jedi.executable.command": "jedi-language-server",
+  "pyright.enable": true,
   "pyright.organizeimports.provider": "isort",
   "python.linting.flake8Enabled": true,
   "python.linting.pylintArgs": ["--generate-members"],
   "python.linting.pylintEnabled": true,
   "python.formatting.provider": "black",
+  "python.sortImports.path": "~/.local/bin/isort",
   "solargraph.checkGemVersion": false,
   "solargraph.diagnostics": true,
   "solargraph.autoformat": true,
@@ -89,7 +91,7 @@
     }
   },
   "explorer.file.reveal.auto": true,
-  "explorer.previewAction.onHover": "content",
+  "explorer.previewAction.onHover": false,
   "go.trace.server": "verbose",
   "go.goplsArgs": ["-rpc.trace"],
   "go.goplsPath": "/home/jeewangue/go/bin/gopls",

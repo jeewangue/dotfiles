@@ -31,8 +31,8 @@
 [mergetool "vimdiff"]
 	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [filter "lfs"]
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+	smudge = git-lfs smudge --skip -- %f
+	process = git-lfs filter-process --skip
 	required = true
 	clean = git-lfs clean -- %f
 [user]

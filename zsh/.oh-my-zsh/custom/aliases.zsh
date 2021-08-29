@@ -35,3 +35,7 @@ alias gpat='git remote | xargs -L1 git push --tags'
 function jjq {
     jq -R -r "${1:-.} as \$line | try fromjson catch \$line"
 }
+
+function jobdone() {
+	mpv $HOME/Music/finished.mp3
+}

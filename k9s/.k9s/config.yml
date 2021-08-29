@@ -37,7 +37,7 @@ k9s:
       portForwardAddress: localhost
     swiftmr-dev:
       namespace:
-        active: monitoring
+        active: ""
         favorites:
         - operators
         - monitoring
@@ -65,15 +65,17 @@ k9s:
       namespace:
         active: ""
         favorites:
-        - monitoring
-        - apps-prod
-        - default
-        - rook-ceph
-        - kube-system
+        - cert-manager
         - all
+        - workers-prod
+        - workers-staging
         - operators
+        - rabbitmq-system
+        - apps-staging
+        - gitlab-managed-apps
+        - monitoring
       view:
-        active: po
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
