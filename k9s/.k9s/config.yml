@@ -14,8 +14,8 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: swiftmr-dev
-  currentCluster: swiftmr-dev
+  currentContext: swiftmr-prod
+  currentCluster: swiftmr-prod
   clusters:
     digitalocean-jeewangue:
       namespace:
@@ -49,7 +49,7 @@ k9s:
         - kong
         - demo
       view:
-        active: po
+        active: pod
       featureGates:
         nodeShell: false
       shellPod:
@@ -65,17 +65,17 @@ k9s:
       namespace:
         active: ""
         favorites:
+        - workers-staging
+        - db-prod
+        - db-staging
+        - apps-prod
+        - apps-staging
         - cert-manager
         - all
-        - workers-prod
-        - workers-staging
-        - operators
+        - rook-ceph
         - rabbitmq-system
-        - apps-staging
-        - gitlab-managed-apps
-        - monitoring
       view:
-        active: pod
+        active: dp
       featureGates:
         nodeShell: false
       shellPod:

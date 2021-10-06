@@ -14,5 +14,5 @@ export XDG_CACHE_HOME=$HOME/.cache
 export XDG_DATA_HOME=$HOME/.local/share
 
 ### QT scale
-export QT_FONT_DPI=96
+export QT_FONT_DPI=190
 

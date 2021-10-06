@@ -11,6 +11,7 @@ init_sources=(
 	/usr/share/z/z.sh
 	/etc/bash_completion.d/azure-cli
 	/usr/share/bash-completion/completions/gwhisper
+	/opt/asdf-vm/asdf.sh
 )
 
 for i in $init_sources; do
