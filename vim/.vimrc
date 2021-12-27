@@ -150,7 +150,7 @@ call plug#end()
 """ Coc Extensions
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
-      \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
+      \ 'coc-tsserver', 'coc-eslint8', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
@@ -164,7 +164,7 @@ nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gf :Gvdiffsplit!<CR>
 nnoremap <leader>gd :Gvdiffsplit<CR>
-nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gl :Commits<CR>
 nnoremap <leader>gc :Gcommit<CR>
 nnoremap <leader>gp :Git push<CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -205,7 +205,10 @@ map <C-g> <ESC>:Goyo<CR>
 
 " fzf
 if has('nvim') || has('gui_running')
-  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+  let $FZF_DEFAULT_OPTS .= " --inline-info
+        \ --bind ctrl-b:preview-page-up,ctrl-f:preview-page-down,
+        \ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,
+        \shift-up:preview-half-page-up,shift-down:preview-half-page-down"
 endif
 
 " fzf: All files
@@ -396,7 +399,7 @@ nnoremap <silent> <leader><space>y  :<C-u>CocFzfList yank<CR>
 nnoremap <silent> <leader><space>p  :<C-u>CocFzfListResume<CR>
 nnoremap <silent> <leader><space><space>  :<C-u>CocFzfList<CR>
 
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
 """ coc-explorer
 nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
@@ -574,7 +577,7 @@ let g:vrc_curl_opts = {
 "let g:floaterm_keymap_prev   = '<Leader>fp'
 "let g:floaterm_keymap_next   = '<Leader>fn'
 let g:floaterm_keymap_toggle = '<C-t>'
-let g:floaterm_autoclose     = '2'
+let g:floaterm_autoclose     = '2' "always close
 
 let g:floaterm_width         = 0.8
 let g:floaterm_height        = 0.8

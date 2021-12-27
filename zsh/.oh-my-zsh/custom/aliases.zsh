@@ -39,3 +39,5 @@ function jjq {
 function jobdone() {
 	mpv $HOME/Music/finished.mp3
 }
+
+alias avet='docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash'

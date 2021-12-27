@@ -1,17 +1,17 @@
 output VIRTUAL1
 off
-output HDMI-1-0
+output DP-1-0
 off
 output DP-1-1
 off
-output DP-1-0
-crtc 4
-mode 3840x2160
-pos 2560x0
-rate 29.98
 output eDP1
 crtc 0
 mode 2560x1440
-pos 0x720
+pos 0x0
 primary
 rate 59.96
+output HDMI-1-0
+crtc 4
+mode 2560x1440
+pos 2560x0
+rate 59.95

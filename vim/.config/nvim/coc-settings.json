@@ -29,6 +29,7 @@
   "diagnostic.checkCurrentLine": true,
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
+  "eslint.alwaysShowStatus": true,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -112,6 +113,10 @@
   "omnisharp.trace.server": "verbose",
   "powershell.integratedConsole.showOnStartup": false,
   "prettier.eslintIntegration": true,
+  "prettier.semi": true,
+  "prettier.trailingComma": "all",
+  "prettier.tabWidth": 2,
+  "prettier.printWidth": 120,
   "latex.lint.onSave": true,
   "latex.lint.onChange": false,
   "latex.build.args": ["-pdf", "-interaction=nonstopmode", "-synctex=1", "-pv"],

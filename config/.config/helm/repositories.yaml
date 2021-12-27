@@ -163,3 +163,12 @@ repositories:
   password: ""
   url: https://charts.appscode.com/stable/
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: datadog
+  pass_credentials_all: false
+  password: ""
+  url: https://helm.datadoghq.com
+  username: ""
