@@ -124,6 +124,7 @@
   "latex.forwardSearch.executable": "okular",
   "latex.forwardSearch.args": ["--unique", "file:%p#src:%l%f"],
   "tsserver.log": "verbose",
+  "tsserver.trace.server": "messages",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enable": true,

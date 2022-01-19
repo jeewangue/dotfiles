@@ -172,3 +172,21 @@ repositories:
   password: ""
   url: https://helm.datadoghq.com
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: nvgfd
+  pass_credentials_all: false
+  password: ""
+  url: https://nvidia.github.io/gpu-feature-discovery
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: nfd
+  pass_credentials_all: false
+  password: ""
+  url: https://kubernetes-sigs.github.io/node-feature-discovery/charts
+  username: ""

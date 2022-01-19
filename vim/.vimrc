@@ -47,6 +47,7 @@ syntax on
 " python_host_prog
 let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
 let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
+let g:ruby_host_prog = '~/.rvm/gems/default/bin/neovim-ruby-host'
 let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 " disable pandoc's filetype overwrite
@@ -72,7 +73,7 @@ Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
 Plug 'puremourning/vimspector'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-Plug 'tpope/vim-rvm'
+"Plug 'tpope/vim-rvm'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 "--- syntax ---
@@ -120,7 +121,6 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'greyblake/vim-preview'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 Plug 'Yggdroot/indentLine'
-Plug 'chrisbra/Colorizer'
 Plug 'lambdalisue/suda.vim' " write suda://PATH
 Plug 'jeewangue/vim-rest-console' " api console
 Plug 'neomutt/neomutt.vim' " email
@@ -583,9 +583,6 @@ let g:floaterm_width         = 0.8
 let g:floaterm_height        = 0.8
 let g:floaterm_winblend      = 0
 
-""" Colorizer
-let g:colorizer_auto_color = 1
-let g:colorizer_use_virtual_text = 1
 
 """ vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -688,4 +685,7 @@ xnoremap <silent><Leader>y "cy <Bar> :call system('xclip -selection clipboard', 
 
 " disable syntax if the file size is too big.
 autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
+
+" scroll to bottom
+autocmd TextChanged output:///* normal G
 

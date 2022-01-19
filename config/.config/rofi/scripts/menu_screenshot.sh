@@ -20,8 +20,11 @@ case $chosen in
     $screen)
         sleep 1; scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 "Screenshot Saved" $f'
         ;;
+    # $area)
+    #     sleep 1; scrot -s -f '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 "Screenshot Saved" $f'
+    #     ;;
     $area)
-        sleep 1; scrot -s -f '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 "Screenshot Saved" $f'
+        sleep 1; flameshot gui --path $(xdg-user-dir PICTURES)
         ;;
     $window)
         sleep 1; scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 "Screenshot Saved" $f'

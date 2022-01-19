@@ -226,6 +226,11 @@ bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e
 # bindsym $mod+Shift+c mode "$mode_capture"
 
 bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/bin/menu_screenshot.sh
+
+######################### Clipboard List ########################
+
+bindsym $mod+Shift+p exec --no-startup-id ~/.config/rofi/scripts/rofi-gpaste.sh
+
 ######################### Launcher Mode #########################
 
 set $mode_launcher Launch: [a]ndroid-studio [c]hrome [f]irefox [n]autilus [k]akaotalk [r]ubymine [s]lack [t]ypora [v]scode
