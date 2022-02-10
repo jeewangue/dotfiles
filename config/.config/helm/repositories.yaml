@@ -190,3 +190,21 @@ repositories:
   password: ""
   url: https://kubernetes-sigs.github.io/node-feature-discovery/charts
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: portainer
+  pass_credentials_all: false
+  password: ""
+  url: https://portainer.github.io/k8s/
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: minio
+  pass_credentials_all: false
+  password: ""
+  url: https://charts.min.io/
+  username: ""

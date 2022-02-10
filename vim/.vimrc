@@ -113,6 +113,7 @@ Plug 'junegunn/limelight.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'luochen1990/rainbow'
 Plug 'skanehira/docker-compose.vim'
 Plug 'vimwiki/vimwiki'
@@ -156,7 +157,7 @@ let g:coc_global_extensions=[
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger'
+      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji'
       \ ]
 
 " vim-fugitive
@@ -468,7 +469,7 @@ let g:tagbar_type_vimwiki = {
 " pandoc
 let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
 let g:pandoc#folding#mode = ["syntax"]
-let g:pandoc#spell#enabled = 1
+let g:pandoc#spell#enabled = 0
 let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html",
       \ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
       \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
