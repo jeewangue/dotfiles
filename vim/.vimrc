@@ -151,7 +151,7 @@ call plug#end()
 """ Coc Extensions
 let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
-      \ 'coc-tsserver', 'coc-eslint8', 'coc-solargraph', 'coc-diagnostic',
+      \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
@@ -679,6 +679,9 @@ nnoremap <C-n> :tabnew<CR>
 
 nnoremap qq :<C-u>q<CR>
 nnoremap qa :<C-u>qa<CR>
+
+nnoremap ,cl0 :<C-u>set cole=0<CR>
+nnoremap ,cl2 :<C-u>set cole=2<CR>
 
 " copy the content in a visual block to clipboard
 vnoremap <silent><Leader>y "cy <Bar> :call system('xclip -selection clipboard', @c)<CR>

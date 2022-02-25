@@ -1,0 +1,24 @@
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh pool-edit gnome-boxes
+or other application using the libvirt API.
+-->
+
+<pool type='dir'>
+  <name>gnome-boxes</name>
+  <uuid>d33ffb03-8511-4f1e-b04a-3115d5883c06</uuid>
+  <capacity unit='bytes'>0</capacity>
+  <allocation unit='bytes'>0</allocation>
+  <available unit='bytes'>0</available>
+  <source>
+  </source>
+  <target>
+    <path>/home/jeewangue/.local/share/gnome-boxes/images</path>
+    <permissions>
+      <mode>0744</mode>
+      <owner>1000</owner>
+      <group>1000</group>
+    </permissions>
+  </target>
+</pool>

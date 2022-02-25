@@ -58,5 +58,7 @@
 	defaultBranch = master
 [includeIf "gitdir:~/workspace/airs/"]
 	path = ~/workspace/airs/.gitconfig
+[includeIf "gitdir:~/workspace/eisen/"]
+	path = ~/workspace/eisen/.gitconfig
 ; [url "git@github.com:"]
 ; 	insteadOf = https://github.com/

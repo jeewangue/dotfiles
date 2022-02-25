@@ -9,14 +9,14 @@ BASEDIR=$(dirname $0)
 # updated at 2020/04/09
 # general server packages
 echo -e "Installing ${RED}Prerequisite${NC}"
-echo -e "${BLUE}build-essential, git, git-flow, vim, neovim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, sqlite3, docker, docker-compose${NC}"
+echo -e "${BLUE}build-essential, git, git-flow, vim, neovim, zsh, tmux, xclip, curl, openssl, autojump, tree, htop, glances, imagemagick, graphicsmagick, sqlite3, docker.io, docker-compose${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt update
   sudo apt upgrade
   sudo apt install -y build-essential git git-flow zsh vim neovim tmux xclip curl openssl autojump tree htop glances imagemagick graphicsmagick sqlite3
-	sudo apt install -y docker docker-compose
+	sudo apt install -y docker.io docker-compose
 fi
 
 # updated at 2019/07/13
@@ -56,6 +56,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
   git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
   git clone https://github.com/zsh-users/zsh-completions ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-completions
+  git clone https://github.com/agkozak/zsh-z ${ZSH_CUSTOM:=~/.oh-my-zsh/custom}/plugins/zsh-z
   cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
 fi
 

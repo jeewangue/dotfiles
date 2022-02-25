@@ -244,7 +244,6 @@ mode "$mode_launcher" {
 	bindsym --release s exec slack                ; mode "default"
 	bindsym --release t exec typora               ; mode "default"
 	bindsym --release v exec code                 ; mode "default"
-	bindsym --release k exec env WINEPREFIX="/home/wineuser/.wine32" LANG="ko_KR.UTF-8" wine /home/wineuser/.wine32/dosdevices/c:/Program\ Files/Kakao/KakaoTalk/KakaoTalk.exe; mode "default"
 
 	bindsym Escape mode "default"
 	bindsym Return mode "default"
@@ -274,7 +273,7 @@ for_window [class="(?i)*nextcloud*"] floating disable
 
 for_window [title="Emulator"                                             ] floating enable
 for_window [                                  class="Wine"               ] floating enable
-for_window [                                  class="KakaoTalk"          ] floating enable
+for_window [                                  class="kakaotalk.exe"      ] floating enable
 for_window [                                  class="jetbrains-toolbox"  ] floating enable
 for_window [instance="sun-awt-X11-XFramePeer" class="jetbrains-studio"   ] floating enable
 for_window [instance="jetbrains-studio"       class="jetbrains-studio"   ] floating enable
