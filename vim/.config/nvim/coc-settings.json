@@ -18,7 +18,8 @@
     "ruby",
     "graphql",
     "go",
-    "sh"
+    "sh",
+    "html"
   ],
   "coc.preferences.extensionUpdateCheck": "weekly",
   "codeLens.enable": true,
@@ -43,13 +44,16 @@
   "python.linting.pylintEnabled": true,
   "python.formatting.provider": "black",
   "python.sortImports.path": "~/.local/bin/isort",
-  "solargraph.checkGemVersion": false,
+  "solargraph.checkGemVersion": true,
+  "solargraph.symbols": true,
+  "solargraph.completion": true,
+  "solargraph.references": true,
   "solargraph.diagnostics": true,
   "solargraph.autoformat": true,
   "solargraph.formatting": true,
   "solargraph.hover": true,
-  "solargraph.useBundler": false,
-  "solargraph.trace.server": "verbose",
+  "solargraph.useBundler": true,
+  "solargraph.trace.server": "messages",
   "suggest.enablePreview": true,
   "markdownlint.config": {
     "default": true,
@@ -115,13 +119,7 @@
   "prettier.trailingComma": "all",
   "prettier.tabWidth": 2,
   "prettier.printWidth": 120,
-  "latex.lint.onSave": true,
-  "latex.lint.onChange": false,
-  "latex.build.args": ["-pdf", "-interaction=nonstopmode", "-synctex=1", "-pv"],
-  "latex.build.onSave": true,
-  "latex.forwardSearch.executable": "okular",
-  "latex.forwardSearch.args": ["--unique", "file:%p#src:%l%f"],
-  "tsserver.log": "verbose",
+  "tsserver.log": "normal",
   "tsserver.trace.server": "messages",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
@@ -213,7 +211,9 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephblockpools.ceph.rook.io.schema.json": "*cephblockpool.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephrbdmirrors.ceph.rook.io.schema.json": "*cephrbdmirror.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephfilesystems.ceph.rook.io.schema.json": "*cephfilesystem.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresclusters.postgres-operator.crunchydata.com.schema.json": "*postgrescluster.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresclusters.postgres-operator.crunchydata.com.schema.json": "*postgrescluster.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/redisfailovers.databases.spotahome.com.schema.json": "*redisfailover.yaml"
   },
-  "yaml.trace.server": "verbose"
+  "yaml.trace.server": "verbose",
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd"
 }

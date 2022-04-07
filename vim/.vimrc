@@ -31,6 +31,7 @@ set hidden
 set cmdheight=2
 set updatetime=300
 set termguicolors
+set maxmempattern=10000
 " vim true-color problem
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -43,12 +44,6 @@ endif
 
 let mapleader=","
 syntax on
-
-" python_host_prog
-let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
-let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
-let g:ruby_host_prog = '~/.rvm/gems/default/bin/neovim-ruby-host'
-let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 " disable pandoc's filetype overwrite
 let g:pandoc#filetypes#pandoc_markdown = 0
@@ -73,7 +68,7 @@ Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
 Plug 'puremourning/vimspector'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
-"Plug 'tpope/vim-rvm'
+" Plug 'tpope/vim-rvm'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 "--- syntax ---
@@ -157,7 +152,7 @@ let g:coc_global_extensions=[
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji'
+      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer'
       \ ]
 
 " vim-fugitive
@@ -419,7 +414,7 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_enabled = []
+let g:go_metalinter_enabled = ['revive', 'errcheck', 'gosimple', 'govet', 'staticcheck', 'typecheck']
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
 let g:go_jump_to_error = 0
@@ -587,12 +582,20 @@ let g:floaterm_winblend      = 0
 
 """ vimspector
 let g:vimspector_enable_mappings = 'HUMAN'
+nmap <leader>vl :call vimspector#Launch()<CR>
+nmap <leader>vr :VimspectorReset<CR>
+nmap <leader>ve :VimspectorEval
+nmap <leader>vw :VimspectorWatch
+nmap <leader>vo :VimspectorShowOutput
+nmap <leader>vi <Plug>VimspectorBalloonEval
+xmap <leader>vi <Plug>VimspectorBalloonEval
+
 nmap <F2>             <Plug>VimspectorStepInto
 nmap <leader><F3>      :<C-u>VimspectorReset<CR>
-nmap <leader>di        <Plug>VimspectorBalloonEval
-xmap <leader>di        <Plug>VimspectorBalloonEval
 nmap <leader><S-F10>   <Plug>VimspectorUpFrame
 nmap <leader><S-F12>   <Plug>VimspectorDownFrame
+
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-go', 'CodeLLDB', 'vscode-node-debug2' ]
 
 """ tabular
 nmap <leader>tf :<C-u>TableFormat<CR>
@@ -613,6 +616,7 @@ let g:shfmt_fmt_on_save = 0
 
 augroup filetype_visual_config
   autocmd!
+  autocmd Filetype cpp            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype markdown       setlocal ts=2 sw=2 sts=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
@@ -622,7 +626,7 @@ augroup filetype_visual_config
   autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
   autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
+  autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=marker foldlevel=99 foldmarker={,}
   autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
   autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
   autocmd Filetype proto          setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
@@ -631,10 +635,11 @@ augroup END
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 
 augroup filetype_go_config
-  autocmd FileType go nmap gta :CocCommand go.tags.add.prompt<cr>
-  autocmd FileType go nmap gtj :CocCommand go.tags.add json<cr>
-  autocmd FileType go nmap gty :CocCommand go.tags.add yaml<cr>
-  autocmd FileType go nmap gtx :CocCommand go.tags.clear<cr>
+  autocmd FileType go nmap gota :CocCommand go.tags.add.prompt<cr>
+  autocmd FileType go nmap gotj :CocCommand go.tags.add json<cr>
+  autocmd FileType go nmap goty :CocCommand go.tags.add yaml<cr>
+  autocmd FileType go nmap gotx :CocCommand go.tags.clear<cr>
+  autocmd FileType go nmap goim :CocCommand go.impl.cursor<cr>
 augroup END
 
 
@@ -692,4 +697,11 @@ autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | end
 
 " scroll to bottom
 autocmd TextChanged output:///* normal G
+
+" lang host prog
+let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
+let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
+" let g:ruby_host_prog = '~/.rvm/gems/default/bin/neovim-ruby-host'
+" let g:ruby_host_prog = 'neovim-ruby-host'
+let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 

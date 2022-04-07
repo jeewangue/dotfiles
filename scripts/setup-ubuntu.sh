@@ -42,7 +42,7 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   sudo apt install oracle-java11-installer-local
 fi
 
-# updated at 2019/07/13
+# updated at 2022/02/26
 # oh my zsh
 echo -e "Installing ${RED}Zsh Configuration${NC}"
 echo -e "${BLUE}ohmyzsh, powerlevel10k, zsh-syntax-highlighting, zsh-autosuggestions zsh-completions${NC}"
@@ -60,21 +60,21 @@ if [ "$answer" != "${answer#[Yy]}" ]; then
   cp -v "$BASEDIR/.zshrc"     "$HOME/.zshrc"
 fi
 
-# updated at 2019/07/13
-# nodejs (v12)
-echo -e "Installing ${RED}NVM / NodeJS (v12)${NC}"
-echo -e "${BLUE}nvm, node, npm, yarn, diff-so-fancy${NC}"
+# updated at 2022/02/26
+# nodejs (v16)
+echo -e "Installing ${RED}NVM / NodeJS (v16)${NC}"
+echo -e "${BLUE}nvm, node, npm, yarn${NC}"
 echo -n "continue? [y/N] "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ]; then
-	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 	echo '# NVM scripts'                                                                                         >> $HOME/.zshrc
 	echo 'export NVM_DIR="$HOME/.nvm"'                                                                           >> $HOME/.zshrc
 	echo '[ -s "$NVM_DIR/nvm.sh"  ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm'                                   >> $HOME/.zshrc
 	echo '[ -s "$NVM_DIR/bash_completion"  ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion' >> $HOME/.zshrc
 
 	source $HOME/.zshrc # source
-	nvm install --lts=erbium # version 12
+	nvm install --lts=gallium # version 12
 
   npm -g install yarn
   yarn global add diff-so-fancy

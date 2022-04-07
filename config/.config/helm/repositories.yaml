@@ -208,3 +208,21 @@ repositories:
   password: ""
   url: https://charts.min.io/
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: istio
+  pass_credentials_all: false
+  password: ""
+  url: https://istio-release.storage.googleapis.com/charts
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: redis-operator
+  pass_credentials_all: false
+  password: ""
+  url: https://spotahome.github.io/redis-operator
+  username: ""
