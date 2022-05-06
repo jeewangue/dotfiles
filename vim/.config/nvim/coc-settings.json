@@ -212,6 +212,7 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephrbdmirrors.ceph.rook.io.schema.json": "*cephrbdmirror.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephfilesystems.ceph.rook.io.schema.json": "*cephfilesystem.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresclusters.postgres-operator.crunchydata.com.schema.json": "*postgrescluster.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/jaegers.jaegertracing.io.schema.json": "*jaeger.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/redisfailovers.databases.spotahome.com.schema.json": "*redisfailover.yaml"
   },
   "yaml.trace.server": "verbose",

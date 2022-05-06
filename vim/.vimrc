@@ -219,6 +219,11 @@ command! -nargs=? -complete=dir AF
       \   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
       \ })))
 
+" fzf: All text search & unrestricted
+command! -nargs=? -complete=dir AGU
+      \ call fzf#vim#ag(<q-args>, '-u', fzf#vim#with_preview(), <bang>0)
+
+
 " SessionsList: list sessions from obsession & procession
 function! SessionsList()
     let flist = glob(fnamemodify(g:prosession_dir, ':p').'*.vim', 0, 1)
@@ -246,6 +251,7 @@ nnoremap <leader>ss :FZFSESS<CR>
 " ripgrep
 nnoremap <leader>ag :Ag<CR>
 nnoremap <leader>rg :Rg<CR>
+nnoremap <leader>Ag :AGU<CR>
 
 let g:fzf_colors =
       \ { 'fg':      ['fg', 'Normal'],
