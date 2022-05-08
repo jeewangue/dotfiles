@@ -1,0 +1,10 @@
+github.com/keithknott26/datadash
+github.com/ksync/ksync/cmd/ksync
+github.com/lucagrulla/cw
+github.com/gineurzh/gost
+github.com/89luca89/pakkero
+fyne.io/fyne/v2
+github.com/goreleaser/goreleaser
+github.com/ethereum/go-ethereum
+github.com/Trigleos/ELFREVGO
+mvdan.cc/garble

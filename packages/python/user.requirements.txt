@@ -1,51 +1,26 @@
-# A unified commnad line interface to Amazon Web Services
-awscli
-
-# Black is the uncompromising Python code formatter
-black
-
-# Command line interface creation kit
-click
-
-# Lightweight WSGI web application framework
-Flask
-
-# Python client library for Google's discovery based APIs
-google-api-python-client
-
-# Google authentication library
-google-auth
-
-# Oauthlib integration with google-auth
-google-auth-oauthlib
-
-# An autocompletion tool for Python
-jedi
-
-# Python imaging library
-Pillow
-
-# Python development workflow for humans
-pipenv
-
-# Python code static checker
-pylint
-
-# Python client to neovim
-pynvim
-
-# A python refactoring library
-rope
-
-# Command line tool for managing Amazon S3 and CloudFront services
-s3cmd
-
-# command line util to display images in combination with X11
-ueberzug
-
-# Command-line YAML/XML processer - jq wrapper
-yq
-
-# YouTube video downloader
-youtube-dl
-
+Package        Version
+-------------- -------
+batinfo        0.4.2
+bernhard       0.2.6
+bottle         0.12.19
+chevron        0.14.0
+cmake-format   0.6.13
+cmakelang      0.6.13
+future         0.18.2
+Glances        3.2.4.2
+ifaddr         0.1.7
+netifaces      0.11.0
+pbkdf2         1.3
+pip-chill      1.0.1
+protobuf       3.19.1
+py3nvml        0.2.7
+pycryptodomex  3.12.0
+pygal          3.0.0
+pymdstat       0.4.2
+pySMART.smartx 0.3.10
+pysmi          0.3.4
+pysnmp         4.4.12
+scandir        1.10.0
+sparklines     0.4.2
+wifi           0.3.8
+zeroconf       0.38.1
