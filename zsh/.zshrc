@@ -7,6 +7,7 @@ HIST_STAMPS="mm/dd/yyyy"
 
 plugins=(zsh-syntax-highlighting zsh-autosuggestions zsh-completions vi-mode common-aliases)
 plugins+=(tmux git git-flow zsh-z dotenv timer)
+plugins+=(copyfile copypath copybuffer)
 plugins+=(gpg-agent)
 plugins+=(docker docker-compose kubectl helm)
 plugins+=(npm yarn)
@@ -53,3 +54,7 @@ export NVM_DIR="$HOME/.nvm"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /home/jeewangue/bin/mc mc
+
+# setting for gup command (auto generate)
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -i

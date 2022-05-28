@@ -12,6 +12,7 @@ fi
 
 unalias grv # for grv command (https://github.com/rgburke/grv)
 unalias gm  # for gm  command (graphicsmagick)
+unalias gup # for gup command (https://github.com/nao1215/gup)
 
 alias ka='k -a '
 
