@@ -229,6 +229,7 @@ bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/bin/menu_screenshot.sh
 
 ######################### Clipboard List ########################
 
+exec_always --no-startup-id gpaste-client start
 bindsym $mod+Shift+p exec --no-startup-id ~/.config/rofi/scripts/rofi-gpaste.sh
 
 ######################### Launcher Mode #########################

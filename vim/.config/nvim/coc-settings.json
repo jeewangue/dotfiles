@@ -1,11 +1,14 @@
 {
   "languageserver": {
+    "terraform": {
+      "command": "terraform-ls",
+      "args": ["serve"],
+      "filetypes": ["terraform", "tf"],
+      "initializationOptions": {},
+      "settings": {}
+    }
   },
-  "coc.preferences.rootPatterns": [
-    ".git",
-    ".hg",
-    ".projections.json"
-  ],
+  "coc.preferences.rootPatterns": [".git", ".hg", ".projections.json"],
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "Markdown",
@@ -21,6 +24,7 @@
     "sh",
     "html"
   ],
+  "coc.preferences.enableMessageDialog": true,
   "coc.preferences.extensionUpdateCheck": "weekly",
   "codeLens.enable": true,
   "diagnostic.errorSign": "✖",
@@ -30,12 +34,7 @@
   "diagnostic.checkCurrentLine": true,
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "jedi.executable.command": "jedi-language-server",
   "pyright.enable": true,
   "pyright.organizeimports.provider": "isort",

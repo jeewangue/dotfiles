@@ -102,7 +102,6 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -421,6 +420,7 @@ let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_enabled = ['revive', 'errcheck', 'gosimple', 'govet', 'staticcheck', 'typecheck']
+
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
 let g:go_jump_to_error = 0
@@ -646,6 +646,7 @@ augroup filetype_go_config
   autocmd FileType go nmap goty :CocCommand go.tags.add yaml<cr>
   autocmd FileType go nmap gotx :CocCommand go.tags.clear<cr>
   autocmd FileType go nmap goim :CocCommand go.impl.cursor<cr>
+  autocmd FileType go nmap gorun :GoRun<cr>
 augroup END
 
 
