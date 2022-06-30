@@ -212,7 +212,8 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephfilesystems.ceph.rook.io.schema.json": "*cephfilesystem.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresclusters.postgres-operator.crunchydata.com.schema.json": "*postgrescluster.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/jaegers.jaegertracing.io.schema.json": "*jaeger.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/redisfailovers.databases.spotahome.com.schema.json": "*redisfailover.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/redisfailovers.databases.spotahome.com.schema.json": "*redisfailover.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephobjectzones.ceph.rook.io.schema.json": "*cephobjectzone.yaml"
   },
   "yaml.trace.server": "verbose",
   "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd"

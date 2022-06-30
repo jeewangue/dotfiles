@@ -419,7 +419,10 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_enabled = ['revive', 'errcheck', 'gosimple', 'govet', 'staticcheck', 'typecheck']
+let g:go_metalinter_autosave_enabled = ['deadcode','errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused','varcheck']
+
+let g:go_list_height = 6
+let g:go_list_autoclose = 0
 
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
@@ -648,8 +651,6 @@ augroup filetype_go_config
   autocmd FileType go nmap goim :CocCommand go.impl.cursor<cr>
   autocmd FileType go nmap gorun :GoRun<cr>
 augroup END
-
-
 
 map <F1> <ESC>:help<CR>
 
