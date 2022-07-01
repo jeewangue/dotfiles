@@ -6,7 +6,6 @@ BACKUP_DIR=jeewangue@192.168.83.117:/volume1/data/backup/asus-20220701
 sudo rsync \
 	-auHXS \
 	-hh \
-	--mkpath \
 	--partial \
 	--stats \
 	--info=progress2 \
