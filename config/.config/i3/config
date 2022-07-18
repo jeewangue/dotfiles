@@ -22,6 +22,10 @@ bindsym $mod+Shift+q kill
 # start krunner (a program launcher)
 bindsym $mod+d exec --no-startup-id ~/.config/rofi/scripts/appsmenu.sh
 
+# show desktop for holding key and go back when release
+bindsym $mod+m workspace conky
+bindsym --release $mod+m workspace back_and_forth
+
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down

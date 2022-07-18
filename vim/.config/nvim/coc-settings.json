@@ -139,6 +139,7 @@
   "yaml.completion": true,
   "yaml.schemas": {
     "kubernetes": "*k8s.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/goreleaser.schema.json": ".goreleaser.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/k3d.schema.json": "*k3d.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/alertmanagers.monitoring.coreos.com.schema.json": "*alertmanager.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/attributemanifests.config.istio.io.schema.json": "*attributemanifest.yaml",

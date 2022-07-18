@@ -130,9 +130,6 @@ Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 
-"--- finder ---
-Plug 'liuchengxu/vim-clap'
-
 "--- kubernetes ---
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
@@ -422,7 +419,7 @@ let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['deadcode','errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused','varcheck']
 
 let g:go_list_height = 6
-let g:go_list_autoclose = 0
+let g:go_list_autoclose = 1
 
 let g:go_auto_type_info = 1
 let g:go_auto_sameids = 1
@@ -712,4 +709,5 @@ let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/pytho
 " let g:ruby_host_prog = '~/.rvm/gems/default/bin/neovim-ruby-host'
 " let g:ruby_host_prog = 'neovim-ruby-host'
 let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
+
 

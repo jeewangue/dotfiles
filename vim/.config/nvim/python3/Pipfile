@@ -11,6 +11,7 @@ neovim = "*"
 neovim-remote = "*"
 black = "*"
 pylint = "*"
+pfp = "*"
 
 [requires]
 python_version = "3.9"
