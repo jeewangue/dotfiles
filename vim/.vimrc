@@ -416,7 +416,7 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['deadcode','errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused','varcheck']
+let g:go_metalinter_autosave_enabled = ['deadcode','errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused','varcheck', 'revive']
 
 let g:go_list_height = 6
 let g:go_list_autoclose = 1

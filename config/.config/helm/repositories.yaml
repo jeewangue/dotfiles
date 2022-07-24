@@ -226,3 +226,12 @@ repositories:
   password: ""
   url: https://spotahome.github.io/redis-operator
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: sentry
+  pass_credentials_all: false
+  password: ""
+  url: https://sentry-kubernetes.github.io/charts
+  username: ""
