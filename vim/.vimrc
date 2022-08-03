@@ -67,7 +67,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
 Plug 'plasticboy/vim-markdown'
 Plug 'puremourning/vimspector'
-Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build' }
+Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 " Plug 'tpope/vim-rvm'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
@@ -130,6 +130,7 @@ Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 
+
 "--- kubernetes ---
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
@@ -152,12 +153,12 @@ let g:coc_global_extensions=[
       \ ]
 
 " vim-fugitive
-nnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gb :Git blame<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gf :Gvdiffsplit!<CR>
 nnoremap <leader>gd :Gvdiffsplit<CR>
 nnoremap <leader>gl :Commits<CR>
-nnoremap <leader>gc :Gcommit<CR>
+nnoremap <leader>gc :Git commit<CR>
 nnoremap <leader>gp :Git push<CR>
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
@@ -271,26 +272,29 @@ autocmd  FileType fzf set noshowmode noruler nonu
 " coc
 if has_key(g:plugs, 'coc.nvim')
   
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
   function! s:check_back_space() abort
     let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
+    return !col || getline('.')[col - 1]  =~ '\s'
   endfunction
+
+  " Insert <tab> when previous text is space, refresh completion if not.
+  inoremap <silent><expr> <TAB>
+        \ coc#pum#visible() ? coc#pum#next(1) :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
   " Use <c-space> to trigger completion.
   inoremap <silent><expr> <C-space>
-        \ pumvisible() ? "\<C-n>" :
+        \ coc#pum#visible() ? coc#pum#next(1) :
         \ coc#refresh()
 
   inoremap <silent><expr> <C-S-space>
-        \ pumvisible() ? "\<C-p>" :
+        \ coc#pum#visible() ? coc#pum#prev(1) :
         \ "\<ESC>:call CocAction('showSignatureHelp')\<CR>a"
+
+  " Use <CR> to confirm completion.
+  inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
 
   " Use `[g` and `]g` to navigate diagnostics
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.

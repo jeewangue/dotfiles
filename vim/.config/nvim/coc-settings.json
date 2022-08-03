@@ -8,7 +8,9 @@
       "settings": {}
     }
   },
-  "coc.preferences.rootPatterns": [".git", ".hg", ".projections.json"],
+  "coc.preferences.enableMarkdown": false,
+  "coc.preferences.enableMessageDialog": true,
+  "coc.preferences.extensionUpdateCheck": "weekly",
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "Markdown",
@@ -24,18 +26,18 @@
     "sh",
     "html"
   ],
-  "coc.preferences.enableMessageDialog": true,
-  "coc.preferences.extensionUpdateCheck": "weekly",
+  "coc.preferences.rootPatterns": [".git", ".hg", ".projections.json"],
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd",
   "codeLens.enable": true,
-  "diagnostic.errorSign": "✖",
-  "diagnostic.warningSign": "⚠",
-  "diagnostic.infoSign": "ℹ",
-  "diagnostic.hintSign": "➤",
   "diagnostic.checkCurrentLine": true,
+  "diagnostic.errorSign": "✖",
+  "diagnostic.hintSign": "➤",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.warningSign": "⚠",
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "jedi.executable.command": "jedi-language-server",
+  "jedi.jediSettings.autoImportModules": ["numpy", "pandas"],
   "pyright.enable": true,
   "pyright.organizeimports.provider": "isort",
   "python.sortImports.path": "~/.local/bin/isort",
@@ -58,7 +60,6 @@
     "default": true,
     "line_length": false
   },
-  "coc.preferences.enableMarkdown": false,
   "explorer.icon.enableNerdfont": true,
   "explorer.presets": {
     "panel": {
@@ -123,11 +124,10 @@
   "xml.validation.schema": true,
   "xml.validation.resolveExternalEntities": true,
   "json.enable": true,
+  "yaml.completion": true,
   "yaml.format.enable": true,
   "yaml.format.singleQuote": true,
-  "yaml.validate": true,
   "yaml.hover": true,
-  "yaml.completion": true,
   "yaml.schemas": {
     "kubernetes": "*k8s.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/goreleaser.schema.json": ".goreleaser.yaml",
@@ -208,5 +208,5 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephobjectzones.ceph.rook.io.schema.json": "*cephobjectzone.yaml"
   },
   "yaml.trace.server": "verbose",
-  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/13.0.0/clangd_13.0.0/bin/clangd"
+  "yaml.validate": true
 }
