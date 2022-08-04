@@ -42,3 +42,4 @@ function jobdone() {
 }
 
 alias avet='docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash'
+alias go-reshim='asdf reshim golang && export GOROOT="$(asdf where golang)/go/"'
