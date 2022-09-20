@@ -244,3 +244,30 @@ repositories:
   password: ""
   url: https://charts.gitlab.io
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: linkerd
+  pass_credentials_all: false
+  password: ""
+  url: https://helm.linkerd.io/stable
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: jetstack
+  pass_credentials_all: false
+  password: ""
+  url: https://charts.jetstack.io
+  username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: nginx-stable
+  pass_credentials_all: false
+  password: ""
+  url: https://helm.nginx.com/stable
+  username: ""
