@@ -2,6 +2,8 @@
 unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
+set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
+
 set nocompatible
 set encoding=UTF-8
 set fileencoding=UTF-8
@@ -31,7 +33,7 @@ set hidden
 set cmdheight=2
 set updatetime=300
 set termguicolors
-set maxmempattern=10000
+set maxmempattern=50000
 " vim true-color problem
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -717,3 +719,4 @@ let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/pytho
 let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 
+nmap <silent> <leader>dm <Plug>(coc-dictd-keymap)

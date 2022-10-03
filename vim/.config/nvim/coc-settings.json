@@ -6,7 +6,20 @@
       "filetypes": ["terraform", "tf"],
       "initializationOptions": {},
       "settings": {}
-    }
+    },
+    "svls": {
+      "command": "svls",
+      "filetypes": ["systemverilog", "verilog"]
+    },
+    // "svlangserver": {
+    //   "command": "svlangserver",
+    //   "filetypes": ["systemverilog", "verilog"],
+    //   "settings": {
+    //     "systemverilog.includeIndexing": ["**/*.{v,sv,svh}"],
+    //     "systemverilog.excludeIndexing": ["test/**/*.sv*"],
+    //     "systemverilog.defines": [],
+    //   }
+    // }
   },
   "coc.preferences.enableMarkdown": false,
   "coc.preferences.enableMessageDialog": true,
@@ -39,7 +52,6 @@
   "jedi.jediSettings.autoImportModules": ["numpy", "pandas"],
   "pyright.enable": true,
   "pyright.organizeimports.provider": "isort",
-  "python.sortImports.path": "~/.local/bin/isort",
   "python.linting.flake8Enabled": true,
   "python.linting.pylintArgs": ["--generate-members"],
   "python.linting.pylintEnabled": true,
@@ -100,7 +112,7 @@
   "go.goplsOptions": {
     "usePlaceholders": true,
     "hoverKind": "FullDocumentation",
-    "gofumpt": true,
+    "gofumpt": true
   },
   "omnisharp.version": "v1.37.3",
   "omnisharp.trace.server": "verbose",

@@ -14,7 +14,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec urxvt
-bindsym $mod+Return exec termite
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -324,11 +324,11 @@ bindsym $mod+Shift+u exec --no-startup-id \
 # bindsym $mod+z [instance="urxvt_scratchpad"] scratchpad show
 # bindsym $mod+Shift+z exec --no-startup-id urxvt -name urxvt_scratchpad
 
-for_window [instance="termite_scratchpad"] move container to scratchpad
-for_window [instance="termite_scratchpad"] border pixel 1
-exec --no-startup-id termite --name termite_scratchpad
-bindsym $mod+z [instance="termite_scratchpad"] scratchpad show
-bindsym $mod+Shift+z exec --no-startup-id termite --name termite_scratchpad
+for_window [instance="alacritty_scratchpad"] move container to scratchpad
+for_window [instance="alacritty_scratchpad"] border pixel 1
+exec --no-startup-id alacritty --class alacritty_scratchpad
+bindsym $mod+z [instance="alacritty_scratchpad"] scratchpad show
+bindsym $mod+Shift+z exec --no-startup-id alacritty --class alacritty_scratchpad
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+x move scratchpad
