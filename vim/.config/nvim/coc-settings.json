@@ -6,20 +6,7 @@
       "filetypes": ["terraform", "tf"],
       "initializationOptions": {},
       "settings": {}
-    },
-    "svls": {
-      "command": "svls",
-      "filetypes": ["systemverilog", "verilog"]
-    },
-    // "svlangserver": {
-    //   "command": "svlangserver",
-    //   "filetypes": ["systemverilog", "verilog"],
-    //   "settings": {
-    //     "systemverilog.includeIndexing": ["**/*.{v,sv,svh}"],
-    //     "systemverilog.excludeIndexing": ["test/**/*.sv*"],
-    //     "systemverilog.defines": [],
-    //   }
-    // }
+    }
   },
   "coc.preferences.enableMarkdown": false,
   "coc.preferences.enableMessageDialog": true,
@@ -46,6 +33,8 @@
   "diagnostic.hintSign": "➤",
   "diagnostic.infoSign": "ℹ",
   "diagnostic.warningSign": "⚠",
+  "coc-dictd.server": "localhost",
+  "coc-dictd.timeout": 5000,
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],

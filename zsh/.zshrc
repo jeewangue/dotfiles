@@ -11,7 +11,7 @@ plugins+=(copyfile copypath copybuffer)
 plugins+=(gpg-agent)
 plugins+=(docker docker-compose kubectl helm)
 plugins+=(npm yarn)
-plugins+=(ruby gem rvm)
+plugins+=(ruby gem)
 plugins+=(pip pipenv)
 plugins+=(aws)
 
@@ -52,3 +52,4 @@ complete -o nospace -C /home/jeewangue/bin/mc mc
 # setting for gup command (auto generate)
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
+

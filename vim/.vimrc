@@ -2,8 +2,6 @@
 unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
-set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
-
 set nocompatible
 set encoding=UTF-8
 set fileencoding=UTF-8
@@ -91,6 +89,7 @@ Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'jeewangue/coc-dictd', {'branch': 'master'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -719,4 +718,4 @@ let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/pytho
 let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 
-nmap <silent> <leader>dm <Plug>(coc-dictd-keymap)
+nmap <silent> <leader>ds <Plug>(coc-dictd-search)
