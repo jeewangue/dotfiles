@@ -1,28 +1,39 @@
 yarn global v1.22.17
-info "@remix-project/remixd@0.6.0" has binaries:
+info "@imc-trading/svlangserver@0.4.1" has binaries:
+   - svlangserver
+info "@remix-project/remixd@0.6.7" has binaries:
    - remixd
-info "autocannon@7.8.1" has binaries:
+info "autocannon@7.10.0" has binaries:
    - autocannon
-info "aws-cdk@2.20.0" has binaries:
+info "aws-cdk@2.45.0" has binaries:
    - cdk
+info "aws-cloudformation-stacks-graph@1.2.2" has binaries:
+   - cfn-stacks-graph
+info "concurrently@7.4.0" has binaries:
+   - concurrently
+   - conc
 info "cordova@11.0.0" has binaries:
    - cordova
+info "create-coc-extension@0.6.4" has binaries:
+   - create-coc-extension
 info "create-electron-app@1.0.0" has binaries:
    - create-electron-app
-info "create-next-app@12.1.5" has binaries:
+info "create-next-app@12.3.1" has binaries:
    - create-next-app
-info "create-nx-workspace@13.10.2" has binaries:
+info "create-nx-workspace@14.8.3" has binaries:
    - create-nx-workspace
-info "eslint@8.13.0" has binaries:
+info "eslint@8.24.0" has binaries:
    - eslint
-info "firebase-tools@10.6.0" has binaries:
+info "fast-cli@3.2.0" has binaries:
+   - fast
+info "firebase-tools@11.14.1" has binaries:
    - firebase
 info "graphqurl@1.0.1" has binaries:
    - gq
    - graphqurl
 info "grpcc@1.1.3" has binaries:
    - grpcc
-info "hasura-cli@2.5.0" has binaries:
+info "hasura-cli@2.12.0" has binaries:
    - hasura
 info "log.io@0.4.16" has binaries:
    - log.io-server
@@ -30,37 +41,39 @@ info "log.io-file-input@0.4.16" has binaries:
    - log.io-file-input
 info "neovim@4.10.1" has binaries:
    - neovim-node-host
-info "nexe@4.0.0-beta.19" has binaries:
+info "nexe@4.0.0-rc.1" has binaries:
    - nexe
-info "node-gyp@9.0.0" has binaries:
+info "node-gyp@9.2.0" has binaries:
    - node-gyp
 info "npx@10.2.2" has binaries:
    - npx
-info "nx@13.10.2" has binaries:
+info "nx@14.8.3" has binaries:
    - nx
-info "prettier@2.6.2" has binaries:
+info "prettier@2.7.1" has binaries:
    - prettier
 info "rtail@0.2.1" has binaries:
    - rtail
    - rtail-server
-info "serve@13.0.2" has binaries:
+info "serve@14.0.1" has binaries:
    - serve
+info "speed-test@3.0.0" has binaries:
+   - speed-test
 info "storyboard-cli@3.3.2" has binaries:
    - sb
-info "terser@5.12.1" has binaries:
+info "terser@5.15.1" has binaries:
    - terser
-info "ts-node@10.7.0" has binaries:
+info "ts-node@10.9.1" has binaries:
    - ts-node
    - ts-node-cwd
    - ts-node-esm
    - ts-node-script
    - ts-node-transpile-only
    - ts-script
-info "twilio-cli@3.3.1" has binaries:
+info "twilio-cli@5.1.0" has binaries:
    - twilio
-info "typescript@4.6.3" has binaries:
+info "typescript@4.8.4" has binaries:
    - tsc
    - tsserver
-info "wscat@5.1.0" has binaries:
+info "wscat@5.2.0" has binaries:
    - wscat
-Done in 0.97s.
+Done in 0.96s.
