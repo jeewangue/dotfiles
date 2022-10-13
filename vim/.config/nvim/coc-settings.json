@@ -55,6 +55,10 @@
   "solargraph.hover": true,
   "solargraph.useBundler": true,
   "solargraph.trace.server": "messages",
+  "translate.providers": [
+    "aws",
+    "google"
+  ],
   "translate.aws.targetLanguageCode": "ko",
   "translate.google.targetLanguageCode": "ko",
   "markdownlint.config": {

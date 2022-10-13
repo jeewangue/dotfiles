@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BACKUP_DIR=jeewangue@192.168.83.117:/volume1/data/backup/asus-20220701
+BACKUP_DIR=jeewangue@192.168.83.117:/volume1/data/backup/asus-20221013
 
 # backup /home
 sudo rsync \

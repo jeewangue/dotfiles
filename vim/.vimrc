@@ -3,7 +3,7 @@ unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
 " set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
-" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
+set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
 
 set nocompatible
 set encoding=UTF-8
@@ -145,7 +145,7 @@ Plug 'c9s/vikube.vim'
 
 "--- my plugins ---
 Plug 'jeewangue/coc-dictd', {'branch': 'master'}
-Plug 'jeewangue/coc-translate', {'branch': 'master'}
+" Plug 'jeewangue/coc-translate', {'branch': 'master'}
 
 call plug#end()
 """ PLUG END
