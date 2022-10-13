@@ -2,6 +2,9 @@
 unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
+" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
+" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
+
 set nocompatible
 set encoding=UTF-8
 set fileencoding=UTF-8
@@ -65,7 +68,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
-Plug 'plasticboy/vim-markdown'
+Plug 'preservim/vim-markdown'
 Plug 'puremourning/vimspector'
 Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
 " Plug 'tpope/vim-rvm'
@@ -89,7 +92,6 @@ Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'jeewangue/coc-dictd', {'branch': 'master'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -137,6 +139,13 @@ Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 
+"--- plugins using deno ---
+" Plug 'vim-denops/denops.vim'
+" Plug 'skanehira/denops-docker.vim'
+
+"--- my plugins ---
+Plug 'jeewangue/coc-dictd', {'branch': 'master'}
+Plug 'jeewangue/coc-translate', {'branch': 'master'}
 
 call plug#end()
 """ PLUG END
@@ -146,7 +155,7 @@ let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-pyright',
+      \ 'coc-snippets', 'coc-lists', 'coc-pyright', 'coc-deno',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
@@ -718,4 +727,7 @@ let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/pytho
 let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
 
 
-nmap <silent> <leader>ds <Plug>(coc-dictd-search)
+nnoremap <silent> <leader>ds <Plug>(coc-dictd-search)
+nnoremap <silent> <leader>dt <Plug>(coc-translate-word)
+vnoremap <silent> <leader>dt <Plug>(coc-translate-selected)
+nnoremap <silent> <leader>dl <Plug>(coc-translate-line)
