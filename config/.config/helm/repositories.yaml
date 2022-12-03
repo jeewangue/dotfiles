@@ -271,3 +271,12 @@ repositories:
   password: ""
   url: https://helm.nginx.com/stable
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: crossplane-stable
+  pass_credentials_all: false
+  password: ""
+  url: https://charts.crossplane.io/stable
+  username: ""

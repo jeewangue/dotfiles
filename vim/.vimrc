@@ -3,7 +3,7 @@ unlet! skip_defaults_vim
 silent! source $VIMRUNTIME/defaults.vim
 
 " set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
-set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
+" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
 
 set nocompatible
 set encoding=UTF-8
@@ -90,7 +90,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
-Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 "--- tags explorer ---
@@ -138,6 +138,7 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
+Plug 'andrewstuart/vim-kubernetes'
 
 "--- plugins using deno ---
 " Plug 'vim-denops/denops.vim'
@@ -145,7 +146,7 @@ Plug 'c9s/vikube.vim'
 
 "--- my plugins ---
 Plug 'jeewangue/coc-dictd', {'branch': 'master'}
-" Plug 'jeewangue/coc-translate', {'branch': 'master'}
+Plug 'jeewangue/coc-translate', {'branch': 'master'}
 
 call plug#end()
 """ PLUG END
@@ -156,10 +157,10 @@ let g:coc_global_extensions=[
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
       \ 'coc-snippets', 'coc-lists', 'coc-pyright', 'coc-deno',
-      \ 'coc-markdownlint', 'coc-explorer', 'coc-docker',
+      \ 'coc-markdownlint', 'coc-explorer', 'coc-docker', 'coc-yaml',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer'
+      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb'
       \ ]
 
 " vim-fugitive
@@ -187,10 +188,6 @@ let g:airline_theme = 'base16_tomorrow'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#coc#enabled = 1
-let g:airline#extensions#coc#error_symbol = 'E:'
-let g:airline#extensions#coc#warning_symbol = 'W:'
-let g:airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
-let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
 
 " vim-airline-themes
@@ -204,7 +201,7 @@ command! AirlineThemes call fzf#run({
 
 
 " goyo / limelight
-map <C-g> <ESC>:Goyo<CR>
+" map <C-g> <ESC>:Goyo<CR>
 
 " fzf
 if has('nvim') || has('gui_running')

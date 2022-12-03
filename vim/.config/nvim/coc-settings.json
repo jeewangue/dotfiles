@@ -8,25 +8,20 @@
       "settings": {}
     }
   },
-  "coc.preferences.enableMarkdown": false,
+  "session.saveOnVimLeave": false,
+  "coc.preferences.enableMarkdown": true,
   "coc.preferences.enableMessageDialog": true,
   "coc.preferences.extensionUpdateCheck": "weekly",
-  "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "Markdown",
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "json",
-    "python",
-    "ruby",
-    "graphql",
-    "go",
-    "sh",
-    "html"
-  ],
-  "coc.preferences.rootPatterns": [".git", ".hg", ".projections.json"],
+  "[html][css][json][yaml][markdown]": {
+    "coc.preferences.formatOnSave": true,
+  },
+  "[javascript][javascriptreact][typescript][typescriptreact]": {
+    "coc.preferences.formatOnSave": true,
+  },
+  "[python][ruby][graphql][go]": {
+    "coc.preferences.formatOnSave": true
+  },
+  "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json"],
   "codeLens.enable": true,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "✖",
@@ -36,7 +31,9 @@
   "dictd.server": "localhost",
   "dictd.timeout": 3000,
   "eslint.autoFixOnSave": true,
+  "eslint.alwaysShowStatus": false,
   "eslint.packageManager": "yarn",
+  "eslint.format.enable": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "jedi.jediSettings.autoImportModules": ["numpy", "pandas"],
   "pyright.enable": true,
@@ -48,6 +45,7 @@
   "solargraph.checkGemVersion": true,
   "solargraph.symbols": true,
   "solargraph.completion": true,
+  "solargraph.definitions": true,
   "solargraph.references": true,
   "solargraph.diagnostics": true,
   "solargraph.autoformat": true,
@@ -55,10 +53,7 @@
   "solargraph.hover": true,
   "solargraph.useBundler": true,
   "solargraph.trace.server": "messages",
-  "translate.providers": [
-    "aws",
-    "google"
-  ],
+  "translate.providers": ["aws", "google"],
   "translate.aws.targetLanguageCode": "ko",
   "translate.google.targetLanguageCode": "ko",
   "markdownlint.config": {
@@ -119,7 +114,7 @@
   "tsserver.trace.server": "messages",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.suggest.autoImports": true,
-  "typescript.updateImportsOnFileMove.enable": true,
+  "typescript.updateImportsOnFileMove.enabled": "prompt",
   "xml.format.enabled": true,
   "xml.format.preserveEmptyContent": true,
   "xml.format.quotations": "doubleQuotes",
@@ -210,7 +205,10 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/postgresclusters.postgres-operator.crunchydata.com.schema.json": "*postgrescluster.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/jaegers.jaegertracing.io.schema.json": "*jaeger.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/redisfailovers.databases.spotahome.com.schema.json": "*redisfailover.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephobjectzones.ceph.rook.io.schema.json": "*cephobjectzone.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/cephobjectzones.ceph.rook.io.schema.json": "*cephobjectzone.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/appprojects.argoproj.io.schema.json": "*appproject.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/applications.argoproj.io.schema.json": "*application.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/applicationsets.argoproj.io.schema.json": "*applicationset.yaml"
   },
   "yaml.trace.server": "verbose",
   "yaml.validate": true
