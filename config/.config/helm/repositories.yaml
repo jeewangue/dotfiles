@@ -280,3 +280,12 @@ repositories:
   password: ""
   url: https://charts.crossplane.io/stable
   username: ""
+- caFile: ""
+  certFile: ""
+  insecure_skip_tls_verify: false
+  keyFile: ""
+  name: kedacore
+  pass_credentials_all: false
+  password: ""
+  url: https://kedacore.github.io/charts
+  username: ""
