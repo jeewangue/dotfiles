@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "nvim-python3-host-prog"
+version = "1.0.0"
+description = ""
+authors = ["Jee Wan Gue <jeewangue@gmail.com>"]
+readme = "README.md"
+packages = [{ include = "nvim_python3_host_prog" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pynvim = "^0.4.3"
+neovim = "^0.3.1"
+neovim-remote = "^2.5.1"
+tqdm = "^4.64.1"
+black = { extras = ["d"], version = "^23.1.0" }
+isort = "^5.12.0"
+rope = "^1.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

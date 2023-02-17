@@ -70,8 +70,6 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
 Plug 'preservim/vim-markdown'
 Plug 'puremourning/vimspector'
-Plug 'pappasam/coc-jedi', { 'do': 'yarn install --frozen-lockfile && yarn build', 'branch': 'main' }
-" Plug 'tpope/vim-rvm'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 "--- syntax ---
@@ -141,10 +139,6 @@ Plug 'c9s/helper.vim'
 Plug 'c9s/treemenu.vim'
 Plug 'c9s/vikube.vim'
 Plug 'andrewstuart/vim-kubernetes'
-
-"--- plugins using deno ---
-" Plug 'vim-denops/denops.vim'
-" Plug 'skanehira/denops-docker.vim'
 
 "--- my plugins ---
 Plug 'jeewangue/coc-dictd', {'branch': 'master'}
@@ -730,14 +724,13 @@ autocmd BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | end
 autocmd TextChanged output:///* normal G
 
 " lang host prog
-let g:python_host_prog = '~/.local/share/virtualenvs/python2-RgfmKSho/bin/python'
-let g:python3_host_prog = '~/.local/share/virtualenvs/python3-DPjnFJNF/bin/python'
-" let g:ruby_host_prog = '~/.rvm/gems/default/bin/neovim-ruby-host'
-" let g:ruby_host_prog = 'neovim-ruby-host'
-let g:node_host_prog = '~/.yarn/bin/neovim-node-host'
-
+let g:python3_host_prog = expand('~/.cache/pypoetry/virtualenvs/nvim-python3-host-prog-D0jsQcE7-py3.11/bin/python')
+let g:node_host_prog = expand('~/.yarn/bin/neovim-node-host')
 
 nnoremap <silent> <leader>ds <Plug>(coc-dictd-search)
 nnoremap <silent> <leader>dt <Plug>(coc-translate-word)
 vnoremap <silent> <leader>dt <Plug>(coc-translate-selected)
 nnoremap <silent> <leader>dl <Plug>(coc-translate-line)
+
+"For Types hint
+highlight default CocInlayHint ctermfg=7 ctermbg=18 guifg=Khaki1 guibg=Grey19
