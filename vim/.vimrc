@@ -35,6 +35,7 @@ set cmdheight=2
 set updatetime=300
 set termguicolors
 set maxmempattern=50000
+
 " vim true-color problem
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -732,5 +733,5 @@ nnoremap <silent> <leader>dt <Plug>(coc-translate-word)
 vnoremap <silent> <leader>dt <Plug>(coc-translate-selected)
 nnoremap <silent> <leader>dl <Plug>(coc-translate-line)
 
-"For Types hint
+" For Types hint
 highlight default CocInlayHint ctermfg=7 ctermbg=18 guifg=Khaki1 guibg=Grey19
