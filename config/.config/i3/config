@@ -339,6 +339,8 @@ bindsym $mod+Shift+Return resize set 3600px 2000px; move position center
 bindsym $mod+Shift+BackSpace resize set 2520px 1400px; move position center
 
 ######################### KakaoTalk (wine)  #####################
+no_focus [title="KakaoTalkShadowWnd"]
+no_focus [title="KakaoTalkEdgeWnd"]
 # no_focus [class="^Wine$"]
 # no_focus [class="^Wine$" title="^(?!.*KakaoTalk).*$"]
 

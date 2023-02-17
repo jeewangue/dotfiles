@@ -32,6 +32,8 @@ sudo rsync \
 	--exclude=".azure" \
 	--exclude=".bundle" \
 	--exclude=".yarn" \
+	--exclude="__pycache__" \
+	--exclude=".asdf" \
 	--exclude=dist \
 	--exclude=cache \
 	--exclude=Cache \

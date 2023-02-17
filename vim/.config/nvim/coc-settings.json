@@ -13,10 +13,10 @@
   "coc.preferences.enableMessageDialog": true,
   "coc.preferences.extensionUpdateCheck": "weekly",
   "[html][css][json][yaml][markdown]": {
-    "coc.preferences.formatOnSave": true,
+    "coc.preferences.formatOnSave": true
   },
   "[javascript][javascriptreact][typescript][typescriptreact]": {
-    "coc.preferences.formatOnSave": true,
+    "coc.preferences.formatOnSave": true
   },
   "[python][ruby][graphql][go]": {
     "coc.preferences.formatOnSave": true
@@ -35,13 +35,16 @@
   "eslint.packageManager": "yarn",
   "eslint.format.enable": true,
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "jedi.jediSettings.autoImportModules": ["numpy", "pandas"],
+  "jedi.enable": false,
+  // "jedi.startupMessage": true,
+  // "jedi.jediSettings.autoImportModules": ["numpy", "pandas"],
+  // "jedi.workspace.symbols.ignoreFolders": [".nox", ".tox", ".venv", "__pycache__", "venv", "data/model"],
+  "pydocstring.formatter": "google",
   "pyright.enable": true,
-  "pyright.organizeimports.provider": "isort",
-  "python.linting.flake8Enabled": true,
-  "python.linting.pylintArgs": ["--generate-members"],
-  "python.linting.pylintEnabled": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.linting.mypyEnabled": true,
   "python.formatting.provider": "black",
+  "ruff.showNotifications": "always",
   "solargraph.checkGemVersion": true,
   "solargraph.symbols": true,
   "solargraph.completion": true,
@@ -211,5 +214,6 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/applicationsets.argoproj.io.schema.json": "*applicationset.yaml"
   },
   "yaml.trace.server": "verbose",
-  "yaml.validate": true
+  "yaml.validate": true,
+  "snippets.ultisnips.pythonPrompt": false
 }

@@ -92,6 +92,8 @@ Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 " Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
+Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -354,8 +356,12 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac <Plug>(coc-codeaction)
+nmap <leader>al <Plug>(coc-codeaction-line)
+
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf <Plug>(coc-fix-current)
+
+nmap <leader>op <Plug>(coc-openlink)
 
 nmap <silent> <leader>ci :<C-u>CocInfo<CR>
 nmap <silent> <leader>cr :<C-u>CocRestart<CR>
@@ -427,7 +433,7 @@ nmap ga <Plug>(EasyAlign)
 let g:go_def_mapping_enabled = 0
 let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['deadcode','errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused','varcheck', 'revive']
+let g:go_metalinter_autosave_enabled = ['errcheck','gosimple','govet','ineffassign','staticcheck','typecheck','unused', 'revive']
 
 let g:go_list_height = 6
 let g:go_list_autoclose = 1
@@ -495,6 +501,13 @@ let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 let g:mkdp_auto_start   = 0
 let g:mkdp_auto_close   = 0
 let g:mkdp_refresh_slow = 0
+""" when use with local plantuml renderer as docker command below
+""" docker run --rm --name plantuml -d -p 8989:8080 plantuml/plantuml-server:jetty
+" let g:mkdp_preview_options = {
+"     \ 'uml': {
+"     \   'server': 'http://localhost:8989'
+"     \ }
+"     \ }
 nmap <leader>mp <Plug>MarkdownPreviewToggle
 
 " vim-haskell

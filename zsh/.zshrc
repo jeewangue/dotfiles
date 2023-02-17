@@ -26,11 +26,6 @@ export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export GPG_TTY=$(tty)
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-
 source $ZSH/oh-my-zsh.sh
 
 # Arrow keys
