@@ -19,16 +19,22 @@
   "[javascript][javascriptreact][typescript][typescriptreact]": {
     "coc.preferences.formatOnSave": true
   },
-  "[python][ruby][graphql][go]": {
+  "[ruby][graphql][go]": {
     "coc.preferences.formatOnSave": true
   },
-  "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json"],
+  "[python]": {
+    "coc.preferences.formatOnSave": true
+  },
+  "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json", "pyproject.toml"],
   "codeLens.enable": true,
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "✖",
   "diagnostic.hintSign": "➤",
   "diagnostic.infoSign": "ℹ",
   "diagnostic.warningSign": "⚠",
+  "diagnostic-languageserver.filetypes": {
+    "dockerfile": "hadolint"
+  },
   "dictd.server": "localhost",
   "dictd.timeout": 3000,
   "eslint.autoFixOnSave": true,
@@ -39,7 +45,7 @@
   "pydocstring.formatter": "google",
   "pyright.enable": true,
   "python.linting.mypyEnabled": true,
-  "python.formatting.provider": "black",
+  "python.formatting.provider": "blackd",
   "ruff.showNotifications": "always",
   "solargraph.checkGemVersion": true,
   "solargraph.symbols": true,
@@ -119,6 +125,9 @@
   "xml.validation.enabled": true,
   "xml.validation.schema": true,
   "xml.validation.resolveExternalEntities": true,
+  "paste.pandoc.enable": true,
+  "paste.pandoc.logLevel": "debug",
+  "paste.pandoc.selection": "clipboard",
   "json.enable": true,
   "yaml.completion": true,
   "yaml.format.enable": true,
@@ -207,5 +216,6 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/applicationsets.argoproj.io.schema.json": "*applicationset.yaml"
   },
   "yaml.validate": true,
-  "snippets.ultisnips.pythonPrompt": false
+  "snippets.ultisnips.pythonPrompt": false,
+  "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/15.0.6/clangd_15.0.6/bin/clangd"
 }

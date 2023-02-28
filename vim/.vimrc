@@ -4,6 +4,8 @@ silent! source $VIMRUNTIME/defaults.vim
 
 " set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
 " set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
+" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-pyright
+" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-paste-pandoc
 
 set nocompatible
 set encoding=UTF-8
@@ -86,9 +88,11 @@ Plug 'chriskempson/base16-vim'
 
 "--- syntax / autocomplete ---
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
+Plug 'jeewangue/coc-pyright', {'barnch': 'master', 'do': 'yarn install --frozen-lockfile'}
 " Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
@@ -153,7 +157,7 @@ let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-pyright', 'coc-deno',
+      \ 'coc-snippets', 'coc-lists', 'coc-deno',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker', 'coc-yaml',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
@@ -735,3 +739,26 @@ nnoremap <silent> <leader>dl <Plug>(coc-translate-line)
 
 " For Types hint
 highlight default CocInlayHint ctermfg=7 ctermbg=18 guifg=Khaki1 guibg=Grey19
+
+
+function! PandocPasteMarkdown()
+  " Get the content of the clipboard with xclip
+  let markdown_content = system('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm-raw_html --wrap=none')
+
+  " Split the converted Markdown content into lines
+  let lines = split(markdown_content, '\n')
+
+  " Insert the lines into the buffer after the current line
+  let line_number = line('.')
+  call append(line_number, lines)
+
+  " Move the cursor to the last line of the inserted text
+  let last_line_number = line_number + len(lines) - 1
+  call cursor(last_line_number + 1, 0)
+endfunction
+
+" Map PandocPaste function
+nnoremap <silent> <leader>pm :<C-u>call PandocPasteMarkdown()<CR>
+
+nnoremap <silent> <leader>pp <Plug>(coc-paste-pandoc-gfm)
+nnoremap <silent> <leader>ph <Plug>(coc-paste-pandoc-html)
