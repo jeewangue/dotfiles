@@ -762,3 +762,4 @@ nnoremap <silent> <leader>pm :<C-u>call PandocPasteMarkdown()<CR>
 
 nnoremap <silent> <leader>pp <Plug>(coc-paste-pandoc-gfm)
 nnoremap <silent> <leader>ph <Plug>(coc-paste-pandoc-html)
+
