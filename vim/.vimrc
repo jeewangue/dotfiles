@@ -496,19 +496,6 @@ let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
 let g:pandoc#formatting#textwidth = 120
 let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
-" markdown-preview.nvim
-let g:mkdp_auto_start   = 0
-let g:mkdp_auto_close   = 0
-let g:mkdp_refresh_slow = 0
-""" when use with local plantuml renderer as docker command below
-""" docker run --rm --name plantuml -d -p 8989:8080 plantuml/plantuml-server:jetty
-" let g:mkdp_preview_options = {
-"     \ 'uml': {
-"     \   'server': 'http://localhost:8989'
-"     \ }
-"     \ }
-nmap <leader>mp <Plug>MarkdownPreviewToggle
-
 " vim-haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
