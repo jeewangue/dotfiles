@@ -16,7 +16,7 @@ let g:mkdp_auto_close   = 0
 let g:mkdp_refresh_slow = 1
 
 """ when use with local plantuml renderer as docker command below
-""" docker run --rm --name plantuml -d -p 8989:8080 plantuml/plantuml-server:jetty
+""" docker run --rm --name plantuml -d -p 8989:8080 -e PLANTUML_LIMIT_SIZE=8192 plantuml/plantuml-server:jetty
 
 " options for markdown render
 " mkit: markdown-it options for render
