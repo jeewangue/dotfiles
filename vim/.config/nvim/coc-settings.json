@@ -213,7 +213,8 @@
     "file:///home/jeewangue/workspace/personal/data/json-schemas/cephobjectzones.ceph.rook.io.schema.json": "*cephobjectzone.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/appprojects.argoproj.io.schema.json": "*appproject.yaml",
     "file:///home/jeewangue/workspace/personal/data/json-schemas/applications.argoproj.io.schema.json": "*application.yaml",
-    "file:///home/jeewangue/workspace/personal/data/json-schemas/applicationsets.argoproj.io.schema.json": "*applicationset.yaml"
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/applicationsets.argoproj.io.schema.json": "*applicationset.yaml",
+    "file:///home/jeewangue/workspace/personal/data/json-schemas/autoinstall.ubuntu.schema.json": "user-data"
   },
   "yaml.validate": true,
   "snippets.ultisnips.pythonPrompt": false,

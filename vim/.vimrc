@@ -137,6 +137,8 @@ Plug 'jkramer/vim-checkbox'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'github/copilot.vim'
+Plug 'jbyuki/instant.nvim'
 
 
 "--- kubernetes ---
@@ -750,3 +752,17 @@ nnoremap <silent> <leader>pm :<C-u>call PandocPasteMarkdown()<CR>
 nnoremap <silent> <leader>pp <Plug>(coc-paste-pandoc-gfm)
 nnoremap <silent> <leader>ph <Plug>(coc-paste-pandoc-html)
 
+
+""" For Copilot
+
+""" change the key mapping
+" let g:copilot_no_tab_map = v:true
+" imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
+highlight CopilotSuggestion ctermfg=8 guifg=Khaki1 guibg=Grey19
+
+
+nnoremap <silent> <leader>cp :<C-u>Copilot split<CR>
+
+
+
+let g:instant_username = "jee"

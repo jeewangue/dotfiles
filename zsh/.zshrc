@@ -19,7 +19,7 @@ plugins+=(aws)
 # User configuration
 # make path to have unique values
 typeset -U path
-path+=($HOME/bin $HOME/.yarn/bin $HOME/.local/bin $HOME/.dotnet/tools $HOME/.luarocks/bin $HOME/Android/Sdk/platform-tools $HOME/Android/Sdk/tools/bin $HOME/Android/Sdk/cmdline-tools/latest/bin)
+path+=($HOME/bin $HOME/.yarn/bin $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet/tools $HOME/.luarocks/bin $HOME/Android/Sdk/platform-tools $HOME/Android/Sdk/tools/bin $HOME/Android/Sdk/cmdline-tools/latest/bin)
 fpath+=($ZSH/custom/completions)
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8

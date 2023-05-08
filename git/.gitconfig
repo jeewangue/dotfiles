@@ -65,3 +65,5 @@
 ; 	insteadOf = https://github.com/
 [url "https://"]
 	insteadOf = git://
+[credential]
+	helper = store
