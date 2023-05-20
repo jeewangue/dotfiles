@@ -49,6 +49,7 @@ else
 endif
 
 let mapleader=","
+let maplocalleader=","
 syntax on
 
 " disable pandoc's filetype overwrite
@@ -72,8 +73,10 @@ Plug 'sebdah/vim-delve'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'jparise/vim-graphql'
 Plug 'preservim/vim-markdown'
+Plug 'mzlogin/vim-markdown-toc'
 Plug 'puremourning/vimspector'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
+Plug 'jupyter-vim/jupyter-vim'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -631,6 +634,23 @@ augroup END
 let g:shfmt_extra_args = '-i 2'
 let g:shfmt_fmt_on_save = 0
 
+""" jupyter-vim
+let g:jupyter_mapkeys = 0
+nnoremap <silent> <leader>jc :JupyterConnect<CR>
+nnoremap <silent> <leader>jrf :JupyterRunFile<CR>
+nnoremap <silent> <leader>ji :PythonImportThisFile<CR>
+
+" Change to directory of current file
+nnoremap <silent> <leader>jcd :JupyterCd %:p:h<CR>
+
+" Send a selection of lines
+nnoremap <silent> <leader>jrc :JupyterSendCell<CR>
+nnoremap <silent> <leader>jrr :JupyterSendRange<CR>
+nmap     <silent> <leader>jr <Plug>JupyterRunTextObj
+vmap     <silent> <leader>jr <Plug>JupyterRunVisual
+
+" " Debugging maps
+nnoremap <buffer> <silent> <leader>jb :PythonSetBreak<CR>
 
 """ Plugin Configuration END
 
@@ -751,7 +771,6 @@ nnoremap <silent> <leader>pm :<C-u>call PandocPasteMarkdown()<CR>
 
 nnoremap <silent> <leader>pp <Plug>(coc-paste-pandoc-gfm)
 nnoremap <silent> <leader>ph <Plug>(coc-paste-pandoc-html)
-
 
 """ For Copilot
 

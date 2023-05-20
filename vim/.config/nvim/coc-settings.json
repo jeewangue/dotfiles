@@ -44,6 +44,7 @@
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "pydocstring.formatter": "google",
   "pyright.enable": true,
+  "python.linting.ruffEnabled": true,
   "python.linting.mypyEnabled": true,
   "python.formatting.provider": "blackd",
   "ruff.showNotifications": "always",
