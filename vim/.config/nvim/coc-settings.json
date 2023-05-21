@@ -25,6 +25,9 @@
   "[python]": {
     "coc.preferences.formatOnSave": true
   },
+  "[cpp]": {
+    "coc.preferences.formatOnSave": true
+  },
   "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json", "pyproject.toml"],
   "codeLens.enable": true,
   "diagnostic.checkCurrentLine": true,
