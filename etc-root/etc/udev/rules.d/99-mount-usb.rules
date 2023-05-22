@@ -1,0 +1,2 @@
+# replaced by 71-usb-uaccess.rules
+# SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", ACTION=="add", RUN{program}+="/usr/bin/systemd-mount --no-block --automount=yes --collect $devnode /media/%k"

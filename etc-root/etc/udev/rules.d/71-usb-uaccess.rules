@@ -1,0 +1,1 @@
+SUBSYSTEMS=="usb", SUBSYSTEM=="block", ENV{ID_FS_USAGE}=="filesystem", MODE="0660", TAG+="uaccess"
