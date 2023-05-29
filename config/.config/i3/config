@@ -326,11 +326,11 @@ bindsym $mod+Shift+u exec --no-startup-id \
 
 for_window [instance="alacritty_scratchpad"] move container to scratchpad
 for_window [instance="alacritty_scratchpad"] border pixel 1
-# exec --no-startup-id alacritty --class alacritty_scratchpad
-exec --no-startup-id prime-run alacritty --class alacritty_scratchpad
+exec --no-startup-id alacritty --class alacritty_scratchpad
+# exec --no-startup-id prime-run alacritty --class alacritty_scratchpad
 bindsym $mod+z [instance="alacritty_scratchpad"] scratchpad show
-# bindsym $mod+Shift+z exec --no-startup-id alacritty --class alacritty_scratchpad
-bindsym $mod+Shift+z exec --no-startup-id prime-run alacritty --class alacritty_scratchpad
+bindsym $mod+Shift+z exec --no-startup-id alacritty --class alacritty_scratchpad
+# bindsym $mod+Shift+z exec --no-startup-id prime-run alacritty --class alacritty_scratchpad
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+x move scratchpad

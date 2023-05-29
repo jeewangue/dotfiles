@@ -26,9 +26,12 @@ for keyid in $(gpg -k | grep "^pub" | grep -v "expired:" | grep -v "revoked:" | 
 done
 echo done.
 
-gpg --batch --quiet --refresh-keys > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-	echo "Refresh OK"
-else
-	echo "Refresh FAIL."
-fi
+echo -n "Refresh Keys from Ubuntu Keyserver: "
+gpg --batch --keyserver hkps://keyserver.ubuntu.com --refresh-keys
+
+echo -n "Refresh Keys from OpenPGP Keyserver: "
+gpg --batch --keyserver hkps://keys.openpgp.org --refresh-keys
+
+echo -n "Refresh Keys from MIT Keyserver: "
+gpg --batch --keyserver hkps://pgp.mit.edu --refresh-keys
+
