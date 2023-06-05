@@ -1,0 +1,11 @@
+output eDP-1
+crtc 0
+mode 2560x1440
+pos 0x0
+primary
+rate 59.96
+x-prop-broadcast_rgb Automatic
+x-prop-colorspace Default
+x-prop-max_bpc 12
+x-prop-non_desktop 0
+x-prop-scaling_mode Full aspect
