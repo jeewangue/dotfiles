@@ -20,7 +20,16 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # start krunner (a program launcher)
-bindsym $mod+d exec --no-startup-id ~/.config/rofi/scripts/appsmenu.sh
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/scripts/launcher_t7
+# exit Session
+bindsym $mod+Shift+e exec --no-startup-id ~/.config/rofi/scripts/powermenu_t1
+
+######################### Screen Capture Mode ###################
+bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/applets/bin/screenshot.sh
+
+######################### Clipboard List ########################
+exec_always --no-startup-id gpaste-client start
+bindsym $mod+Shift+p exec --no-startup-id ~/.config/rofi/applets/bin/clipboard.sh
 
 # show desktop for holding key and go back when release
 bindsym $mod+m workspace conky
@@ -114,8 +123,6 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 bindsym $mod+Shift+t reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# exit Session
-bindsym $mod+Shift+e exec --no-startup-id ~/.config/rofi/bin/menu_powermenu.sh
 # resize window (you can also use the mouse for that)
 mode "resize" {
 	# These bindings trigger as soon as you enter the resize mode
@@ -213,28 +220,6 @@ bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 bindsym Print exec --no-startup-id "scrot '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'xclip -selection clipboard -t image/png < $f ; mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
 bindsym $mod+Print exec --no-startup-id "scrot -u '%Y-%m-%d-%H%M%S_$wx$h.png' -e 'xclip -selection clipboard -t image/png < $f ; mv $f ~/Pictures/screenshots/ ; notify-send -i ~/Pictures/screenshots/$f -t 2000 \\"Screenshot Saved\\" $f'"
 
-######################### Screen Capture Mode ###################
-
-# set $mode_capture Capture: [b]ackground [r]egion [a]ctive-window
-
-# mode "$mode_capture" {
-# 	bindsym --release b exec --no-startup-id spectacle -b ; mode "default"
-# 	bindsym --release r exec --no-startup-id spectacle -br; mode "default"
-# 	bindsym --release a exec --no-startup-id spectacle -ba; mode "default"
-
-# 	bindsym Escape mode "default"
-# 	bindsym Return mode "default"
-# 	bindsym $mod+Shift+c mode "default"
-# }
-
-# bindsym $mod+Shift+c mode "$mode_capture"
-
-bindsym $mod+Shift+c exec --no-startup-id ~/.config/rofi/bin/menu_screenshot.sh
-
-######################### Clipboard List ########################
-
-exec_always --no-startup-id gpaste-client start
-bindsym $mod+Shift+p exec --no-startup-id ~/.config/rofi/scripts/rofi-gpaste.sh
 
 ######################### Launcher Mode #########################
 

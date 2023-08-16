@@ -11,7 +11,7 @@ while pgrep -x polybar >/dev/null; do sleep 1; done
 # MAIN_MONITOR=eDP1
 # MAIN_MONITOR=DP-1-0
 
-MAIN_MONITORS=(eDP-1 eDP1)
+MAIN_MONITORS=(eDP-1-1 eDP-1 eDP1)
 
 # Launch primary bar
 if type "xrandr"; then

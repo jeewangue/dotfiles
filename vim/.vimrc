@@ -77,6 +77,7 @@ Plug 'mzlogin/vim-markdown-toc'
 Plug 'puremourning/vimspector'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 Plug 'jupyter-vim/jupyter-vim'
+Plug 'cdelledonne/vim-cmake'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -95,7 +96,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
-Plug 'jeewangue/coc-pyright', {'barnch': 'master', 'do': 'yarn install --frozen-lockfile'}
 " Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
@@ -121,7 +121,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'luochen1990/rainbow'
 Plug 'skanehira/docker-compose.vim'
-Plug 'vimwiki/vimwiki'
+" Plug 'vimwiki/vimwiki'
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'greyblake/vim-preview'
@@ -142,6 +142,7 @@ Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'github/copilot.vim'
 Plug 'jbyuki/instant.nvim'
+Plug 'kassio/neoterm'
 
 
 "--- kubernetes ---
@@ -151,7 +152,7 @@ Plug 'c9s/vikube.vim'
 Plug 'andrewstuart/vim-kubernetes'
 
 "--- my plugins ---
-Plug 'jeewangue/coc-dictd', {'branch': 'master'}
+" Plug 'jeewangue/coc-dictd', {'branch': 'master'}
 Plug 'jeewangue/coc-translate', {'branch': 'master'}
 
 call plug#end()
@@ -162,11 +163,11 @@ let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-deno',
+      \ 'coc-snippets', 'coc-lists', 'coc-deno', 'coc-pyright',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker', 'coc-yaml',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb'
+      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb', 'coc-sql'
       \ ]
 
 " vim-fugitive
@@ -652,11 +653,36 @@ vmap     <silent> <leader>jr <Plug>JupyterRunVisual
 " " Debugging maps
 nnoremap <buffer> <silent> <leader>jb :PythonSetBreak<CR>
 
+
+""" neoterm
+let g:neoterm_default_mod = 'vertical'
+let g:neoterm_autoscroll = 1
+
+" Use <leader>tx{text-object} in normal mode
+nnoremap <leader>tx <Plug>(neoterm-repl-send)
+
+" Send selected contents in visual mode
+xnoremap <leader>tx <Plug>(neoterm-repl-send)
+
+" Send current line in normal mode
+nnoremap <leader>txx <Plug>(neoterm-repl-send-line)
+
+" 3<leader>to will open neoterm-3
+nnoremap <leader>to :<c-u>exec v:count.'Topen'<cr>
+
+" 3<leader>tq will close neoterm-3
+nnoremap <leader>tq :<c-u>exec v:count.'Tclose'<cr>
+
+" 3<leader>tc will clear neoterm-3
+nnoremap <leader>tc :<c-u>exec v:count.'Tclear'<cr>
+
+
 """ Plugin Configuration END
 
 augroup filetype_visual_config
   autocmd!
   autocmd Filetype cpp            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99 commentstring=//\ %s
+  autocmd Filetype sql            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99 commentstring=--\ %s
   autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype markdown       setlocal ts=2 sw=2 sts=2 expandtab foldmethod=syntax foldlevel=99
   autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
@@ -782,6 +808,8 @@ highlight CopilotSuggestion ctermfg=8 guifg=Khaki1 guibg=Grey19
 
 nnoremap <silent> <leader>cp :<C-u>Copilot split<CR>
 
-
-
 let g:instant_username = "jee"
+
+""" delete all buffers except current one
+nnoremap <silent> <leader>bd :<C-u>%bd\|e#<cr>
+

@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 filesystem_template () {
-    printf "\${color2} $1 \${alignr 12}\${color}"
+    printf "\${color2}󰋊 $1 \${alignr 12}\${color}"
     printf "\n"
     printf "\${fs_used $1} / \${fs_size $1} \${fs_bar 8,70 $1} "
 

@@ -1,0 +1,19 @@
+output HDMI-1-0
+off
+output DP-1-1
+off
+output DP-1-0
+mode 3840x2160
+pos 0x0
+primary
+rate 60.00
+x-prop-non_desktop 0
+output eDP-1
+mode 2560x1440
+pos 3840x720
+rate 59.96
+x-prop-broadcast_rgb Automatic
+x-prop-colorspace Default
+x-prop-max_bpc 12
+x-prop-non_desktop 0
+x-prop-scaling_mode Full aspect

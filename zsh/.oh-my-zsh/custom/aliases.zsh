@@ -3,7 +3,7 @@ alias c='clear -x'
 alias ta='tmux attach -t '
 alias tb='taskbook'
 alias pm='pulsemixer'
-alias dcp='docker-compose'
+alias dcp='docker compose'
 
 # nvim alias
 if type nvim > /dev/null 2>&1; then
