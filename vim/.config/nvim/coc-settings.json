@@ -1,26 +1,22 @@
 {
   "languageserver": {
-    "ccls": {
-      "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-      "initializationOptions": {
-        "cache": {
-          "directory": "/tmp/ccls"
-        },
-        "client": {
-          "snippetSupport": true,
-        }
-      },
-    },
+    // "ccls": {
+    //   "command": "ccls",
+    //   "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+    //   "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+    //   "initializationOptions": {
+    //     "cache": {
+    //       "directory": "/tmp/ccls"
+    //     },
+    //   }
+    // },
     "terraform": {
       "command": "terraform-ls",
       "args": ["serve"],
-      "filetypes": ["terraform", "tf"],
-      "initializationOptions": {},
-      "settings": {}
+      "filetypes": ["terraform", "tf"]
     }
   },
+  "rust-analyzer.trace.server": "verbose",
   "session.saveOnVimLeave": false,
   "coc.preferences.enableMarkdown": true,
   "coc.preferences.enableMessageDialog": true,
@@ -46,6 +42,8 @@
   },
   "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json", "pyproject.toml"],
   "codeLens.enable": true,
+  "codeLens.position": "right_align",
+  "codeLens.separator": "| ",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "✖",
   "diagnostic.hintSign": "➤",
@@ -246,7 +244,14 @@
   "yaml.validate": true,
   "snippets.ultisnips.pythonPrompt": false,
   "clangd.path": "~/.config/coc/extensions/coc-clangd-data/install/16.0.2/clangd_16.0.2/bin/clangd",
+  "clangd.compilationDatabaseCandidates": [
+    "build/compile_commands.json",
+    "build/CMakeFiles/compile_commands.json",
+    "build/bazel/compile_commands.json",
+    "compile_commands.json"
+  ],
   "clangd.fallbackFlags": ["-std=c++20"],
+  "clangd.arguments": ["--background-index", "-j", "7", "--clang-tidy", "--header-insertion-decorators"],
   "sql.database": "postgresql",
   "sql.formatOptions": {
     "keywordCase": "upper",

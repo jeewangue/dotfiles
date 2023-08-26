@@ -1,6 +1,6 @@
 java openjdk-20
 ruby 3.2.2
-python system
+python 3.11.4
 golang system
 nodejs system
 rust stable

@@ -78,12 +78,14 @@ Plug 'puremourning/vimspector'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 Plug 'jupyter-vim/jupyter-vim'
 Plug 'cdelledonne/vim-cmake'
+" Plug 'rust-lang/rust.vim'
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'jeewangue/vim-protobuf'
 Plug 'google/vim-jsonnet'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "--- theme ---
 Plug 'vim-airline/vim-airline'
@@ -100,6 +102,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'jeewangue/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
 
 "--- tags explorer ---
 Plug 'liuchengxu/vista.vim'
@@ -163,11 +166,11 @@ let g:coc_global_extensions=[
       \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
       \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
       \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-deno', 'coc-pyright',
+      \ 'coc-snippets', 'coc-lists', 'coc-deno', 'coc-pyright', 'coc-toml',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-docker', 'coc-yaml',
       \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb', 'coc-sql'
+      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb', 'coc-sql', 'coc-java'
       \ ]
 
 " vim-fugitive
@@ -320,6 +323,7 @@ if has_key(g:plugs, 'coc.nvim')
   nmap <silent> gy <Plug>(coc-type-definition)
   nmap <silent> gi <Plug>(coc-implementation)
   nmap <silent> gr <Plug>(coc-references)
+  nmap <silent> ge :<c-u>CocCommand workspace.inspectEdit<CR>
 
   function! s:show_documentation()
     if (index(['vim', 'help'], &filetype) >= 0)
