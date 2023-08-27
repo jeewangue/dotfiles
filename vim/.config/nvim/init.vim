@@ -9,3 +9,6 @@ set guifont="Hack Nerd Font:h12"
 autocmd FileType dockerfile call matchadd('DockerfileFromLine', '^FROM.*$', 0)
 hi DockerfileFromLine guibg=NavyBlue
 
+autocmd FileType dockerfile call matchadd('DockerfileImportantComment', '^###.*$', 0)
+hi DockerfileImportantComment guibg=Gray24
+

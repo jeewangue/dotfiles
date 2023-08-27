@@ -1,0 +1,23 @@
+set pagination off
+
+define di
+    if $argc == 0
+        disassemble /s
+    end
+    if $argc == 1
+        disassemble /s $arg0
+    end
+    if $argc == 2
+        disassemble /s $arg0 $arg1
+    end
+    if $argc > 2
+        help di
+    end
+end
+document di
+Syntax: di <ADDR1> <ADDR2>
+| Disassemble a specified section of memory with /s (source) option.
+| Default is to disassemble the function surrounding the PC (program counter) of selected frame.
+| With one argument, ADDR1, the function surrounding this address is dumped.
+| Two arguments are taken as a range of memory to dump.
+end

@@ -14,6 +14,10 @@
       "command": "terraform-ls",
       "args": ["serve"],
       "filetypes": ["terraform", "tf"]
+    },
+    "asm-lsp": {
+      "command": "asm-lsp",
+      "filetypes": ["asm", "s", "S"]
     }
   },
   "rust-analyzer.trace.server": "verbose",
