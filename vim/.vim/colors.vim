@@ -11,7 +11,7 @@ while search('\w\+') > 0
   if exists('g:rgb_fg') && g:rgb_fg
     execute 'hi col_'.w.' guifg='.w.' guibg=NONE'
   else
-    execute 'hi col_'.w.' guifg=white guibg='.w
+    execute 'hi col_'.w.' guifg=cleared guibg='.w
   endif
   execute 'syn keyword col_'.w.' '.w.' contained containedin=vimLineComment'
 endwhile

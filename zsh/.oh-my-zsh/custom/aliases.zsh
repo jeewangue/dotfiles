@@ -38,10 +38,12 @@ function jjq {
 }
 
 function jobdone() {
-	mpv $HOME/Music/finished.mp3
+	notify-send -i "$HOME/Pictures/jobdone.gif" "🎉 Job Done!" "Congratulations, your task is complete! Awesome work! 🚀"
+	# mpv $HOME/Music/finished.mp3
 }
 
 alias avet='docker run -it --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $(pwd):/tools/avet/output avet:v0.1 /bin/bash'
 alias go-reshim='asdf reshim golang && export GOROOT="$(asdf where golang)/go/"'
 alias tf='terraform'
+alias -g NOTIFY="; notify-send -u low -t 5000 -i $HOME/Pictures/jobdone.gif '🎉 Job Done!' 'Congratulations, your task is complete! Awesome work! 🚀'"
 # alias dive="docker run -ti --rm  -v /var/run/docker.sock:/var/run/docker.sock wagoodman/dive"

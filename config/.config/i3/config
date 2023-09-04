@@ -161,6 +161,7 @@ focus_follows_mouse no
 
 # Start picom compositor on background
 exec_always --no-startup-id picom -b
+exec_always --no-startup-id nm-applet
 
 # polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh

@@ -20,7 +20,9 @@
       "filetypes": ["asm", "s", "S"]
     }
   },
-  "rust-analyzer.trace.server": "verbose",
+  "Lua.workspace.library": ["/usr/share/nvim/runtime"],
+  "rust-analyzer.inlayHints.lifetimeElisionHints.enable": "always",
+  "rust-analyzer.check.command": "clippy",
   "session.saveOnVimLeave": false,
   "coc.preferences.enableMarkdown": true,
   "coc.preferences.enableMessageDialog": true,
@@ -44,19 +46,23 @@
   "[cpp]": {
     "coc.preferences.formatOnSave": true
   },
-  "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json", "pyproject.toml"],
+  "[rust]": {
+    "coc.preferences.formatOnSave": true,
+    "inlayHint.enable": true
+  },
+  "workspace.rootPatterns": [".git", ".env", ".hg", ".projections.json", "pyproject.toml", "Cargo.lock"],
   "codeLens.enable": true,
-  "codeLens.position": "right_align",
+  "codeLens.position": "eol",
   "codeLens.separator": "| ",
   "diagnostic.checkCurrentLine": true,
   "diagnostic.errorSign": "✖",
   "diagnostic.hintSign": "➤",
   "diagnostic.infoSign": "ℹ",
   "diagnostic.warningSign": "⚠",
-  "diagnostic.virtualText": false,
-  "diagnostic.virtualTextAlign": "below",
-  "diagnostic.virtualTextLines": 3,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextAlign": "after",
   "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.virtualTextLevel": "error",
   "diagnostic-languageserver.filetypes": {
     "dockerfile": "hadolint"
   },
@@ -162,6 +168,10 @@
   "yaml.format.enable": true,
   "yaml.format.singleQuote": true,
   "yaml.hover": true,
+  "toml.semanticTokens": true,
+  "toml.formatter.columnWidth": 100,
+  "toml.formatter.alignEntries": true,
+  "toml.formatter.reorderKeys": true,
   "yaml.schemas": {
     "kubernetes": "*k8s.yaml",
     "file:///home/jeewangue/workspace/personal/repos/json-schemas/goreleaser.schema.json": ".goreleaser.yaml",

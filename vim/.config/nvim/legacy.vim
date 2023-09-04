@@ -102,9 +102,6 @@ Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
 " Plug 'jeewangue/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
 
-"--- tags explorer ---
-Plug 'liuchengxu/vista.vim'
-
 "--- utils ---
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
@@ -188,8 +185,6 @@ endif
 set undodir=~/.vim/.undodir
 set undofile
 nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
-
-lua require('lualine').setup()
 
 " vim-airline
 set laststatus=2
@@ -517,10 +512,16 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 let g:doge_mapping = '<Leader>d'
 let g:doge_doc_standard_python = 'google'
 
-" vista
-nnoremap <leader>vv :Vista!!<CR>
-nnoremap <leader>vc :Clap<CR>
-nnoremap <leader>vf :Vista finder<CR>
+" show outline (ex. Vista)
+function! ToggleOutline() abort
+  let winid = coc#window#find('cocViewId', 'OUTLINE')
+  if winid == -1
+    call CocActionAsync('showOutline', 1)
+  else
+    call CocActionAsync('hideOutline')
+  endif
+endfunction
+nnoremap <leader>vv :call ToggleOutline()<CR>
 
 let g:vista_default_executive = 'ctags'
 let g:vista_executive_for = {
@@ -808,6 +809,23 @@ nnoremap <silent> <leader>cp :<C-u>Copilot split<CR>
 
 let g:instant_username = "jee"
 
+colorscheme kanagawa
+
 """ delete all buffers except current one
 nnoremap <silent> <leader>bd :<C-u>%bd\|e#<cr>
 
+augroup custom_colors
+  autocmd!
+
+  " Add a highlight group for the FROM line in Dockerfiles
+  autocmd FileType dockerfile call matchadd('DockerfileFromLine', '^FROM.*$', 0)
+  hi DockerfileFromLine guibg=NavyBlue
+
+  " Add a highlight group for the important comments in Dockerfiles
+  autocmd FileType dockerfile call matchadd('DockerfileImportantComment', '^###.*$', 0)
+  hi DockerfileImportantComment guibg=Gray24
+
+  hi CocHighlightText guibg=firebrick4
+
+  hi Visual guibg=DeepPink4
+augroup END
