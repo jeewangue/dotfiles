@@ -24,7 +24,7 @@ path+=($HOME/bin $HOME/.yarn/bin $HOME/.local/bin $HOME/.cargo/bin $HOME/.dotnet
 fpath+=($ZSH/custom/completions)
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-export EDITOR=vim
+export EDITOR=nvim
 export GPG_TTY=$(tty)
 
 source $ZSH/oh-my-zsh.sh

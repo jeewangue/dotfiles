@@ -1,8 +1,4 @@
-dofile(vim.g.base46_cache .. "lsp")
-require "nvchad.lsp"
-
 local M = {}
-local utils = require "core.utils"
 
 -- export on_attach & capabilities for custom lspconfigs
 
@@ -10,14 +6,9 @@ M.on_attach = function(client, bufnr)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
 
-  utils.load_mappings("lspconfig", { buffer = bufnr })
 
   if client.server_capabilities.signatureHelpProvider then
     require("nvchad.signature").setup(client)
-  end
-
-  if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method "textDocument/semanticTokens" then
-    client.server_capabilities.semanticTokensProvider = nil
   end
 end
 

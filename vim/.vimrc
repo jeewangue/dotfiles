@@ -102,9 +102,6 @@ Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
 Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
 " Plug 'jeewangue/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
 
-"--- tags explorer ---
-Plug 'liuchengxu/vista.vim'
-
 "--- utils ---
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
@@ -517,33 +514,6 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 let g:doge_mapping = '<Leader>d'
 let g:doge_doc_standard_python = 'google'
 
-" vista
-nnoremap <leader>vv :Vista!!<CR>
-nnoremap <leader>vc :Clap<CR>
-nnoremap <leader>vf :Vista finder<CR>
-
-let g:vista_default_executive = 'ctags'
-let g:vista_executive_for = {
-      \ 'vimwiki': 'markdown',
-      \ 'pandoc': 'markdown',
-      \ 'markdown': 'toc',
-      \ 'html': 'coc',
-      \ 'ruby': 'coc',
-      \ 'python': 'coc',
-      \ 'go': 'ctags',
-      \ 'javascript': 'coc',
-      \ 'typescript': 'coc',
-      \ 'typescript.tsx': 'coc',
-      \ 'json': 'coc',
-      \ 'yaml': 'coc',
-      \ }
-let g:vista_ctags_cmd = {
-      \ 'go': 'gotags',
-      \ }
-let g:vista_fzf_preview = ['right:50%']
-let g:vista_update_on_text_changed = 1
-let g:vista_update_on_text_changed_delay = 1000
-
 
 """ coc-list
 nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
@@ -810,4 +780,5 @@ let g:instant_username = "jee"
 
 """ delete all buffers except current one
 nnoremap <silent> <leader>bd :<C-u>%bd\|e#<cr>
+
 

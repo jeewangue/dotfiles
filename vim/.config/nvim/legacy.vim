@@ -1,52 +1,4 @@
-" Vim 8 defaults
-unlet! skip_defaults_vim
-silent! source $VIMRUNTIME/defaults.vim
-
-" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-dictd
-" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-translate
-" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-pyright
-" set runtimepath^=/home/jeewangue/workspace/personal/repos/coc-paste-pandoc
-
-set nocompatible
-set encoding=UTF-8
-set fileencoding=UTF-8
-set fileencodings=utf8,euc-kr,cp949,cp932,euc-jp,shift-jis,big5,latin1,ucs-2le
-set visualbell
-set backspace=indent,eol,start
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
-set cindent
-set autoindent
-set smartindent
-set ruler
-set showcmd
-set hlsearch
-set incsearch
-set number
-set relativenumber
-set background=dark
-set swapfile
-set wildmenu
-set cursorline
-set ignorecase
-set smartcase
-set mouse=a
-set hidden
-set cmdheight=2
-set updatetime=300
-set termguicolors
-set maxmempattern=50000
-
-if has('nvim')
-  set signcolumn=auto:4
-else
-  set signcolumn=auto
-endif
-
-let mapleader=","
-let maplocalleader=","
-syntax on
+" syntax on
 
 " disable pandoc's filetype overwrite
 let g:pandoc#filetypes#pandoc_markdown = 0
@@ -81,14 +33,13 @@ Plug 'towolf/vim-helm'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'jeewangue/vim-protobuf'
 Plug 'google/vim-jsonnet'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "--- theme ---
 " Plug 'vim-airline/vim-airline'
 " Plug 'vim-airline/vim-airline-themes'
-Plug 'rebelot/kanagawa.nvim'
-Plug 'nvim-lualine/lualine.nvim'
-Plug 'nvim-tree/nvim-web-devicons'
+" Plug 'rebelot/kanagawa.nvim'
+" Plug 'nvim-lualine/lualine.nvim'
+" Plug 'nvim-tree/nvim-web-devicons'
 
 "--- syntax / autocomplete ---
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -124,7 +75,6 @@ Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'greyblake/vim-preview'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
-Plug 'Yggdroot/indentLine'
 Plug 'lambdalisue/suda.vim' " write suda://PATH
 Plug 'jeewangue/vim-rest-console' " api console
 Plug 'neomutt/neomutt.vim' " email
@@ -391,13 +341,6 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
 
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of LS, ex: coc-tsserver
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-nmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
-xmap <silent> <C-S-s> <Plug>(coc-range-select-backward)
-
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
@@ -523,28 +466,6 @@ function! ToggleOutline() abort
 endfunction
 nnoremap <leader>vv :call ToggleOutline()<CR>
 
-let g:vista_default_executive = 'ctags'
-let g:vista_executive_for = {
-      \ 'vimwiki': 'markdown',
-      \ 'pandoc': 'markdown',
-      \ 'markdown': 'toc',
-      \ 'html': 'coc',
-      \ 'ruby': 'coc',
-      \ 'python': 'coc',
-      \ 'go': 'ctags',
-      \ 'javascript': 'coc',
-      \ 'typescript': 'coc',
-      \ 'typescript.tsx': 'coc',
-      \ 'json': 'coc',
-      \ 'yaml': 'coc',
-      \ }
-let g:vista_ctags_cmd = {
-      \ 'go': 'gotags',
-      \ }
-let g:vista_fzf_preview = ['right:50%']
-let g:vista_update_on_text_changed = 1
-let g:vista_update_on_text_changed_delay = 1000
-
 
 """ coc-list
 nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
@@ -569,11 +490,6 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 
 " Use <leader>x for convert visual selected code to snippet
 xmap <leader>x  <Plug>(coc-convert-snippet)
-
-""" indent-line
-" let g:indentLine_char = '|'
-" let g:indentLine_conceallevel = 0
-let g:indentLine_concealcursor = "n"
 
 """ vim syntax
 let g:vimsyn_folding = 'af'
@@ -742,9 +658,9 @@ endfunction
 set foldtext=MyFoldText()
 
 """ Simple Shortcuts
-nnoremap <C-l> :tabnext<CR>
-nnoremap <C-h> :tabprevious<CR>
-nnoremap <C-n> :tabnew<CR>
+" nnoremap <C-l> :tabnext<CR>
+" nnoremap <C-h> :tabprevious<CR>
+" nnoremap <C-n> :tabnew<CR>
 
 nnoremap qq :<C-u>q<CR>
 nnoremap qa :<C-u>qa<CR>
@@ -806,10 +722,7 @@ highlight CopilotSuggestion ctermfg=8 guifg=Khaki1 guibg=Grey19
 
 
 nnoremap <silent> <leader>cp :<C-u>Copilot split<CR>
-
 let g:instant_username = "jee"
-
-colorscheme kanagawa
 
 """ delete all buffers except current one
 nnoremap <silent> <leader>bd :<C-u>%bd\|e#<cr>
@@ -826,6 +739,9 @@ augroup custom_colors
   hi DockerfileImportantComment guibg=Gray24
 
   hi CocHighlightText guibg=firebrick4
-
-  hi Visual guibg=DeepPink4
 augroup END
+
+nm <silent> <F1> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
+    \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
+    \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name")
+    \ . ">"<CR>

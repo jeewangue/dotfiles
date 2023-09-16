@@ -1,19 +1,9 @@
 local M = {}
 local merge_tb = vim.tbl_deep_extend
 
-M.load_config = function()
-  local config = require "core.default_config"
-  local chadrc_path = vim.api.nvim_get_runtime_file("lua/custom/chadrc.lua", false)[1]
-
-  if chadrc_path then
-    local chadrc = dofile(chadrc_path)
-
-    config.mappings = M.remove_disabled_keys(chadrc.mappings, config.mappings)
-    config = merge_tb("force", config, chadrc)
-    config.mappings.disabled = nil
-  end
-
-  return config
+M.echo = function(str)
+  vim.cmd "redraw"
+  vim.api.nvim_echo({ { str, "Bold" } }, true, {})
 end
 
 M.remove_disabled_keys = function(chadrc_mappings, default_mappings)
@@ -72,17 +62,6 @@ M.load_mappings = function(section, mapping_opt)
           vim.keymap.set(mode, keybind, mapping_info[1], opts)
         end
       end
-    end
-
-    local mappings = require("core.utils").load_config().mappings
-
-    if type(section) == "string" then
-      mappings[section]["plugin"] = nil
-      mappings = { mappings[section] }
-    end
-
-    for _, sect in pairs(mappings) do
-      set_section_map(sect)
     end
   end)
 end
