@@ -35,9 +35,7 @@ let g:mkdp_refresh_slow = 1
 let g:mkdp_preview_options = {
     \ 'mkit': {},
     \ 'katex': {},
-    \ 'uml': {
-    \   'server': 'http://localhost:8989'
-    \ },
+    \ 'uml': {},
     \ 'maid': {},
     \ 'disable_sync_scroll': 0,
     \ 'sync_scroll_type': 'middle',

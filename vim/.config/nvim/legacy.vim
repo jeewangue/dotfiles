@@ -1,15 +1,5 @@
-" syntax on
-
-" disable pandoc's filetype overwrite
-let g:pandoc#filetypes#pandoc_markdown = 0
-
 """ PLUG START
 call plug#begin('~/.vim/plugged')
-
-"--- sessions ---
-Plug 'tpope/vim-obsession'
-Plug 'dhruvasagar/vim-prosession'
-Plug 'mbbill/undotree'
 
 "--- langs ---
 Plug 'udalov/kotlin-vim'
@@ -27,6 +17,7 @@ Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 Plug 'jupyter-vim/jupyter-vim'
 Plug 'cdelledonne/vim-cmake'
 " Plug 'rust-lang/rust.vim'
+"
 
 "--- syntax ---
 Plug 'towolf/vim-helm'
@@ -42,9 +33,8 @@ Plug 'google/vim-jsonnet'
 " Plug 'nvim-tree/nvim-web-devicons'
 
 "--- syntax / autocomplete ---
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'antoinemadec/coc-fzf', {'branch': 'release'}
 Plug 'tjdevries/coc-zsh'
 Plug 'sheerun/vim-polyglot'
 " Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
@@ -54,9 +44,7 @@ Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
 " Plug 'jeewangue/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
 
 "--- utils ---
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-haml'
-Plug 'tpope/vim-commentary'
 Plug 'chrisbra/csv.vim'
 Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'tpope/vim-eunuch'
@@ -64,15 +52,10 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'luochen1990/rainbow'
 Plug 'skanehira/docker-compose.vim'
-" Plug 'vimwiki/vimwiki'
-Plug 'vim-pandoc/vim-pandoc'
-Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'greyblake/vim-preview'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install' }
 Plug 'lambdalisue/suda.vim' " write suda://PATH
@@ -88,7 +71,6 @@ Plug 'jkramer/vim-checkbox'
 Plug 'kshenoy/vim-signature'
 Plug 'tpope/vim-dadbod'
 Plug 'kristijanhusak/vim-dadbod-ui'
-Plug 'github/copilot.vim'
 Plug 'jbyuki/instant.nvim'
 Plug 'kassio/neoterm'
 
@@ -117,117 +99,6 @@ let g:coc_global_extensions=[
       \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
       \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb', 'coc-sql', 'coc-java'
       \ ]
-
-" vim-fugitive
-nnoremap <leader>gb :Git blame<CR>
-nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gf :Gvdiffsplit!<CR>
-nnoremap <leader>gd :Gvdiffsplit<CR>
-nnoremap <leader>gl :Commits<CR>
-nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gp :Git push<CR>
-autocmd BufReadPost fugitive://* set bufhidden=delete
-
-" undotree
-if !isdirectory($HOME."/.vim/.undodir")
-  call mkdir($HOME."/.vim/.undodir", "", 0700)
-endif
-set undodir=~/.vim/.undodir
-set undofile
-nnoremap <leader>ut :UndotreeToggle<CR>:UndotreeFocus<CR>
-
-" vim-airline
-set laststatus=2
-" let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#enabled = 1
-" let g:airline#extensions#coc#enabled = 1
-
-
-" vim-airline-themes
-" command! AirlineThemes call fzf#run({
-"   \ 'source':  map(split(globpath(&rtp, 'autoload/airline/themes/*.vim'), "\n"),
-"   \               "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-"   \ 'sink':    'AirlineTheme',
-"   \ 'options': '+m --prompt="Airline Themes> "',
-"   \ 'down':    '~40%'
-"   \ })
-
-
-" goyo / limelight
-" map <C-g> <ESC>:Goyo<CR>
-
-" fzf
-if has('nvim') || has('gui_running')
-  let $FZF_DEFAULT_OPTS .= " --inline-info
-        \ --bind ctrl-b:preview-page-up,ctrl-f:preview-page-down,
-        \ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,
-        \shift-up:preview-half-page-up,shift-down:preview-half-page-down"
-endif
-
-" fzf: All files
-command! -nargs=? -complete=dir AFI
-      \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-      \   'source': 'fd --type f --hidden --follow --exclude .git --no-ignore . '.expand(<q-args>)
-      \ })))
-
-" fzf: All files & ignore
-command! -nargs=? -complete=dir AF
-      \ call fzf#run(fzf#wrap(fzf#vim#with_preview({
-      \   'source': 'fd --type f --hidden --follow --exclude .git '.expand(<q-args>)
-      \ })))
-
-" fzf: All text search & unrestricted
-command! -nargs=? -complete=dir AGU
-      \ call fzf#vim#ag(<q-args>, '-u', fzf#vim#with_preview(), <bang>0)
-
-
-" SessionsList: list sessions from obsession & procession
-function! SessionsList()
-    let flist = glob(fnamemodify(g:prosession_dir, ':p').'*.vim', 0, 1)
-    let flist = map(flist, "fnamemodify(v:val, ':t:r')")
-    let flist = map(flist, "substitute(v:val, '%', '/', 'g')")
-    return flist
-endfunction
-
-" SessionsSelect: replace session
-function! SessionsSelect(str)
-  execute 'Prosession' a:str
-endfunction
-
-" fzf: All Sessions
-command! -nargs=? -complete=dir FZFSESS
-      \ call fzf#run(fzf#wrap({
-      \   'source': SessionsList(),
-      \   'sink': function('SessionsSelect'),
-      \ }))
-
-nnoremap <leader>, :AF<CR>
-nnoremap <leader>. :AFI<CR>
-nnoremap <leader>/ :Buffers<CR>
-nnoremap <leader>ss :FZFSESS<CR>
-" ripgrep
-nnoremap <leader>ag :Ag<CR>
-nnoremap <leader>rg :Rg<CR>
-nnoremap <leader>Ag :AGU<CR>
-
-let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'border':  ['fg', 'Ignore'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
-
-" Terminal buffer options for fzf
-autocmd! FileType fzf
-autocmd  FileType fzf set noshowmode noruler nonu
 
 " coc
 if has_key(g:plugs, 'coc.nvim')
@@ -268,17 +139,6 @@ if has_key(g:plugs, 'coc.nvim')
   nmap <silent> gr <Plug>(coc-references)
   nmap <silent> ge :<c-u>CocCommand workspace.inspectEdit<CR>
 
-  function! s:show_documentation()
-    if (index(['vim', 'help'], &filetype) >= 0)
-      execute 'h ' expand('<cword>')
-    elseif (coc#rpc#ready())
-      call CocActionAsync('doHover')
-    else
-      execute '!' . &keywordprg . " " . expand('<cword>')
-    endif
-  endfunction
-
-  nnoremap <silent> gh :call <SID>show_documentation()<CR>
   nmap <silent> gp :call CocActionAsync('showSignatureHelp')<CR>
   imap <silent> <C-p> <ESC>:call CocActionAsync('showSignatureHelp')<CR>a
 
@@ -292,11 +152,23 @@ if has_key(g:plugs, 'coc.nvim')
 
   command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
-  nmap <leader>rn <Plug>(coc-rename)
-  xmap <leader>f <Plug>(coc-format-selected)
-  vmap <leader>f <Plug>(coc-format-selected)
-  nmap <leader>f <Plug>(coc-format-selected)
+  " nmap <leader>rn <Plug>(coc-rename)
+  " xmap <leader>f <Plug>(coc-format-selected)
+  " vmap <leader>f <Plug>(coc-format-selected)
+  " nmap <leader>f <Plug>(coc-format-selected)
 endif
+
+function! s:show_documentation()
+  if (index(['vim', 'help'], &filetype) >= 0)
+    execute 'h ' expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
 
 xmap <leader>fa <Plug>(coc-format)
 nmap <leader>fa <Plug>(coc-format)
@@ -346,29 +218,9 @@ endif
 " provide custom statusline: lightline.vim, vim-airline.
 " set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
-""" coc-fzf
-nnoremap <silent> <leader><space>a  :<C-u>CocFzfList diagnostics<CR>
-nnoremap <silent> <leader><space>b  :<C-u>CocFzfList diagnostics --current-buf<CR>
-nnoremap <silent> <leader><space>c  :<C-u>CocFzfList commands<CR>
-nnoremap <silent> <leader><space>e  :<C-u>CocFzfList extensions<CR>
-nnoremap <silent> <leader><space>l  :<C-u>CocFzfList location<CR>
-nnoremap <silent> <leader><space>o  :<C-u>CocFzfList outline<CR>
-nnoremap <silent> <leader><space>s  :<C-u>CocFzfList symbols<CR>
-nnoremap <silent> <leader><space>S  :<C-u>CocFzfList services<CR>
-nnoremap <silent> <leader><space>y  :<C-u>CocFzfList yank<CR>
-nnoremap <silent> <leader><space>p  :<C-u>CocFzfListResume<CR>
-nnoremap <silent> <leader><space><space>  :<C-u>CocFzfList<CR>
-
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
-
 """ coc-explorer
 nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
 nnoremap <silent> <leader>ee :CocCommand explorer --preset floating<CR>
-
-" augroup openCocExplorer
-"   autocmd!
-"   autocmd SessionLoadPost * CocCommand explorer --preset panel
-" augroup END
 
 " vim-easy-align
 xmap ga <Plug>(EasyAlign)
@@ -404,43 +256,6 @@ let g:go_highlight_variable_assignments = 1
 
 " rainbow
 let g:rainbow_active = 1
-
-" vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/',
-      \ 'automatic_nested_syntaxes': 1,
-      \ 'auto_toc': 1,
-      \ 'auto_tags': 1,
-      \ 'auto_diary_index': 1,
-      \ 'syntax': 'markdown',
-      \ 'ext': '.md'}]
-let g:vimwiki_global_ext = 0
-" let g:vimwiki_folding = 'expr'
-let g:vimwiki_auto_chdir = 1
-autocmd Filetype vimwiki set syntax=markdown.pandoc
-autocmd Filetype vimwiki syntax on
-let g:tagbar_type_vimwiki = {
-      \ 'ctagstype': 'vimwiki'
-      \ , 'kinds': ['h:header']
-      \ , 'sro':'&&&'
-      \ , 'kind2scope':{'h':'header'}
-      \ , 'sort':0
-      \ , 'ctagsbin':'~/vimwiki/vwtags.py'
-      \ , 'ctagsargs': 'markdown'
-      \ }
-
-
-" pandoc
-let g:pandoc#filetypes#handled = ["pandoc", "markdown"]
-let g:pandoc#folding#mode = ["syntax"]
-let g:pandoc#spell#enabled = 0
-let g:pandoc#syntax#codeblocks#embeds#langs = ["c", "cpp", "cmake", "css", "dockerfile", "go", "html",
-      \ "haskell", "json", "java", "javascript", "javascriptreact", "markdown", "ocaml", "perl",
-      \ "python", "ruby", "rust", "sql", "scala", "texinfo", "typescript", "xml", "yaml", "zsh",
-      \ "bash=sh", "literatehaskell=lhaskell"]
-let g:pandoc#syntax#conceal#blacklist = ["codeblock_start", "codeblock_delim"]
-" let g:pandoc#formatting#mode = "a"
-let g:pandoc#formatting#textwidth = 120
-let g:pandoc#formatting#smart_autoformat_on_cursormoved = 1
 
 " vim-haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -709,20 +524,6 @@ endfunction
 
 " Map PandocPaste function
 nnoremap <silent> <leader>pm :<C-u>call PandocPasteMarkdown()<CR>
-
-nnoremap <silent> <leader>pp <Plug>(coc-paste-pandoc-gfm)
-nnoremap <silent> <leader>ph <Plug>(coc-paste-pandoc-html)
-
-""" For Copilot
-
-""" change the key mapping
-" let g:copilot_no_tab_map = v:true
-" imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-highlight CopilotSuggestion ctermfg=8 guifg=Khaki1 guibg=Grey19
-
-
-nnoremap <silent> <leader>cp :<C-u>Copilot split<CR>
-let g:instant_username = "jee"
 
 """ delete all buffers except current one
 nnoremap <silent> <leader>bd :<C-u>%bd\|e#<cr>

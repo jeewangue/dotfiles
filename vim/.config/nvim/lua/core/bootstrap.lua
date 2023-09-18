@@ -10,9 +10,10 @@ local function shell_call(args)
   assert(vim.v.shell_error == 0, "External call failed with error code: " .. vim.v.shell_error .. "\n" .. output)
 end
 
-M.lazy = function(lazypath)
+M.lazy = function()
+  --------- lazy.nvim ---------------
+  local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
   if not vim.loop.fs_stat(lazypath) then
-    --------- lazy.nvim ---------------
     M.echo "  Installing lazy.nvim & plugins ..."
     local repo = "https://github.com/folke/lazy.nvim.git"
 

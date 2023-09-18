@@ -44,7 +44,7 @@ vim.opt.hidden         = true
 vim.opt.backspace      = 'indent,eol,start'
 vim.opt.updatetime     = 300
 vim.opt.maxmempattern  = 50000 -- 50MB for pattern matching
-vim.opt.timeoutlen     = 500
+vim.opt.timeoutlen     = 300
 vim.opt.undofile       = true
 
 -- Leader
