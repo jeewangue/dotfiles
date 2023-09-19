@@ -2,21 +2,9 @@
 call plug#begin('~/.vim/plugged')
 
 "--- langs ---
-Plug 'udalov/kotlin-vim'
-Plug 'plytophogy/vim-virtualenv'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-" Neovim / Vim integration for Delve (Go debugger)
-Plug 'sebdah/vim-delve'
-Plug 'neovimhaskell/haskell-vim'
-Plug 'jparise/vim-graphql'
 Plug 'preservim/vim-markdown'
 Plug 'mzlogin/vim-markdown-toc'
 Plug 'puremourning/vimspector'
-Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
-Plug 'jupyter-vim/jupyter-vim'
-Plug 'cdelledonne/vim-cmake'
-" Plug 'rust-lang/rust.vim'
 "
 
 "--- syntax ---
@@ -25,24 +13,6 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'jeewangue/vim-protobuf'
 Plug 'google/vim-jsonnet'
 
-"--- theme ---
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-" Plug 'rebelot/kanagawa.nvim'
-" Plug 'nvim-lualine/lualine.nvim'
-" Plug 'nvim-tree/nvim-web-devicons'
-
-"--- syntax / autocomplete ---
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'tjdevries/coc-zsh'
-Plug 'sheerun/vim-polyglot'
-" Plug 'jeewangue/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
-Plug 'josa42/coc-go', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
-Plug 'yaegassy/coc-ruff', {'do': 'yarn install --frozen-lockfile'}
-Plug 'yaegassy/coc-pydocstring', {'do': 'yarn install --frozen-lockfile'}
-" Plug 'jeewangue/coc-clangd', {'do': 'yarn install --frozen-lockfile'}
-
 "--- utils ---
 Plug 'tpope/vim-haml'
 Plug 'chrisbra/csv.vim'
@@ -50,9 +20,6 @@ Plug 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-surround'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/vim-easy-align'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'luochen1990/rainbow'
 Plug 'skanehira/docker-compose.vim'
@@ -67,38 +34,11 @@ Plug 'voldikss/vim-floaterm'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } } " documentation generator
 Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
-Plug 'jkramer/vim-checkbox'
 Plug 'kshenoy/vim-signature'
-Plug 'tpope/vim-dadbod'
-Plug 'kristijanhusak/vim-dadbod-ui'
-Plug 'jbyuki/instant.nvim'
 Plug 'kassio/neoterm'
-
-
-"--- kubernetes ---
-Plug 'c9s/helper.vim'
-Plug 'c9s/treemenu.vim'
-Plug 'c9s/vikube.vim'
-Plug 'andrewstuart/vim-kubernetes'
-
-"--- my plugins ---
-" Plug 'jeewangue/coc-dictd', {'branch': 'master'}
-Plug 'jeewangue/coc-translate', {'branch': 'master'}
 
 call plug#end()
 """ PLUG END
-
-""" Coc Extensions
-let g:coc_global_extensions=[
-      \ 'coc-highlight', 'coc-prettier', 'coc-html', 'coc-css', 'coc-xml',
-      \ 'coc-tsserver', 'coc-eslint', 'coc-solargraph', 'coc-diagnostic',
-      \ 'coc-vimlsp', 'coc-json', 'coc-git', 'coc-omnisharp', 'coc-yank',
-      \ 'coc-snippets', 'coc-lists', 'coc-deno', 'coc-pyright', 'coc-toml',
-      \ 'coc-markdownlint', 'coc-explorer', 'coc-docker', 'coc-yaml',
-      \ 'coc-actions', 'coc-cmake', 'coc-powershell', 'coc-clangd',
-      \ 'coc-lua', 'coc-sh', 'coc-phpls', 'coc-texlab', 'coc-react-refactor',
-      \ 'coc-styled-components', 'coc-swagger', 'coc-emoji', 'coc-rust-analyzer', 'coc-lightbulb', 'coc-sql', 'coc-java'
-      \ ]
 
 " coc
 if has_key(g:plugs, 'coc.nvim')
@@ -212,19 +152,6 @@ if has('nvim-0.4.0') || has('patch-8.2.0750')
   vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
   vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 endif
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-""" coc-explorer
-nnoremap <silent> <leader>n :CocCommand explorer --preset panel<CR>
-nnoremap <silent> <leader>ee :CocCommand explorer --preset floating<CR>
-
-" vim-easy-align
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
 
 " vim-go
 let g:go_def_mapping_enabled = 0

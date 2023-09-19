@@ -27,7 +27,7 @@ vim.api.nvim_set_keymap('n', '<leader><C-r>', ':luafile %<CR>', { noremap = true
 --           -- library = vim.api.nvim_get_runtime_file("", true)
 --         }
 --       })
--- 
+--
 --       client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
 --     end
 --     return true

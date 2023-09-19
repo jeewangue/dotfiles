@@ -6,3 +6,4 @@ nodejs system
 rust stable
 deno 1.26.1
 haskell 9.6.2
+bun 1.0.2

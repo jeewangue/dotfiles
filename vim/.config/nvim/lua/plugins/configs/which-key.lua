@@ -21,6 +21,7 @@ return {
   "folke/which-key.nvim",
   keys = { "<leader>", "<c-r>", '"', "'", "`", "c", "v", "g" },
   cmd = "WhichKey",
+  lazy = false,
 
   init = function()
     require("core.utils").load_mappings("whichkey", mappings)

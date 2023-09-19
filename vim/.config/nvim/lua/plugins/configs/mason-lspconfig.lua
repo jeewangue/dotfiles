@@ -5,7 +5,7 @@ return {
   },
   opts = {
     ensure_installed = {
-      "lua-language-server",
+      -- lsp servers
       "asm_lsp",
       "bashls",
       "clangd",
