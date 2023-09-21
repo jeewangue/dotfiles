@@ -6,7 +6,7 @@ return {
       log_level = "error",
       auto_session_suppress_dirs = { "/", "~/" },
       pre_save_cmds = {
-        "tabdo NvimTreeClose",
+        "tabdo Neotree close",
         "tabdo SymbolsOutlineClose",
       }
     }

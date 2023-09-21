@@ -37,6 +37,7 @@ vim.opt.wildmenu       = true
 vim.opt.cmdheight      = 2
 vim.opt.colorcolumn    = '+1,+2,+3' -- highlight according to textwidth
 vim.opt.signcolumn     = 'auto:6'
+vim.opt.statuscolumn = "%=%l%s%C"
 
 -- Misc
 vim.opt.swapfile       = true
@@ -50,5 +51,3 @@ vim.opt.undofile       = true
 -- Leader
 vim.g.mapleader        = ','
 vim.g.maplocalleader   = ','
-
-

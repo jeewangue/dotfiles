@@ -12,7 +12,6 @@ return {
       "neocmake",
       "cssls",
       "dockerls",
-      "eslint",
       "golangci_lint_ls",
       "gopls",
       "gradle_ls",
@@ -34,7 +33,6 @@ return {
       "taplo",
       "terraformls",
       "tflint",
-      "biome", --typescript
       "vimls",
       "yamlls",
       "zls",

@@ -1,6 +1,6 @@
 return {
   "nvim-tree/nvim-tree.lua",
-  lazy = false,
+  cmd = { "NvimTreeToggle", "NvimTreeFocus" },
   dependencies = {
     "antosha417/nvim-lsp-file-operations"
   },
@@ -94,6 +94,8 @@ return {
             { desc = "Close directory", buffer = bufnr, noremap = true, silent = true })
           vim.keymap.set("n", "E", api.node.open.vertical,
             { desc = "Open: Vertical Split", buffer = bufnr, noremap = true, silent = true })
+          vim.keymap.set("n", "<CR>", api.tree.change_root_to_node, { desc = "Change directory", buffer = bufnr, noremap = true, silent = true })
+          vim.keymap.set("n", "<BS>", api.tree.change_root_to_parent, { desc = "Change directory to parent", buffer = bufnr, noremap = true, silent = true })
         end,
       }
     )

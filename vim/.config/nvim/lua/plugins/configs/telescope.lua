@@ -3,7 +3,8 @@ local mappings = {
     -- find
     ["<leader><leader>"] = { "<cmd> Telescope find_files <CR>", "Find files" },
     ["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
-    ["<leader>fh"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all (including hidden)" },
+    ["<leader>fh"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>",
+      "Find all (including hidden)" },
     ["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
     ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
     ["<leader>fv"] = { "<cmd> Telescope help_tags <CR>", "Vim Help page" },
@@ -37,6 +38,13 @@ return {
   config = function()
     local telescope = require "telescope"
     telescope.setup({
+      pickers = {
+        find_files = {
+          -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
+          find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+        },
+      },
+
       defaults = {
         vimgrep_arguments = {
           "rg",
@@ -47,6 +55,7 @@ return {
           "--line-number",
           "--column",
           "--smart-case",
+          "--hidden",
         },
         prompt_prefix = "   ",
         mappings = {

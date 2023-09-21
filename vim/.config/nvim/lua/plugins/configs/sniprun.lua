@@ -1,3 +1,4 @@
+
 return {
   'michaelb/sniprun',
   cmd = { 'SnipRun', 'SnipInfo', 'SnipReset', 'SnipClose', 'SnipReplMemoryClean', 'SnipLive' },
@@ -5,6 +6,12 @@ return {
   init = function()
     require('core.utils').load_mappings('sniprun', {
       n = {
+        ['<leader>sn'] = {
+          function()
+            require 'sniprun'.run('n')
+          end,
+          "Run Sniprun Operator"
+        },
         ['<leader>snr'] = {
           function()
             require 'sniprun'.run()

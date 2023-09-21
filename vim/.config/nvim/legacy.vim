@@ -435,7 +435,7 @@ highlight default CocInlayHint ctermfg=7 ctermbg=18 guifg=Khaki1 guibg=Grey19
 
 function! PandocPasteMarkdown()
   " Get the content of the clipboard with xclip
-  let markdown_content = system('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm-raw_html --wrap=none')
+  let markdown_content = system('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm --wrap=none')
 
   " Split the converted Markdown content into lines
   let lines = split(markdown_content, '\n')

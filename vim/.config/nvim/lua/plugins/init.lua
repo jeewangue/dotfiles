@@ -17,8 +17,9 @@ local plugins = {
 	require "plugins.configs.telescope-undo",
 	require "plugins.configs.telescope",
 	require "plugins.configs.comment",
-	require "plugins.configs.sniprun",
-	require "plugins.configs.nvim-tree",
+	-- require "plugins.configs.sniprun",
+	-- require "plugins.configs.nvim-tree",
+	require "plugins.configs.neo-tree",
   require "plugins.configs.symbols-outline",
   require "plugins.configs.fterm",
 
@@ -41,20 +42,8 @@ local plugins = {
 	require "plugins.configs.cmp",
 	require "plugins.configs.lspconfig",
 
-	-- -- file managing , picker etc
-	-- {
-	-- 	"nvim-tree/nvim-tree.lua",
-	-- 	cmd = { "NvimTreeToggle", "NvimTreeFocus" },
-	-- 	init = function()
-	-- 		require("core.utils").load_mappings "nvimtree"
-	-- 	end,
-	-- 	opts = function()
-	-- 		return require "plugins.configs.nvimtree"
-	-- 	end,
-	-- 	config = function(_, opts)
-	-- 		require("nvim-tree").setup(opts)
-	-- 	end,
-	-- },
+  require "plugins.configs.nvim-code-action-menu",
+  require "plugins.configs.lspsaga",
 }
 
 local lazy_config = require("plugins.configs.lazy_nvim")
