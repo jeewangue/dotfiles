@@ -8,10 +8,11 @@ return {
   config = function()
     require("mason-null-ls").setup({
       ensure_installed = {
+        "cpplint",
         "prettier",
         "shfmt",
         "stylua",
-        "terraform_fmt",
+        "tfsec",
         "black",
         "jq"
       },

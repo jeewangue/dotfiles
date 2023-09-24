@@ -9,22 +9,22 @@ return {
       -- only needed if you want to use the commands with "_with_window_picker" suffix
       's1n7ax/nvim-window-picker',
       name = 'window-picker',
-      tag = "v1.*",
       config = function()
         require 'window-picker'.setup({
-          autoselect_one = true,
-          include_current = false,
+          hint = 'floating-big-letter',
+          selection_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
           filter_rules = {
+            autoselect_one = true,
+            include_current_win = false,
             -- filter using buffer options
             bo = {
               -- if the file type is one of following, the window will be ignored
-              filetype = { 'neo-tree', "neo-tree-popup", "notify" },
+              filetype = { 'NvimTree', 'neo-tree', "neo-tree-popup", "notify" },
 
               -- if the buffer type is one of following, the window will be ignored
               buftype = { 'terminal', "quickfix" },
             },
           },
-          other_win_hl_color = '#e35e4f',
         })
       end,
     }
@@ -47,7 +47,7 @@ return {
       "git_status",
       "document_symbols",
     },
-    add_blank_line_at_top = false,            -- Add a blank line at the top of the tree.
+    add_blank_line_at_top = false,           -- Add a blank line at the top of the tree.
     auto_clean_after_session_restore = true, -- Automatically clean up broken neo-tree buffers saved in sessions
     close_if_last_window = false,            -- Close Neo-tree if it is the last window left in the tab
     -- popup_border_style is for input and confirmation dialogs.
@@ -86,7 +86,7 @@ return {
     -- source_selector provides clickable tabs to switch between sources.
     source_selector = {
       winbar = true,                         -- toggle to show selector on winbar
-      statusline = true,                     -- toggle to show selector on statusline
+      statusline = false,                     -- toggle to show selector on statusline
       show_scrolled_off_parent_node = false, -- this will replace the tabs with the parent path
       -- of the top visible node when scrolled down.
       sources = {
@@ -403,17 +403,15 @@ return {
           nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
         },
         ["<2-LeftMouse>"] = "open",
-        ["<cr>"] = "open",
+        -- ["<cr>"] = "open",
         ["<esc>"] = "cancel", -- close preview or floating neo-tree window
         ["P"] = { "toggle_preview", config = { use_float = true } },
-        ["l"] = "open",
-        -- ["l"] = "focus_preview",
-        -- ["S"] = "open_split",
+        ["l"] = "open_with_window_picker",
+        ["h"] = "close_node",
         ["S"] = "split_with_window_picker",
-        -- ["s"] = "open_vsplit",
         ["s"] = "vsplit_with_window_picker",
         ["t"] = "open_tabnew",
-        -- ["<cr>"] = "open_drop",
+        ["<cr>"] = "open_drop",
         -- ["t"] = "open_tab_drop",
         ["w"] = "open_with_window_picker",
         ["C"] = "close_node",
@@ -454,7 +452,7 @@ return {
           ["f"] = "filter_on_submit",
           ["<C-x>"] = "clear_filter",
           ["<bs>"] = "navigate_up",
-          ["."] = "set_root",
+          ["<cr>"] = "set_root",
           ["[g"] = "prev_git_modified",
           ["]g"] = "next_git_modified",
           ["i"] = "show_file_details",
@@ -494,7 +492,7 @@ return {
       --         The first field in each component is the name of the function to call.
       --         The rest of the fields are passed to the function as the "config" argument.
       filtered_items = {
-        visible = false,                       -- when true, they will just be displayed differently than normal items
+        visible = true,                       -- when true, they will just be displayed differently than normal items
         force_visible_in_empty_folder = false, -- when true, hidden files will be shown if the root folder is otherwise empty
         show_hidden_count = true,              -- when true, the number of hidden items in each folder will be shown as the last entry
         hide_dotfiles = true,
@@ -556,7 +554,7 @@ return {
       group_empty_dirs = false,               -- when true, empty folders will be grouped together
       search_limit = 50,                      -- max number of search results when using filters
       follow_current_file = {
-        enabled = false,                      -- This will find and focus the file in the active buffer every time
+        enabled = true,                      -- This will find and focus the file in the active buffer every time
         --               -- the current file is changed while the tree is open.
         leave_dirs_open = false,              -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
       },
@@ -581,7 +579,7 @@ return {
       window = {
         mappings = {
           ["<bs>"] = "navigate_up",
-          ["."] = "set_root",
+          ["<cr>"] = "set_root",
           ["bd"] = "buffer_delete",
           ["i"] = "show_file_details",
           ["o"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },

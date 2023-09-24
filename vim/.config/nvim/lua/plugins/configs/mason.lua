@@ -2,7 +2,7 @@ return {
   "williamboman/mason.nvim",
   cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
   opts = {
-    PATH = "skip",
+    PATH = "prepend",
 
     ui = {
       icons = {

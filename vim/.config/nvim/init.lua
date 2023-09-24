@@ -1,13 +1,12 @@
-require "core"
+require 'core'
 
 -- bootstrap lazy.nvim!
-require("core.bootstrap").lazy()
+require('core.bootstrap').lazy()
 
-require("core.utils").load_mappings("general", require("core.mappings").general)
+require('core.utils').load_mappings('general', require('core.mappings').general)
 
 -- Source a file
-vim.api.nvim_set_keymap('n', '<leader><C-r>', ':luafile %<CR>', { noremap = true, silent = true })
-
+vim.api.nvim_set_keymap("n", '<leader><C-r>', ':luafile %<CR>', { noremap = true, silent = true })
 
 -- Set statusline using lualine
 
@@ -34,6 +33,4 @@ vim.api.nvim_set_keymap('n', '<leader><C-r>', ':luafile %<CR>', { noremap = true
 --   end
 -- }
 
-
-vim.cmd('source /home/jeewangue/.config/nvim/legacy.vim')
-
+vim.cmd 'source /home/jeewangue/.config/nvim/legacy.vim'

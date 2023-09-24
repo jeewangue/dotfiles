@@ -40,7 +40,7 @@ vim.opt.signcolumn     = 'auto:6'
 vim.opt.statuscolumn = "%=%l%s%C"
 
 -- Misc
-vim.opt.swapfile       = true
+vim.opt.swapfile       = false
 vim.opt.hidden         = true
 vim.opt.backspace      = 'indent,eol,start'
 vim.opt.updatetime     = 300
