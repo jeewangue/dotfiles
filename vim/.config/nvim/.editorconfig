@@ -1,0 +1,12 @@
+# see https://github.com/CppCXY/EmmyLuaCodeStyle
+[*.lua]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+
+# none / single / double
+quote_style = single
+
+# keep / remove / remove_table_only / remove_string_only
+call_arg_parentheses = remove
+

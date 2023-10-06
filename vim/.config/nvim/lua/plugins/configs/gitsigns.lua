@@ -1,78 +1,78 @@
 local mappings = {
   n = {
     -- Navigation through hunks
-    ["]c"] = {
+    [']c'] = {
       function()
         if vim.wo.diff then
-          return "]c"
+          return ']c'
         end
         vim.schedule(function()
-          require("gitsigns").next_hunk()
+          require 'gitsigns'.next_hunk()
         end)
-        return "<Ignore>"
+        return '<Ignore>'
       end,
-      "Jump to next hunk",
+      'Jump to next hunk',
       opts = { expr = true },
     },
 
-    ["[c"] = {
+    ['[c'] = {
       function()
         if vim.wo.diff then
-          return "[c"
+          return '[c'
         end
         vim.schedule(function()
-          require("gitsigns").prev_hunk()
+          require 'gitsigns'.prev_hunk()
         end)
-        return "<Ignore>"
+        return '<Ignore>'
       end,
-      "Jump to prev hunk",
+      'Jump to prev hunk',
       opts = { expr = true },
     },
 
     -- Actions
-    ["<leader>rh"] = {
+    ['<leader>rh'] = {
       function()
-        require("gitsigns").reset_hunk()
+        require 'gitsigns'.reset_hunk()
       end,
-      "Reset hunk",
+      'Reset hunk',
     },
 
-    ["<leader>ph"] = {
+    ['<leader>ph'] = {
       function()
-        require("gitsigns").preview_hunk()
+        require 'gitsigns'.preview_hunk()
       end,
-      "Preview hunk",
+      'Preview hunk',
     },
 
-    ["<leader>gb"] = {
+    ['<leader>gb'] = {
       function()
         package.loaded.gitsigns.blame_line()
       end,
-      "Blame line",
+      'Blame line',
     },
 
-    ["<leader>td"] = {
+    ['<leader>td'] = {
       function()
-        require("gitsigns").toggle_deleted()
+        require 'gitsigns'.toggle_deleted()
       end,
-      "Toggle deleted",
+      'Toggle deleted',
     },
   },
 }
 
 return {
-  "lewis6991/gitsigns.nvim",
-  ft = { "gitcommit", "diff" },
+  'lewis6991/gitsigns.nvim',
+  ft = { 'gitcommit', 'diff' },
   init = function()
     -- load gitsigns only when a git file is opened
-    vim.api.nvim_create_autocmd({ "BufRead" }, {
-      group = vim.api.nvim_create_augroup("GitSignsLazyLoad", { clear = true }),
+    vim.api.nvim_create_autocmd({ 'BufRead' }, {
+      group = vim.api.nvim_create_augroup('GitSignsLazyLoad', { clear = true }),
       callback = function()
-        vim.fn.system("git -C " .. '"' .. vim.fn.expand "%:p:h" .. '"' .. " rev-parse")
+        vim.fn.system('git -C ' .. '"' .. vim.fn.expand '%:p:h' .. '"' .. ' rev-parse')
         if vim.v.shell_error == 0 then
-          vim.api.nvim_del_augroup_by_name "GitSignsLazyLoad"
+          vim.api.nvim_del_augroup_by_name 'GitSignsLazyLoad'
           vim.schedule(function()
-            require("lazy").load { plugins = { "gitsigns.nvim" } }
+            require 'lazy'.load { plugins = { 'gitsigns.nvim' } }
           end)
         end
       end,
@@ -80,10 +80,10 @@ return {
   end,
   opts = {
     on_attach = function(bufnr)
-      require "core.utils".load_mappings("gitsigns", mappings, { buffer = bufnr })
+      require 'core.utils'.load_mappings('gitsigns', mappings, { buffer = bufnr })
     end,
   },
   config = function(_, opts)
-    require "gitsigns".setup(opts)
+    require 'gitsigns'.setup(opts)
   end,
 }

@@ -35,7 +35,6 @@ Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } } " documentation generat
 Plug 'ryanoasis/vim-devicons'
 Plug 'godlygeek/tabular'
 Plug 'kshenoy/vim-signature'
-Plug 'kassio/neoterm'
 
 call plug#end()
 """ PLUG END
@@ -98,39 +97,7 @@ if has_key(g:plugs, 'coc.nvim')
   " nmap <leader>f <Plug>(coc-format-selected)
 endif
 
-function! s:show_documentation()
-  if (index(['vim', 'help'], &filetype) >= 0)
-    execute 'h ' expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
-
-xmap <leader>fa <Plug>(coc-format)
-nmap <leader>fa <Plug>(coc-format)
-
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac <Plug>(coc-codeaction)
-nmap <leader>al <Plug>(coc-codeaction-line)
-
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf <Plug>(coc-fix-current)
-
 nmap <leader>op <Plug>(coc-openlink)
-
-nmap <silent> <leader>ci :<C-u>CocInfo<CR>
-nmap <silent> <leader>cr :<C-u>CocRestart<CR>
-nmap <silent> <leader>cc :<C-u>vs<CR>:<C-u>CocConfig<CR>
-nmap <silent> <leader>cd :<C-u>CocDiagnostics<CR>
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -214,25 +181,6 @@ nnoremap <silent> <Leader>cf :exe 'CocList -I --input='.expand('<cword>').' grep
 
 
 
-""" coc-snippets
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-
-" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-
-" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-
-" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-
-" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-
-" Use <leader>x for convert visual selected code to snippet
-xmap <leader>x  <Plug>(coc-convert-snippet)
-
 """ vim syntax
 let g:vimsyn_folding = 'af'
 
@@ -315,98 +263,11 @@ vmap     <silent> <leader>jr <Plug>JupyterRunVisual
 nnoremap <buffer> <silent> <leader>jb :PythonSetBreak<CR>
 
 
-""" neoterm
-let g:neoterm_default_mod = 'vertical'
-let g:neoterm_autoscroll = 1
-
-" Use <leader>tx{text-object} in normal mode
-nnoremap <leader>tx <Plug>(neoterm-repl-send)
-
-" Send selected contents in visual mode
-xnoremap <leader>tx <Plug>(neoterm-repl-send)
-
-" Send current line in normal mode
-nnoremap <leader>txx <Plug>(neoterm-repl-send-line)
-
-" 3<leader>to will open neoterm-3
-nnoremap <leader>to :<c-u>exec v:count.'Topen'<cr>
-
-" 3<leader>tq will close neoterm-3
-nnoremap <leader>tq :<c-u>exec v:count.'Tclose'<cr>
-
-" 3<leader>tc will clear neoterm-3
-nnoremap <leader>tc :<c-u>exec v:count.'Tclear'<cr>
-
-
 """ Plugin Configuration END
 
-augroup filetype_visual_config
-  autocmd!
-  autocmd Filetype cpp            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99 commentstring=//\ %s
-  autocmd Filetype sql            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99 commentstring=--\ %s
-  autocmd Filetype vim            setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype markdown       setlocal ts=2 sw=2 sts=2 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype html           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype ruby           setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype python         setlocal ts=4 sw=4 expandtab foldmethod=indent foldlevel=99
-  autocmd Filetype haskell        setlocal ts=2 sw=2 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype go             setlocal ts=2 sw=2 foldmethod=syntax foldlevel=99
-  autocmd Filetype javascript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype typescript     setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-  autocmd Filetype json           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=marker foldlevel=99 foldmarker={,}
-  autocmd Filetype yaml           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
-  autocmd Filetype helm           setlocal ts=2 sw=2 sts=0 expandtab foldmethod=indent foldlevel=99
-  autocmd Filetype proto          setlocal ts=2 sw=2 sts=0 expandtab foldmethod=syntax foldlevel=99
-augroup END
-
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
-
-augroup filetype_go_config
-  autocmd FileType go nmap gota :CocCommand go.tags.add.prompt<cr>
-  autocmd FileType go nmap gotj :CocCommand go.tags.add json<cr>
-  autocmd FileType go nmap goty :CocCommand go.tags.add yaml<cr>
-  autocmd FileType go nmap gotx :CocCommand go.tags.clear<cr>
-  autocmd FileType go nmap goim :CocCommand go.impl.cursor<cr>
-  autocmd FileType go nmap gorun :GoRun<cr>
-augroup END
-
-map <F1> <ESC>:help<CR>
-
-nnoremap H <C-w>h
-nnoremap J <C-w>j
-nnoremap K <C-w>k
-nnoremap L <C-w>l
-nnoremap QQ :qall<CR>
-
-""" Fold
-" fold shortcut
-nnoremap <space> za
-vnoremap <space> za
-
-" fold text
-function! MyFoldText()
-  let line = getline(v:foldstart)
-  let nucolwidth = &fdc + &number * &numberwidth
-  let windowwidth = winwidth(0) - nucolwidth - 3
-  let foldedlinecount = v:foldend - v:foldstart
-  " expand tabs into spaces
-  let onetab = strpart(' ', 0, &tabstop)
-  let line = substitute(line, '\t', onetab, 'g')
-  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction
-
-set foldtext=MyFoldText()
-
-""" Simple Shortcuts
-" nnoremap <C-l> :tabnext<CR>
-" nnoremap <C-h> :tabprevious<CR>
-" nnoremap <C-n> :tabnew<CR>
-
-nnoremap qq :<C-u>q<CR>
-nnoremap qa :<C-u>qa<CR>
-
+" nnoremap qq :<C-u>q<CR>
+" nnoremap qa :<C-u>qa<CR>
+"
 nnoremap ,cl0 :<C-u>set cole=0<CR>
 nnoremap ,cl2 :<C-u>set cole=2<CR>
 

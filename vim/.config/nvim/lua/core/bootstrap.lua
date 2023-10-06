@@ -1,29 +1,46 @@
-local M = {}
-
-M.echo = function(str)
-  vim.cmd "redraw"
-  vim.api.nvim_echo({ { str, "Bold" } }, true, {})
+-- Install lazy.nvim automatically
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
-local function shell_call(args)
-  local output = vim.fn.system(args)
-  assert(vim.v.shell_error == 0, "External call failed with error code: " .. vim.v.shell_error .. "\n" .. output)
-end
+local opts = {
+  git = { log = { "--since=3 days ago" } },
+  ui = {
+    custom_keys = { false },
+    icons = {
+      ft = "",
+      lazy = "󰂠 ",
+      loaded = "",
+      not_loaded = "",
+    },
+  },
+  install = { colorscheme = { "kanagawa" } },
+  -- checker = { enabled = true },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+        "rplugin",
+        "editorconfig",
+      },
+    },
+  },
+  change_detection = { enabled = false },
+}
 
-M.lazy = function()
-  --------- lazy.nvim ---------------
-  local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-  if not vim.loop.fs_stat(lazypath) then
-    M.echo "  Installing lazy.nvim & plugins ..."
-    local repo = "https://github.com/folke/lazy.nvim.git"
-
-    shell_call { "git", "clone", "--filter=blob:none", "--branch=stable", repo, lazypath }
-  end
-
-  vim.opt.rtp:prepend(lazypath)
-
-  -- install plugins
-  require "plugins"
-end
-
-return M
+-- Load the plugins and options
+require("lazy").setup("plugins", opts)

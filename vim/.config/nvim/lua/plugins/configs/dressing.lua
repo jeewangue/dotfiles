@@ -1,15 +1,15 @@
 local mappings = {
   n = {
-    ["<leader>test"] = {
+    ['<leader>test'] = {
       function()
         vim.ui.select({ 'apple', 'banana', 'mango' }, {
-          prompt = "Title",
-          telescope = require("telescope.themes").get_cursor(),
+          prompt = 'Title',
+          telescope = require 'telescope.themes'.get_cursor(),
         }, function(selected)
-          vim.notify("Selected: " .. selected)
+          vim.notify('Selected: ' .. selected)
         end)
       end,
-      "Test",
+      'Test',
     },
   },
 }
@@ -18,7 +18,7 @@ return {
   'stevearc/dressing.nvim',
   lazy = false,
   init = function()
-    require("core.utils").load_mappings("dressing", mappings)
+    require 'core.utils'.load_mappings('dressing', mappings)
   end,
   opts = {},
 }

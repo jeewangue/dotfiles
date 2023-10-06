@@ -1,12 +1,23 @@
-require 'core'
+-- Safely require files
+---@param module string
+---@return any
+local function safe_require(module)
+  local success, loaded_module = pcall(require, module)
+  if success then
+    return loaded_module
+  end
+  vim.api.nvim_echo({ { 'Error loading ' .. module } }, false, {})
+end
 
--- bootstrap lazy.nvim!
-require('core.bootstrap').lazy()
+safe_require 'core.options'
+safe_require 'core.keymaps'
+safe_require 'core.autocommands'
+safe_require 'core.bootstrap'
 
 require('core.utils').load_mappings('general', require('core.mappings').general)
 
 -- Source a file
-vim.api.nvim_set_keymap("n", '<leader><C-r>', ':luafile %<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><C-r>', ':luafile %<CR>', { noremap = true, silent = true })
 
 -- Set statusline using lualine
 
@@ -33,4 +44,4 @@ vim.api.nvim_set_keymap("n", '<leader><C-r>', ':luafile %<CR>', { noremap = true
 --   end
 -- }
 
-vim.cmd 'source /home/jeewangue/.config/nvim/legacy.vim'
+-- vim.cmd 'source /home/jeewangue/.config/nvim/legacy.vim'

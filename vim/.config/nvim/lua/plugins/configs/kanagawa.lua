@@ -1,8 +1,8 @@
 return {
-  "rebelot/kanagawa.nvim",
+  'rebelot/kanagawa.nvim',
   lazy = false,
   config = function()
-    require "kanagawa".setup {
+    require 'kanagawa'.setup {
       compile = false,  -- enable compiling the colorscheme
       undercurl = true, -- enable undercurls
       commentStyle = { italic = true },
@@ -47,18 +47,22 @@ return {
       overrides = function(colors) -- add/modify highlights
         return {
           Search = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
+          IncSearch = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
           CurSearch = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
           Visual = { bg = colors.palette.RichBlack },
           VisualNOS = { bg = colors.palette.RichBlack },
           Pmenu = { bg = colors.palette.RichBlack },
           IndentBlanklineContextChar = { fg = colors.palette.Rust, bold = true },
-          CopilotSuggestion = { fg = "khaki1", bg = colors.palette.RichBlack },
+          CopilotSuggestion = { fg = 'khaki1', bg = colors.palette.RichBlack },
+          IlluminatedWordText = { bg = colors.palette.Rosewood },
+          IlluminatedWordRead = { bg = colors.palette.Rosewood },
+          IlluminatedWordWrite = { bg = colors.palette.Rosewood },
         }
       end,
-      theme = "wave",  -- "wave" | "lotus" | "dragon"
+      theme = 'wave',  -- "wave" | "lotus" | "dragon"
       background = {   -- map the value of 'background' option to a theme
-        dark = "wave", -- try "dragon" !
-        light = "lotus"
+        dark = 'wave', -- try "dragon" !
+        light = 'lotus',
       },
     }
     vim.cmd [[colorscheme kanagawa]]
