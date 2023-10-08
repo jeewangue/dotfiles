@@ -14,10 +14,13 @@ safe_require 'core.keymaps'
 safe_require 'core.autocommands'
 safe_require 'core.bootstrap'
 
-require('core.utils').load_mappings('general', require('core.mappings').general)
-
 -- Source a file
-vim.api.nvim_set_keymap('n', '<leader><C-r>', ':luafile %<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader><C-r>',
+  ':luafile %<CR>',
+  { noremap = true, silent = true, desc = 'Source a file' }
+)
 
 -- Set statusline using lualine
 

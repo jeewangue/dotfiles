@@ -151,6 +151,12 @@ return {
   config = function()
     local lspconfig = require 'lspconfig'
 
+    lspconfig.terraformls.setup {
+      cmd = { 'terraform-ls', 'serve' },
+      filetypes = { 'tf', 'terraform', 'terraform-vars' },
+      root_dir = lspconfig.util.root_pattern('.terraform', '.git'),
+    }
+
     lspconfig.lua_ls.setup {
       on_init = function(client)
         local path = client.workspace_folders[1].name

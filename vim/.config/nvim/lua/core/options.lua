@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 ---------------- options ----------------
-opt.laststatus = 3
+opt.laststatus = 2
 opt.showmode = false
 
 -- shortmess options
@@ -63,6 +63,9 @@ opt.foldenable = true
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldcolumn = "auto"
+
+-- Session
+opt.sessionoptions = { "blank", "buffers", "curdir", "folds", "tabpages", "winsize", "winpos" }
 
 -- Misc
 opt.swapfile = false

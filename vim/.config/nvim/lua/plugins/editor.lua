@@ -110,61 +110,104 @@ return {
     keys = { { ']]', desc = 'Next Reference' }, { '[[', desc = 'Prev Reference' } },
   },
 
-  -- -- neo-tree.nvim
-  -- {
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   dependencies = { 'nvim-lua/plenary.nvim', 'nvim-tree/nvim-web-devicons', 'MunifTanjim/nui.nvim' },
-  --   -- Load neo-tree.nvim if we provide a directory as an argument
-  --   init = function()
-  --     if vim.fn.argc() == 1 then
-  --       ---@diagnostic disable-next-line: param-type-mismatch
-  --       local stat = vim.loop.fs_stat(vim.fn.argv(0))
-  --       if stat and stat.type == 'directory' then
-  --         require('neo-tree')
-  --       end
-  --     end
-  --   end,
-  --   branch = 'v3.x',
-  --   keys = { { '<leader>e', '<cmd>Neotree toggle<CR>', desc = 'Open neo-tree.nvim' } },
-  --   opts = {
-  --     event_handlers = {
-  --       {
-  --         event = 'file_opened',
-  --         handler = function()
-  --           -- auto close
-  --           require('neo-tree.command').execute({ action = 'close' })
-  --         end,
-  --       },
-  --     },
-  --     filesystem = {
-  --       filtered_items = { hide_dotfiles = false, hide_by_name = { '.git' } },
-  --       follow_current_file = { enabled = true },
-  --       use_libuv_file_watcher = true,
-  --     },
-  --     window = {
-  --       mappings = {
-  --         ['h'] = function(state)
-  --           local node = state.tree:get_node()
-  --           if node.type == 'directory' and node:is_expanded() then
-  --             require('neo-tree.sources.filesystem').toggle_directory(state, node)
-  --           else
-  --             require('neo-tree.ui.renderer').focus_node(state, node:get_parent_id())
-  --           end
-  --         end,
-  --         ['l'] = function(state)
-  --           local node = state.tree:get_node()
-  --           if node.type == 'directory' then
-  --             if not node:is_expanded() then
-  --               require('neo-tree.sources.filesystem').toggle_directory(state, node)
-  --             elseif node:has_children() then
-  --               require('neo-tree.ui.renderer').focus_node(state, node:get_child_ids()[1])
-  --             end
-  --           end
-  --         end,
-  --       },
-  --     },
-  --   },
-  -- },
+  -- neo-tree.nvim
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-tree/nvim-web-devicons',
+      'MunifTanjim/nui.nvim',
+      {
+        -- only needed if you want to use the commands with "_with_window_picker" suffix
+        's1n7ax/nvim-window-picker',
+        name = 'window-picker',
+        config = function()
+          require 'window-picker'.setup {
+            hint = 'floating-big-letter',
+            selection_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            filter_rules = {
+              autoselect_one = true,
+              include_current_win = false,
+              -- filter using buffer options
+              bo = {
+                -- if the file type is one of following, the window will be ignored
+                filetype = { 'NvimTree', 'neo-tree', 'neo-tree-popup', 'notify' },
+
+                -- if the buffer type is one of following, the window will be ignored
+                buftype = { 'terminal', 'quickfix' },
+              },
+            },
+          }
+        end,
+      },
+    },
+    -- Load neo-tree.nvim if we provide a directory as an argument
+    init = function()
+      if vim.fn.argc() == 1 then
+        ---@diagnostic disable-next-line: param-type-mismatch
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == 'directory' then
+          require 'neo-tree'
+        end
+      end
+    end,
+    branch = 'v3.x',
+    keys = {
+      { '<leader>n', '<cmd>Neotree toggle<CR>', desc = 'Toggle Neotree' },
+    },
+    opts = {
+      sources = {
+        'filesystem',
+        'buffers',
+        'git_status',
+        'document_symbols',
+      },
+      source_selector = {
+        winbar = true,
+        statusline = false,
+        sources = {
+          { source = 'filesystem' },
+          { source = 'buffers' },
+          { source = 'git_status' },
+          { source = 'document_symbols' },
+        },
+      },
+      window = {
+        width = 40,               -- applies to left and right positions
+        auto_expand_width = true, -- expand the window when file exceeds the window width. does not work with position = "float"
+        mappings = {
+          ['h'] = function(state)
+            local node = state.tree:get_node()
+            if node.type == 'directory' and node:is_expanded() then
+              require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+            else
+              require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+            end
+          end,
+          ['l'] = function(state)
+            local node = state.tree:get_node()
+            if node.type == 'directory' then
+              if not node:is_expanded() then
+                require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+              elseif node:has_children() then
+                require 'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+              end
+            elseif node.type == 'file' then
+              require 'neo-tree.sources.common.commands'.open_with_window_picker(state, node)
+            end
+          end,
+        },
+      },
+      filesystem = {
+        filtered_items = { visible = true, hide_dotfiles = false },
+        follow_current_file = { enabled = true },
+        use_libuv_file_watcher = true,
+      },
+      document_symbols = {
+        follow_cursor = true,
+      },
+    },
+  },
 
   -- leap.nvim
   {
@@ -237,215 +280,248 @@ return {
     },
   },
 
-  -- -- gitsigns.nvim
-  -- {
-  --   'lewis6991/gitsigns.nvim',
-  --   init = function()
-  --     -- load gitsigns only when a git file is opened
-  --     vim.api.nvim_create_autocmd({ 'BufRead' }, {
-  --       group = vim.api.nvim_create_augroup('GitSignsLazyLoad', { clear = true }),
-  --       callback = function()
-  --         vim.fn.system('git -C ' .. '"' .. vim.fn.expand('%:p:h') .. '"' .. ' rev-parse')
-  --         if vim.v.shell_error == 0 then
-  --           vim.api.nvim_del_augroup_by_name('GitSignsLazyLoad')
-  --           vim.schedule(function()
-  --             require('lazy').load({ plugins = { 'gitsigns.nvim' } })
-  --           end)
-  --         end
-  --       end,
-  --     })
-  --   end,
-  --   ft = 'gitcommit',
-  --   keys = {
-  --     {
-  --       '<leader>gj',
-  --       function()
-  --         return require('gitsigns').next_hunk()
-  --       end,
-  --       desc = 'Next hunk',
-  --     },
-  --     {
-  --       '<leader>gk',
-  --       function()
-  --         return require('gitsigns').prev_hunk()
-  --       end,
-  --       desc = 'Previous hunk',
-  --     },
-  --     {
-  --       ']g',
-  --       function()
-  --         return require('gitsigns').next_hunk()
-  --       end,
-  --       desc = 'Next hunk',
-  --     },
-  --     {
-  --       '[g',
-  --       function()
-  --         return require('gitsigns').prev_hunk()
-  --       end,
-  --       desc = 'Previous hunk',
-  --     },
-  --     {
-  --       '<leader>gl',
-  --       function()
-  --         return require('gitsigns').blame_line()
-  --       end,
-  --       desc = 'Open git blame',
-  --     },
-  --     {
-  --       '<leader>gp',
-  --       function()
-  --         return require('gitsigns').preview_hunk()
-  --       end,
-  --       desc = 'Preview the hunk',
-  --     },
-  --     {
-  --       '<leader>gr',
-  --       function()
-  --         return require('gitsigns').reset_hunk()
-  --       end,
-  --       desc = 'Reset the hunk',
-  --     },
-  --     {
-  --       '<leader>gR',
-  --       function()
-  --         return require('gitsigns').reset_buffer()
-  --       end,
-  --       desc = 'Reset the buffer',
-  --     },
-  --     {
-  --       '<leader>gs',
-  --       function()
-  --         return require('gitsigns').stage_hunk()
-  --       end,
-  --       desc = 'Stage the hunk',
-  --     },
-  --     {
-  --       '<leader>gS',
-  --       function()
-  --         return require('gitsigns').stage_buffer()
-  --       end,
-  --       desc = 'Stage the buffer',
-  --     },
-  --     {
-  --       '<leader>gu',
-  --       function()
-  --         return require('gitsigns').undo_stage_hunk()
-  --       end,
-  --       desc = 'Unstage the hunk',
-  --     },
-  --     {
-  --       '<leader>gd',
-  --       function()
-  --         return require('gitsigns').diffthis()
-  --       end,
-  --       desc = 'Open a diff',
-  --     },
-  --   },
-  --   opts = {
-  --     signs = {
-  --       add = {
-  --         hl = 'GitSignsAdd',
-  --         text = '+',
-  --         numhl = 'GitSignsAddNr',
-  --         linehl = 'GitSignsAddLn',
-  --       },
-  --       change = {
-  --         hl = 'GitSignsChange',
-  --         text = '~',
-  --         numhl = 'GitSignsChangeNr',
-  --         linehl = 'GitSignsChangeLn',
-  --       },
-  --       delete = {
-  --         hl = 'GitSignsDelete',
-  --         text = '-',
-  --         numhl = 'GitSignsDeleteNr',
-  --         linehl = 'GitSignsDeleteLn',
-  --       },
-  --       topdelete = {
-  --         hl = 'GitSignsDelete',
-  --         text = '-',
-  --         numhl = 'GitSignsDeleteNr',
-  --         linehl = 'GitSignsDeleteLn',
-  --       },
-  --       changedelete = {
-  --         hl = 'GitSignsChange',
-  --         text = '~',
-  --         numhl = 'GitSignsChangeNr',
-  --         linehl = 'GitSignsChangeLn',
-  --       },
-  --     },
-  --     signcolumn = true, -- Toggle with `:GitSigns toggle_signs`
-  --     watch_gitdir = { interval = 1000, follow_files = true },
-  --     attach_to_untracked = true,
-  --     current_line_blame_opts = {
-  --       virt_text = true,
-  --       virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-  --       delay = 1000,
-  --     },
-  --     sign_priority = 6,
-  --     update_debounce = 100,
-  --     status_formatter = nil,
-  --     preview_config = {
-  --       border = 'single',
-  --       style = 'minimal',
-  --       relative = 'cursor',
-  --       row = 0,
-  --       col = 1,
-  --     },
-  --   },
-  -- },
-  --
-  -- -- toggleterm.nvim
-  -- {
-  --   'akinsho/toggleterm.nvim',
-  --   version = '*',
-  --   keys = [[<C-\>]],
-  --   opts = {
-  --     open_mapping = [[<C-\>]],
-  --     size = 20,
-  --     hide_numbers = true,
-  --     shell = vim.o.shell,
-  --     shade_terminals = true,
-  --     shading_factor = 2,
-  --     persist_size = true,
-  --     start_in_insert = true,
-  --     direction = 'float',
-  --     close_on_exit = true,
-  --     float_opts = { border = 'curved' },
-  --   },
-  -- },
-  --
-  -- -- bufdelete.nvim
-  -- {
-  --   'famiu/bufdelete.nvim',
-  --   keys = {
-  --     {
-  --       '<leader>bk',
-  --       function()
-  --         return require('bufdelete').bufdelete(0, false)
-  --       end,
-  --       desc = 'Delete the current buffer',
-  --     },
-  --     {
-  --       '<leader>bK',
-  --       function()
-  --         return require('bufdelete').bufdelete(0, true)
-  --       end,
-  --       desc = 'Delete the current buffer forcefully',
-  --     },
-  --   },
-  -- },
-  --
-  -- -- BufOnly.nvim
-  -- { 'numToStr/BufOnly.nvim', keys = { { '<leader>bo', '<cmd>BufOnly<CR>', desc = 'Delete all other buffers' } } },
-  --
-  -- -- highlight-undo.nvim
-  -- { 'tzachar/highlight-undo.nvim', keys = { 'u', '<C-r>' }, config = true },
-  --
-  -- -- undotree
-  -- { 'mbbill/undotree', keys = { { '<leader>u', '<cmd>UndotreeToggle<CR>', desc = 'Open undo tree' } } },
-  --
+  -- gitsigns.nvim
+  {
+    'lewis6991/gitsigns.nvim',
+    init = function()
+      -- load gitsigns only when a git file is opened
+      vim.api.nvim_create_autocmd({ 'BufRead' }, {
+        group = vim.api.nvim_create_augroup('GitSignsLazyLoad', { clear = true }),
+        callback = function()
+          vim.fn.system('git -C ' .. '"' .. vim.fn.expand '%:p:h' .. '"' .. ' rev-parse')
+          if vim.v.shell_error == 0 then
+            vim.api.nvim_del_augroup_by_name 'GitSignsLazyLoad'
+            vim.schedule(function()
+              require 'lazy'.load { plugins = { 'gitsigns.nvim' } }
+            end)
+          end
+        end,
+      })
+    end,
+    ft = { 'gitcommit', 'diff' },
+    keys = {
+      {
+        '<leader>gj',
+        function()
+          return require 'gitsigns'.next_hunk()
+        end,
+        desc = 'Next hunk',
+      },
+      {
+        '<leader>gk',
+        function()
+          return require 'gitsigns'.prev_hunk()
+        end,
+        desc = 'Previous hunk',
+      },
+      {
+        ']g',
+        function()
+          return require 'gitsigns'.next_hunk()
+        end,
+        desc = 'Next hunk',
+      },
+      {
+        '[g',
+        function()
+          return require 'gitsigns'.prev_hunk()
+        end,
+        desc = 'Previous hunk',
+      },
+      {
+        '<leader>gl',
+        function()
+          return require 'gitsigns'.blame_line()
+        end,
+        desc = 'Open git blame',
+      },
+      {
+        '<leader>gp',
+        function()
+          return require 'gitsigns'.preview_hunk()
+        end,
+        desc = 'Preview the hunk',
+      },
+      {
+        '<leader>gr',
+        function()
+          return require 'gitsigns'.reset_hunk()
+        end,
+        desc = 'Reset the hunk',
+      },
+      {
+        '<leader>gR',
+        function()
+          return require 'gitsigns'.reset_buffer()
+        end,
+        desc = 'Reset the buffer',
+      },
+      {
+        '<leader>gs',
+        function()
+          return require 'gitsigns'.stage_hunk()
+        end,
+        desc = 'Stage the hunk',
+      },
+      {
+        '<leader>gS',
+        function()
+          return require 'gitsigns'.stage_buffer()
+        end,
+        desc = 'Stage the buffer',
+      },
+      {
+        '<leader>gu',
+        function()
+          return require 'gitsigns'.undo_stage_hunk()
+        end,
+        desc = 'Unstage the hunk',
+      },
+      {
+        '<leader>gd',
+        function()
+          return require 'gitsigns'.diffthis()
+        end,
+        desc = 'Open a diff',
+      },
+      {
+        '<leader>gb',
+        function()
+          return require 'gitsigns'.blame_line()
+        end,
+        desc = 'gitsigns - blame line',
+      },
+      {
+        '<leader>gtb',
+        function()
+          return require 'gitsigns'.toggle_current_line_blame()
+        end,
+        desc = 'gitsigns - toggle current line blame',
+      },
+      {
+        '<leader>gtd',
+        function()
+          return require 'gitsigns'.toggle_deleted()
+        end,
+        desc = 'gitsigns - toggle deleted',
+      },
+    },
+    opts = {
+      signcolumn = true, -- Toggle with `:GitSigns toggle_signs`
+      watch_gitdir = { interval = 1000, follow_files = true },
+      attach_to_untracked = true,
+      current_line_blame_opts = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 300,
+      },
+      sign_priority = 6,
+      update_debounce = 100,
+      status_formatter = nil,
+      preview_config = {
+        border = 'single',
+        style = 'minimal',
+        relative = 'cursor',
+        row = 0,
+        col = 1,
+      },
+    },
+  },
+
+  -- toggleterm.nvim
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    keys = {
+      '<C-t>',
+      {
+        '<C-h>',
+        '<CMD>wincmd h<CR>',
+        mode = 't',
+        desc = 'Go to left window',
+      },
+      {
+        '<C-j>',
+        '<CMD>wincmd j<CR>',
+        mode = 't',
+        desc = 'Go to bottom window',
+      },
+      {
+        '<C-k>',
+        '<CMD>wincmd k<CR>',
+        mode = 't',
+        desc = 'Go to top window',
+      },
+      {
+        '<C-l>',
+        '<CMD>wincmd l<CR>',
+        mode = 't',
+        desc = 'Go to right window',
+      },
+      {
+        '<C-w>',
+        '<C-\\><C-n><C-w>',
+        mode = 't',
+        desc = 'Window navigation',
+      },
+    },
+    opts = {
+      open_mapping = '<C-t>',
+      size = function(term)
+        if term.direction == 'horizontal' then
+          return 20
+        elseif term.direction == 'vertical' then
+          return vim.o.columns * 0.4
+        end
+      end,
+      hide_numbers = true,
+      shell = vim.o.shell,
+      shade_terminals = true,
+      shading_factor = 2,
+      persist_size = true,
+      start_in_insert = true,
+      direction = 'horizontal',
+      close_on_exit = true,
+      float_opts = { border = 'curved' },
+    },
+  },
+
+  -- bufdelete.nvim
+  {
+    'famiu/bufdelete.nvim',
+    keys = {
+      {
+        '<leader>bk',
+        function()
+          return require 'bufdelete'.bufdelete(0, false)
+        end,
+        desc = 'Delete the current buffer',
+      },
+      {
+        '<leader>bK',
+        function()
+          return require 'bufdelete'.bufdelete(0, true)
+        end,
+        desc = 'Delete the current buffer forcefully',
+      },
+    },
+  },
+
+  -- BufOnly.nvim
+  {
+    'numToStr/BufOnly.nvim',
+    keys = {
+      { '<leader>bo', '<cmd>BufOnly<CR>', desc = 'Delete all other buffers' },
+    },
+  },
+
+  -- highlight-undo.nvim
+  {
+    'tzachar/highlight-undo.nvim',
+    keys = { 'u', '<C-r>' },
+    config = true,
+  },
+
   -- bufferline.nvim
   {
     'akinsho/bufferline.nvim',

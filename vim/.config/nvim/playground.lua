@@ -1,8 +1,8 @@
-local function pp(...)
+local function ppp(...)
   print(vim.inspect(...))
 end
 
-pp(vim.lsp.buf)
+ppp(vim.lsp.buf)
 
 -- pp(vim.treesitter)
 
