@@ -127,6 +127,13 @@ return {
       desc = 'References',
     },
     {
+      'gR',
+      function()
+        return vim.lsp.buf.rename()
+      end,
+      desc = 'Rename',
+    },
+    {
       'gD',
       vim.lsp.buf.declaration,
       desc = 'Goto Declaration',
@@ -150,6 +157,12 @@ return {
   },
   config = function()
     local lspconfig = require 'lspconfig'
+
+    lspconfig.clangd.setup {
+      capabilities = {
+        offsetEncoding = { 'utf-16' },
+      },
+    }
 
     lspconfig.terraformls.setup {
       cmd = { 'terraform-ls', 'serve' },
@@ -197,29 +210,35 @@ return {
       end,
     }
 
-    -- lspconfig.jsonls.setup {
-    --   settings = {
-    --     json = {
-    --       schemas = require 'schemastore'.json.schemas(),
-    --       validate = { enable = true },
-    --     },
-    --   },
-    -- }
-    --
-    -- lspconfig.yamlls.setup {
-    --   settings = {
-    --     yaml = {
-    --       schemas = require 'schemastore'.yaml.schemas(),
-    --       schemaStore = {
-    --         -- You must disable built-in schemaStore support if you want to use
-    --         -- this plugin and its advanced options like `ignore`.
-    --         enable = false,
-    --         -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-    --         url = '',
-    --       },
-    --     },
-    --   },
-    -- }
+    lspconfig.jsonls.setup {
+      settings = {
+        json = {
+          schemas = require 'schemastore'.json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    }
+
+    lspconfig.yamlls.setup {
+      settings = {
+        yaml = {
+          schemas = require 'schemastore'.yaml.schemas(),
+          schemaStore = {
+            -- You must disable built-in schemaStore support if you want to use
+            -- this plugin and its advanced options like `ignore`.
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = '',
+          },
+        },
+      },
+    }
+
+    lspconfig.pyright.setup {}
+
+    lspconfig.ruff_lsp.setup {}
+
+    lspconfig.marksman.setup {}
 
     require 'mason-lspconfig'.setup {}
   end,

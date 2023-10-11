@@ -1,8 +1,5 @@
 return {
   require 'plugins.configs.nvim-treesitter',
-  require 'plugins.configs.telescope-fzf-native',
-  require 'plugins.configs.telescope-undo',
-  require 'plugins.configs.telescope',
 
   -- lsp stuff
   require 'plugins.configs.lspconfig',
@@ -41,15 +38,11 @@ return {
   {
     'lvimuser/lsp-inlayhints.nvim',
     event = 'LspAttach',
-    config = function()
-      require 'lsp-inlayhints'.setup {}
-    end,
+    config = true,
   },
   {
     'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    config = function()
-      require 'lsp_lines'.setup()
-    end,
+    config = true,
   },
   -- {
   --   'ray-x/navigator.lua',
@@ -68,4 +61,20 @@ return {
   --     }
   --   end,
   -- },
+  -- {
+  --   'edluffy/hologram.nvim',
+  --   opts = {
+  --     auto_display = true,
+  --   },
+  -- },
+  {
+    '3rd/image.nvim',
+    ft = { 'markdown', 'norg', 'syslang', 'vimwiki' },
+    opts = {
+      backend = 'ueberzug',
+    },
+    rocks = { 'magick' },
+  },
+
+  -- TODO: neorg
 }

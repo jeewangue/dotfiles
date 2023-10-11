@@ -14,7 +14,7 @@ return {
         statementStyle = { bold = true },
         typeStyle = {},
         transparent = false,   -- do not set background color
-        dimInactive = false,   -- dim inactive window `:h hl-NormalNC`
+        dimInactive = true,    -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
         colors = {             -- add/modify theme and palette colors
           palette = {
@@ -39,6 +39,9 @@ return {
             Gunmetal = '#042d3a',
             BrunswickGreen = '#12403c',
             DarkMossGreen = '#475200',
+
+            -- others
+            Prompt = '#2c240b',
           },
           theme = {
             wave = {},
@@ -55,11 +58,18 @@ return {
             Visual = { bg = colors.palette.RichBlack },
             VisualNOS = { bg = colors.palette.RichBlack },
             Pmenu = { bg = colors.palette.RichBlack },
-            IndentBlanklineContextChar = { fg = colors.palette.Rust, bold = true },
+            IblScope = { fg = colors.palette.Rust },
             CopilotSuggestion = { fg = 'khaki1', bg = colors.palette.RichBlack },
-            IlluminatedWordText = { bg = colors.palette.Rosewood },
-            IlluminatedWordRead = { bg = colors.palette.Rosewood },
-            IlluminatedWordWrite = { bg = colors.palette.Rosewood },
+            IlluminatedWordText = { bg = colors.palette.TyrianPurple },
+            IlluminatedWordRead = { bg = colors.palette.TyrianPurple },
+            IlluminatedWordWrite = { bg = colors.palette.TyrianPurple },
+            TelescopeNormal = { bg = colors.palette.RichBlack, fg = colors.palette.Vanilla },
+            TelescopeBorder = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
+            TelescopePromptNormal = { bg = colors.palette.Prompt },
+            TelescopePromptBorder = { bg = colors.palette.Prompt, fg = colors.palette.Prompt },
+            TelescopePromptTitle = { bg = colors.palette.Prompt, fg = colors.palette.Prompt },
+            TelescopePreviewTitle = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
+            TelescopeResultsTitle = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
           }
         end,
         theme = 'wave',  -- "wave" | "lotus" | "dragon"
@@ -71,34 +81,6 @@ return {
       vim.cmd [[colorscheme kanagawa]]
     end,
   },
-
-  -- -- tokyonight.nvim
-  -- {
-  --   'folke/tokyonight.nvim',
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {
-  --     style = 'night',
-  --     transparent = true,
-  --     lualine_bold = true,
-  --     terminal_colors = true,
-  --     on_highlights = function(hl, c)
-  --       local prompt = '#2d3149'
-  --       hl.TelescopeNormal = { bg = c.bg_dark, fg = c.fg_dark }
-  --       hl.TelescopeBorder = { bg = c.bg_dark, fg = c.bg_dark }
-  --       hl.TelescopePromptNormal = { bg = prompt }
-  --       hl.TelescopePromptBorder = { bg = prompt, fg = prompt }
-  --       hl.TelescopePromptTitle = { bg = prompt, fg = prompt }
-  --       hl.TelescopePreviewTitle = { bg = c.bg_dark, fg = c.bg_dark }
-  --       hl.TelescopeResultsTitle = { bg = c.bg_dark, fg = c.bg_dark }
-  --     end,
-  --   },
-  --   config = function(_, opts)
-  --     local tokyonight = require('tokyonight')
-  --     tokyonight.setup(opts)
-  --     tokyonight.load()
-  --   end,
-  -- },
 
   -- nvim-notify
   {
@@ -193,24 +175,27 @@ return {
   -- indent-blankline.nvim
   {
     'lukas-reineke/indent-blankline.nvim',
+    main = 'ibl',
     opts = {
-      indentLine_enabled = 1,
-      filetype_exclude = {
-        'help',
-        'terminal',
-        'lazy',
-        'neo-tree',
-        'lspinfo',
-        'TelescopePrompt',
-        'TelescopeResults',
-        'mason',
-        '',
+      indent = {
+        char = '▏',
       },
-      buftype_exclude = { 'terminal' },
-      show_trailing_blankline_indent = false,
-      show_first_indent_level = false,
-      show_current_context = true,
-      show_current_context_start = true,
+      exclude = {
+        filetypes = {
+          'lspinfo',
+          'packer',
+          'checkhealth',
+          'help',
+          'lazy',
+          'neo-tree',
+          'man',
+          'gitcommit',
+          'TelescopePrompt',
+          'TelescopeResults',
+          'mason',
+          '',
+        },
+      },
     },
   },
 

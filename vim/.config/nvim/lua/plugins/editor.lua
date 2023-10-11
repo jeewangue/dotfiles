@@ -37,28 +37,28 @@ return {
       {
         '<leader>xx',
         function()
-          require 'trouble'.open()
+          return require 'trouble'.open()
         end,
         desc = 'Toggle trouble.nvim',
       },
       {
         '<leader>xw',
         function()
-          require 'trouble'.open 'workspace_diagnostics'
+          return require 'trouble'.open 'workspace_diagnostics'
         end,
         desc = 'Open workspace diagnostics',
       },
       {
         '<leader>xd',
         function()
-          require 'trouble'.open 'document_diagnostics'
+          return require 'trouble'.open 'document_diagnostics'
         end,
         desc = 'Open document diagnostics',
       },
       {
         '<leader>xq',
         function()
-          require 'trouble'.open 'quickfix'
+          return require 'trouble'.open 'quickfix'
         end,
 
         desc = 'Open quickfix',
@@ -66,14 +66,14 @@ return {
       {
         '<leader>xl',
         function()
-          require 'trouble'.open 'loclist'
+          return require 'trouble'.open 'loclist'
         end,
         desc = 'Open location list',
       },
       {
         '<leader>xr',
         function()
-          require 'trouble'.open 'lsp_references'
+          return require 'trouble'.open 'lsp_references'
         end,
         desc = 'Open lsp references',
       },
@@ -88,6 +88,15 @@ return {
       providers = { 'lsp', 'treesitter', 'regex' },
       large_file_cuttoff = 2000,
       large_file_overrides = { providers = { 'lsp' } },
+      filetypes_denylist = {
+        'dirbuf',
+        'dirvish',
+        'fugitive',
+        'NvimTree',
+        'neo-tree',
+        'TeleScopePrompt',
+        'TelescopeResults',
+      },
     },
     config = function(_, opts)
       require 'illuminate'.configure(opts)
@@ -154,6 +163,7 @@ return {
     branch = 'v3.x',
     keys = {
       { '<leader>n', '<cmd>Neotree toggle<CR>', desc = 'Toggle Neotree' },
+      { '<leader>N', '<cmd>Neotree reveal<CR>', desc = 'Open Neotree with reveal' },
     },
     opts = {
       sources = {
@@ -173,27 +183,51 @@ return {
         },
       },
       window = {
-        width = 40,               -- applies to left and right positions
-        auto_expand_width = true, -- expand the window when file exceeds the window width. does not work with position = "float"
+        width = 40,                -- applies to left and right positions
+        auto_expand_width = false, -- expand the window when file exceeds the window width. does not work with position = "float"
         mappings = {
           ['h'] = function(state)
             local node = state.tree:get_node()
-            if node.type == 'directory' and node:is_expanded() then
-              require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
-            else
+            if state.name == 'filesystem' then
+              if node.type == 'directory' and node:is_expanded() then
+                require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+              else
+                require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+              end
+            elseif state.name == 'buffers' or state.name == 'git_status' then
               require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+            elseif state.name == 'document_symbols' then
+              if node.type == 'symbol' and node:is_expanded() then
+                require 'neo-tree.sources.common.commands'.toggle_node(state, node)
+              else
+                require 'neo-tree.ui.renderer'.focus_node(state, node:get_parent_id())
+              end
             end
           end,
           ['l'] = function(state)
             local node = state.tree:get_node()
-            if node.type == 'directory' then
-              if not node:is_expanded() then
-                require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
-              elseif node:has_children() then
-                require 'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+            if state.name == 'filesystem' then
+              if node.type == 'directory' then
+                if not node:is_expanded() then
+                  require 'neo-tree.sources.filesystem'.toggle_directory(state, node)
+                elseif node:has_children() then
+                  require 'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+                end
+              elseif node.type == 'file' then
+                require 'neo-tree.sources.common.commands'.open_with_window_picker(state, node)
               end
-            elseif node.type == 'file' then
+            elseif state.name == 'buffers' or state.name == 'git_status' then
               require 'neo-tree.sources.common.commands'.open_with_window_picker(state, node)
+            elseif state.name == 'document_symbols' then
+              if node:has_children() then
+                if not node:is_expanded() then
+                  require 'neo-tree.sources.common.commands'.toggle_node(state, node)
+                else
+                  require 'neo-tree.ui.renderer'.focus_node(state, node:get_child_ids()[1])
+                end
+              else
+                require 'neo-tree.sources.document_symbols.commands'.jump_to_symbol(state, node)
+              end
             end
           end,
         },
@@ -355,20 +389,6 @@ return {
           return require 'gitsigns'.reset_buffer()
         end,
         desc = 'Reset the buffer',
-      },
-      {
-        '<leader>gs',
-        function()
-          return require 'gitsigns'.stage_hunk()
-        end,
-        desc = 'Stage the hunk',
-      },
-      {
-        '<leader>gS',
-        function()
-          return require 'gitsigns'.stage_buffer()
-        end,
-        desc = 'Stage the buffer',
       },
       {
         '<leader>gu',
@@ -634,163 +654,298 @@ return {
       },
     },
   },
-  --
-  -- -- telescope.nvim
-  -- {
-  --   'nvim-telescope/telescope.nvim',
-  --   dependencies = {
-  --     'nvim-lua/plenary.nvim',
-  --     {
-  --       'nvim-telescope/telescope-fzf-native.nvim',
-  --       build = 'make',
-  --       config = function()
-  --         require('telescope').load_extension('fzf')
-  --       end,
-  --     },
-  --   },
-  --   branch = '0.1.x',
-  --   keys = {
-  --     {
-  --       '<leader>ff',
-  --       function()
-  --         return require('telescope.builtin').find_files()
-  --       end,
-  --       desc = 'Files',
-  --     },
-  --     {
-  --       '<leader>fw',
-  --       function()
-  --         return require('telescope.builtin').live_grep()
-  --       end,
-  --       desc = 'Words',
-  --     },
-  --     {
-  --       '<leader>fb',
-  --       function()
-  --         return require('telescope.builtin').buffers()
-  --       end,
-  --       desc = 'Buffers',
-  --     },
-  --     {
-  --       '<leader>fh',
-  --       function()
-  --         return require('telescope.builtin').help_tags()
-  --       end,
-  --       desc = 'Help',
-  --     },
-  --     {
-  --       '<leader>fm',
-  --       function()
-  --         return require('telescope.builtin').man_pages()
-  --       end,
-  --       desc = 'Man pages',
-  --     },
-  --     {
-  --       '<leader>fr',
-  --       function()
-  --         return require('telescope.builtin').oldfiles()
-  --       end,
-  --       desc = 'Recently opened',
-  --     },
-  --     {
-  --       '<leader>fR',
-  --       function()
-  --         return require('telescope.builtin').registers()
-  --       end,
-  --       desc = 'Registers',
-  --     },
-  --     {
-  --       '<leader>fk',
-  --       function()
-  --         return require('telescope.builtin').keymaps()
-  --       end,
-  --       desc = 'Keymaps',
-  --     },
-  --     {
-  --       '<leader>fc',
-  --       function()
-  --         return require('telescope.builtin').commands()
-  --       end,
-  --       desc = 'Commands',
-  --     },
-  --     {
-  --       '<leader>fl',
-  --       function()
-  --         return require('telescope.builtin').resume()
-  --       end,
-  --       desc = 'Resume',
-  --     },
-  --     {
-  --       '<leader>fd',
-  --       function()
-  --         return require('telescope.builtin').diagnostics({ bufnr = 0 })
-  --       end,
-  --       desc = 'Document diagnostics',
-  --     },
-  --     {
-  --       '<leader>fD',
-  --       function()
-  --         return require('telescope.builtin').diagnostics()
-  --       end,
-  --       desc = 'Workspace diagnostics',
-  --     },
-  --     {
-  --       '<leader>fs',
-  --       function()
-  --         return require('telescope.builtin').lsp_document_symbols()
-  --       end,
-  --       desc = 'Document symbols',
-  --     },
-  --     {
-  --       '<leader>go',
-  --       function()
-  --         return require('telescope.builtin').git_status()
-  --       end,
-  --       desc = 'Seach through changed files',
-  --     },
-  --     {
-  --       '<leader>gb',
-  --       function()
-  --         return require('telescope.builtin').git_branches()
-  --       end,
-  --       desc = 'Search through git branches',
-  --     },
-  --     {
-  --       '<leader>gc',
-  --       function()
-  --         return require('telescope.builtin').git_commits()
-  --       end,
-  --       desc = 'Search and checkout git commits',
-  --     },
-  --     { '<leader>ft', '<cmd>TodoTelescope<CR>', desc = 'Todo comments' },
-  --   },
-  --   opts = function()
-  --     -- File and text search in hidden files and directories
-  --     local telescopeConfig = require('telescope.config')
-  --
-  --     -- Clone the default Telescope configuration
-  --     local vimgrep_arguments = { unpack(telescopeConfig.values.vimgrep_arguments) }
-  --
-  --     -- I want to search in hidden/dot files.
-  --     table.insert(vimgrep_arguments, '--hidden')
-  --     -- I don't want to search in the `.git` directory.
-  --     table.insert(vimgrep_arguments, '--glob')
-  --     table.insert(vimgrep_arguments, '!**/.git/*')
-  --
-  --     return {
-  --       defaults = {
-  --         vimgrep_arguments = vimgrep_arguments,
-  --         theme = 'tokyonight',
-  --         path_display = { 'smart' },
-  --         file_ignore_patterns = { '.git/' },
-  --         layout_strategy = 'horizontal',
-  --         layout_config = { prompt_position = 'top' },
-  --         sorting_strategy = 'ascending',
-  --       },
-  --       pickers = { find_files = { find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' } } },
-  --     }
-  --   end,
-  -- },
+
+  -- telescope.nvim
+  {
+    'nvim-telescope/telescope.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      {
+        'debugloop/telescope-undo.nvim',
+        config = function()
+          require 'telescope'.load_extension 'undo'
+        end,
+      },
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'make',
+        config = function()
+          require 'telescope'.load_extension 'fzf'
+        end,
+      },
+      -- TODO: configure ueberzerg to show image
+    },
+    branch = '0.1.x',
+    cmd = 'Telescope',
+    keys = {
+      {
+        '<leader><leader>',
+        function()
+          return require 'telescope.builtin'.find_files()
+        end,
+        desc = 'Files',
+      },
+      {
+        '<leader>ff',
+        function()
+          return require 'telescope.builtin'.find_files()
+        end,
+        desc = 'Files',
+      },
+      {
+        '<leader>fa',
+        function()
+          return require 'telescope.builtin'.find_files {
+            follow = true,
+            no_ignore = true,
+            hidden = true,
+          }
+        end,
+        desc = 'Files (including hidden files)',
+      },
+      {
+        '<leader>fw',
+        function()
+          return require 'telescope.builtin'.live_grep()
+        end,
+        desc = 'Words',
+      },
+      {
+        '<leader>fb',
+        function()
+          return require 'telescope.builtin'.buffers()
+        end,
+        desc = 'Buffers',
+      },
+      {
+        '<leader>fh',
+        function()
+          return require 'telescope.builtin'.help_tags()
+        end,
+        desc = 'Help',
+      },
+      {
+        '<leader>fM',
+        function()
+          return require 'telescope.builtin'.man_pages()
+        end,
+        desc = 'Man pages',
+      },
+      {
+        '<leader>fr',
+        function()
+          return require 'telescope.builtin'.oldfiles()
+        end,
+        desc = 'Recently opened',
+      },
+      {
+        '<leader>fR',
+        function()
+          return require 'telescope.builtin'.registers()
+        end,
+        desc = 'Registers',
+      },
+      {
+        '<leader>fk',
+        function()
+          return require 'telescope.builtin'.keymaps()
+        end,
+        desc = 'Keymaps',
+      },
+      {
+        '<leader>fco',
+        function()
+          return require 'telescope.builtin'.commands()
+        end,
+        desc = 'Commands',
+      },
+      {
+        '<leader>fl',
+        function()
+          return require 'telescope.builtin'.resume()
+        end,
+        desc = 'Resume',
+      },
+      {
+        '<leader>fd',
+        function()
+          return require 'telescope.builtin'.diagnostics { bufnr = 0 }
+        end,
+        desc = 'Document diagnostics',
+      },
+      {
+        '<leader>fD',
+        function()
+          return require 'telescope.builtin'.diagnostics()
+        end,
+        desc = 'Workspace diagnostics',
+      },
+      {
+        '<leader>fs',
+        function()
+          return require 'telescope.builtin'.lsp_document_symbols()
+        end,
+        desc = 'Document symbols',
+      },
+      {
+        '<leader>gs',
+        function()
+          return require 'telescope.builtin'.git_status()
+        end,
+        desc = 'Seach through changed files',
+      },
+      {
+        '<leader>gB',
+        function()
+          return require 'telescope.builtin'.git_branches()
+        end,
+        desc = 'Search through git branches',
+      },
+      {
+        '<leader>gc',
+        function()
+          return require 'telescope.builtin'.git_commits()
+        end,
+        desc = 'Search and checkout git commits',
+      },
+      {
+        '<leader>ut',
+        function()
+          return require 'telescope'.extensions.undo.undo()
+        end,
+        desc = 'Search through undotree',
+      },
+      {
+        '<leader>fz',
+        function()
+          return require 'telescope.builtin'.current_buffer_fuzzy_find()
+        end,
+        desc = 'Find in current buffer',
+      },
+      {
+        '<leader>ft',
+        '<cmd>TodoTelescope<CR>',
+        desc = 'Todo comments',
+      },
+    },
+    config = function()
+      require 'telescope'.setup {
+        defaults = {
+          vimgrep_arguments = {
+            'rg',
+            '--follow',
+            '--color=never',
+            '--no-heading',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+            '--trim',
+          },
+          prompt_prefix = '   ',
+          path_display = { 'smart' },
+          file_ignore_patterns = { '.git/' },
+          layout_strategy = 'horizontal',
+          layout_config = { prompt_position = 'top' },
+          sorting_strategy = 'ascending',
+          mappings = {
+            n = { ['q'] = require 'telescope.actions'.close },
+            i = {
+              -- map actions.which_key to <C-h> (default: <C-/>)
+              -- actions.which_key shows the mappings for your picker,
+              -- e.g. git_{create, delete, ...}_branch for the git_branches picker
+              ['<C-h>'] = 'which_key',
+              ['<esc>'] = require 'telescope.actions'.close,
+            },
+          },
+        },
+        pickers = {
+          find_files = {
+            find_command = { 'rg', '--files', '--hidden', '--glob', '!**/.git/*' },
+          },
+        },
+        extensions = {
+          fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = 'smart_case',
+          },
+          undo = {
+            use_delta = true,
+            side_by_side = true,
+            diff_context_lines = 15,
+          },
+          media_files = {
+            -- filetypes whitelist
+            -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
+            filetypes = { 'png', 'webp', 'jpg', 'jpeg', 'gif', 'mp4', 'webm', 'pdf' },
+            -- find command (defaults to `fd`)
+            find_cmd = 'rg',
+          },
+        },
+      }
+    end,
+  },
+
+  -- telescope-cheat.nvim
+  -- NOTE: Run once to generate the cheat sheet
+  {
+    'yorik1984/telescope-cheat.nvim',
+    dependencies = {
+      'kkharji/sqlite.lua',
+      'nvim-telescope/telescope.nvim',
+    },
+    keys = {
+      {
+        '<leader>fch',
+        function()
+          return require 'telescope'.extensions.cheat.fd {}
+        end,
+        desc = 'Cheat sheet',
+      },
+      {
+        '<leader>fcr',
+        function()
+          return require 'telescope'.extensions.cheat.recache()
+        end,
+        desc = 'Cheat sheet recache',
+      },
+    },
+    init = function()
+      local db_dir = vim.fn.stdpath 'data' .. '/databases'
+      if vim.fn.isdirectory(db_dir) == 0 then
+        vim.fn.mkdir(db_dir, 'p')
+      end
+    end,
+    config = function()
+      require 'telescope'.load_extension 'cheat'
+    end,
+  },
+
+  -- telescope-media-files.nvim
+  {
+    'nvim-telescope/telescope-media-files.nvim',
+    dependencies = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+    keys = {
+      {
+        '<leader>fi',
+        function()
+          return require 'telescope'.extensions.media_files.media_files()
+        end,
+        desc = 'Media files',
+      },
+    },
+    config = function()
+      require 'telescope'.load_extension 'media_files'
+    end,
+  },
 
   -- auto-session
   {

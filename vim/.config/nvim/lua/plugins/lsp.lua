@@ -114,6 +114,9 @@ return {
     event = 'LspAttach',
     opts = {
       highlight = true,
+      lsp = {
+        auto_attach = true,
+      },
       icons = {
         Array = ' ',
         Boolean = ' ',

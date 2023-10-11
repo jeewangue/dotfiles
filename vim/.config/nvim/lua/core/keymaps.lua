@@ -22,10 +22,10 @@ map('n', '<leader>th', '<cmd>tabprevious<CR>', { desc = 'Tab left' })
 map('n', '<leader>tl', '<cmd>tabnext<CR>', { desc = 'Tab right' })
 
 -- Quit current buffer
-map('n', '<leader>qq', '<cmd>q<CR>', { desc = 'Quit the current file' })
+map('n', 'qq', '<cmd>q<CR>', { desc = 'Quit the current file' })
 
 -- Quit all buffers
-map('n', '<leader>qa', '<cmd>qa<CR>', { desc = 'Quit all files' })
+map('n', 'qa', '<cmd>qa<CR>', { desc = 'Quit all files' })
 
 -- Quick save
 map('n', '<leader>ww', '<cmd>w<CR>', { desc = 'Save the current file' })
@@ -51,6 +51,16 @@ map('t', '<C-x>', vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true
 
 ------------ LSP ------------
 -- See `<cmd> :help vim.lsp.*` for documentation on any of the below functions
+map('n', '<leader>ldt', function()
+  if vim.diagnostic.is_disabled(0) then
+    vim.diagnostic.enable(0)
+    vim.notify('Diagnostics enabled')
+  else
+    vim.diagnostic.disable(0)
+    vim.notify('Diagnostics disabled')
+  end
+end, { desc = 'LSP toggle diagnostics' })
+
 map('n', '<leader>fm', '<cmd>lua vim.lsp.buf.format()<CR>', { desc = 'LSP formatting' })
 
 map('n', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
