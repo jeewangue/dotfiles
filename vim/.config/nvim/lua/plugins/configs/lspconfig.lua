@@ -68,27 +68,27 @@ return {
         },
       },
     },
-    {
-      'jay-babu/mason-null-ls.nvim',
-      cmd = { 'NullLsInstall', 'NullLsUninstall' },
-      dependencies = {
-        'jose-elias-alvarez/null-ls.nvim',
-      },
-      opts = {
-        ensure_installed = {
-          'cpplint',
-          'prettier',
-          'shfmt',
-          'stylua',
-          'tfsec',
-          'black',
-          'jq',
-          'blackd-client',
-        },
-        automatic_installation = true,
-        handlers = {},
-      },
-    },
+    -- {
+    --   'jay-babu/mason-null-ls.nvim',
+    --   cmd = { 'NullLsInstall', 'NullLsUninstall' },
+    --   dependencies = {
+    --     'jose-elias-alvarez/null-ls.nvim',
+    --   },
+    --   opts = {
+    --     ensure_installed = {
+    --       'cpplint',
+    --       'prettier',
+    --       'shfmt',
+    --       'stylua',
+    --       'tfsec',
+    --       'black',
+    --       'jq',
+    --       'blackd-client',
+    --     },
+    --     automatic_installation = true,
+    --     handlers = {},
+    --   },
+    -- },
     {
       'j-hui/fidget.nvim',
       event = 'LspAttach',

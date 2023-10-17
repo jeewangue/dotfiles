@@ -6,7 +6,8 @@ return {
     priority = 1000,
     config = function()
       require 'kanagawa'.setup {
-        compile = false,  -- enable compiling the colorscheme
+        -- NOTE: Run `:KanagawaCompile` to compile the colorscheme
+        compile = true,   -- enable compiling the colorscheme
         undercurl = true, -- enable undercurls
         commentStyle = { italic = true },
         functionStyle = {},
@@ -16,6 +17,7 @@ return {
         transparent = false,   -- do not set background color
         dimInactive = true,    -- dim inactive window `:h hl-NormalNC`
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
+        theme = 'wave',        -- "wave" | "lotus" | "dragon"
         colors = {             -- add/modify theme and palette colors
           palette = {
             -- https://coolors.co/palette/001219-005f73-0a9396-94d2bd-e9d8a6-ee9b00-ca6702-bb3e03-ae2012-9b2226
@@ -43,40 +45,22 @@ return {
             -- others
             Prompt = '#2c240b',
           },
-          theme = {
-            wave = {},
-            lotus = {},
-            dragon = {},
-            all = {},
-          },
         },
-        overrides = function(colors) -- add/modify highlights
+        overrides = function(colors)
           return {
-            Search = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
-            IncSearch = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
-            CurSearch = { fg = colors.palette.AlloyOrange, bg = colors.palette.RichBlack },
-            Visual = { bg = colors.palette.RichBlack },
-            VisualNOS = { bg = colors.palette.RichBlack },
-            Pmenu = { bg = colors.palette.RichBlack },
             IblScope = { fg = colors.palette.Rust },
-            CopilotSuggestion = { fg = 'khaki1', bg = colors.palette.RichBlack },
+            CopilotSuggestion = { fg = colors.palette.Gamboge, bg = colors.palette.RichBlack },
             IlluminatedWordText = { bg = colors.palette.TyrianPurple },
             IlluminatedWordRead = { bg = colors.palette.TyrianPurple },
             IlluminatedWordWrite = { bg = colors.palette.TyrianPurple },
             TelescopeNormal = { bg = colors.palette.RichBlack, fg = colors.palette.Vanilla },
-            TelescopeBorder = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
-            TelescopePromptNormal = { bg = colors.palette.Prompt },
-            TelescopePromptBorder = { bg = colors.palette.Prompt, fg = colors.palette.Prompt },
-            TelescopePromptTitle = { bg = colors.palette.Prompt, fg = colors.palette.Prompt },
-            TelescopePreviewTitle = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
-            TelescopeResultsTitle = { bg = colors.palette.RichBlack, fg = colors.palette.RichBlack },
+            TelescopeBorder = { bg = colors.palette.RichBlack, fg = colors.palette.sakuraPink },
+            TelescopeTitle = { bg = colors.palette.RichBlack, fg = colors.palette.sakuraPink },
+            TelescopePromptNormal = { bg = colors.palette.RichBlack },
+            TelescopePromptBorder = { bg = colors.palette.RichBlack, fg = colors.palette.surimiOrange },
+            TelescopePromptTitle = { bg = colors.palette.RichBlack, fg = colors.palette.surimiOrange },
           }
         end,
-        theme = 'wave',  -- "wave" | "lotus" | "dragon"
-        background = {   -- map the value of 'background' option to a theme
-          dark = 'wave', -- try "dragon" !
-          light = 'lotus',
-        },
       }
       vim.cmd [[colorscheme kanagawa]]
     end,

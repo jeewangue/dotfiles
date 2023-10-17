@@ -966,4 +966,12 @@ return {
   },
   -- vim-kitty
   { 'fladson/vim-kitty', ft = 'kitty' },
+
+  -- gx.nvim
+  {
+    'chrishrb/gx.nvim',
+    event = { 'BufEnter' },
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = true,
+  },
 }

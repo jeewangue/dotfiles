@@ -61,8 +61,6 @@ map('n', '<leader>ldt', function()
   end
 end, { desc = 'LSP toggle diagnostics' })
 
-map('n', '<leader>fm', '<cmd>lua vim.lsp.buf.format()<CR>', { desc = 'LSP formatting' })
-
 map('n', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 map('v', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 

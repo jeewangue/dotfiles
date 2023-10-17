@@ -156,6 +156,44 @@ return {
       },
     },
   },
+
+  -- conform.nvim
+  {
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        '<leader>fm',
+        function()
+          require 'conform'.format { async = true, lsp_fallback = true }
+        end,
+        desc = 'Format with Conform',
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        -- Conform will run multiple formatters sequentially
+        python = { 'isort', 'black', 'ruff' },
+        -- Use a sub-list to run only the first available formatter
+        javascript = { { 'prettierd', 'prettier' } },
+        typescript = { { 'prettierd', 'prettier' } },
+        rust = { 'rustfmt' },
+        sh = { 'shfmt' },
+      },
+      formatters = {
+        shfmt = {
+          prepend_args = { '-i', '2' },
+        },
+      },
+      format_on_save = {
+        -- These options will be passed to conform.format()
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
+    },
+    config = true,
+  },
   --
   -- -- null-ls.nvim
   -- -- WARNING: null-ls.nvim will be archived on August 11, 2023
