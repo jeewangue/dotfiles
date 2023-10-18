@@ -67,14 +67,34 @@ return {
   --     auto_display = true,
   --   },
   -- },
-  {
-    '3rd/image.nvim',
-    ft = { 'markdown', 'norg', 'syslang', 'vimwiki' },
-    opts = {
-      backend = 'ueberzug',
-    },
-    rocks = { 'magick' },
-  },
+  -- {
+  --   '3rd/image.nvim',
+  --   ft = { 'markdown', 'norg', 'syslang', 'vimwiki' },
+  --   opts = {
+  --     backend = 'ueberzug',
+  --   },
+  --   rocks = { 'magick' },
+  -- },
 
   -- TODO: neorg
+  {
+    'nvim-neorg/neorg',
+    build = ':Neorg sync-parsers',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require 'neorg'.setup {
+        load = {
+          ['core.defaults'] = {},  -- Loads default behaviour
+          ['core.concealer'] = {}, -- Adds pretty icons to your documents
+          ['core.dirman'] = {      -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                notes = '~/notes',
+              },
+            },
+          },
+        },
+      }
+    end,
+  },
 }

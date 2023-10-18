@@ -93,13 +93,11 @@ return {
     config = true,
   },
 
-  -- nvim-highlight-colors
-  {
-    'brenoprata10/nvim-highlight-colors',
-    config = function()
-      require 'nvim-highlight-colors'.setup {}
-    end,
-  },
+  -- -- nvim-highlight-colors
+  -- {
+  --   'brenoprata10/nvim-highlight-colors',
+  --   config = true,
+  -- },
 
   -- nvim-ufo
   {

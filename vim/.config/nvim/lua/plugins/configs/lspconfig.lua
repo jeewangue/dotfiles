@@ -236,6 +236,8 @@ return {
 
     lspconfig.pyright.setup {}
 
+    lspconfig.tsserver.setup {}
+
     lspconfig.ruff_lsp.setup {}
 
     lspconfig.marksman.setup {}
