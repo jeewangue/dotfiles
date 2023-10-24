@@ -5,19 +5,18 @@
 set -o errexit -o xtrace
 
 cdk_generate_graph() {
-	local TEMPLATES=($(find cdk.out -name "*.template.json" -type f))
+  local TEMPLATES=($(find cdk.out -name "*.template.json" -type f))
 
-	for template in $TEMPLATES; do
-		local DOT_FILE="${template%.json}.dot"
-		local PNG_FILE="${template%.json}.png"
+  for template in $TEMPLATES; do
+    local DOT_FILE="${template%.json}.dot"
+    local PNG_FILE="${template%.json}.png"
 
-		cat "$template" | cfg --edgelabels > "${DOT_FILE}"
-		sed -i '/AssetParameters/d' "${DOT_FILE}"
-		sed -i '/CDKMetadata/d' "${DOT_FILE}"
-		cat "${DOT_FILE}" | dot -T png -o "${PNG_FILE}"
-	done
-	#  && viewnior template.png
+    cat "$template" | cfg --edgelabels >"${DOT_FILE}"
+    sed -i '/AssetParameters/d' "${DOT_FILE}"
+    sed -i '/CDKMetadata/d' "${DOT_FILE}"
+    cat "${DOT_FILE}" | dot -T png -o "${PNG_FILE}"
+  done
+  #  && viewnior template.png
 }
 
 cdk_generate_graph
-

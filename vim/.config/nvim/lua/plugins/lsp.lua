@@ -180,17 +180,23 @@ return {
         typescript = { { 'prettierd', 'prettier' } },
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
+        toml = { 'taplo' },
+        -- dockerfile = { 'hadolint' },
       },
       formatters = {
         shfmt = {
           prepend_args = { '-i', '2' },
         },
+        -- hadolint = {
+        --   command = 'hadolint',
+        --   args = { '--no-fail', '--format', 'json', '$FILENAME' },
+        -- },
       },
-      format_on_save = {
-        -- These options will be passed to conform.format()
-        timeout_ms = 500,
-        lsp_fallback = true,
-      },
+      -- format_on_save = {
+      --   -- These options will be passed to conform.format()
+      --   timeout_ms = 500,
+      --   lsp_fallback = true,
+      -- },
     },
     config = true,
   },
@@ -247,21 +253,32 @@ return {
   --     }
   --   end,
   -- },
-  --
-  -- -- fidget.nvim
-  -- {
-  --   'j-hui/fidget.nvim',
-  --   event = 'LspAttach',
-  --   -- NOTE: Keep branch option until further notice
-  --   -- Related: https://github.com/j-hui/fidget.nvim/commit/a6c51e2
-  --   -- Also related: https://github.com/j-hui/fidget.nvim/issues/131
-  --   branch = 'legacy',
-  --   opts = { window = { blend = 0, relative = 'editor' }, text = { spinner = 'dots' } },
-  -- },
-  --
-  -- -- lsp_lines.nvim
-  -- { 'https://git.sr.ht/~whynothugo/lsp_lines.nvim', event = 'LspAttach', config = true },
-  --
+
+  -- fidget.nvim
+  {
+    'j-hui/fidget.nvim',
+    event = 'LspAttach',
+    -- NOTE: Keep branch option until further notice
+    -- Related: https://github.com/j-hui/fidget.nvim/commit/a6c51e2
+    -- Also related: https://github.com/j-hui/fidget.nvim/issues/131
+    branch = 'legacy',
+    opts = {
+      window = {
+        blend = 0,
+        relative = 'editor'
+      },
+      text = { spinner = 'dots' }
+    },
+  },
+
+
+  -- lsp_lines.nvim
+  {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    event = 'LspAttach',
+    config = true
+  },
+
   -- -- actions-preview.nvim
   -- {
   --   'aznhe21/actions-preview.nvim',

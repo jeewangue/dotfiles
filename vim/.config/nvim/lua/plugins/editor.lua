@@ -77,6 +77,35 @@ return {
         end,
         desc = 'Open lsp references',
       },
+      {
+        '[q',
+        function()
+          if require 'trouble'.is_open() then
+            require 'trouble'.previous { skip_groups = true, jump = true }
+          else
+            local ok, err = pcall(vim.cmd.cprevious)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = 'Previous trouble/quickfix item',
+      },
+      {
+        ']q',
+        function()
+          if require 'trouble'.is_open() then
+            require 'trouble'.next { skip_groups = true, jump = true }
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = 'Next trouble/quickfix item',
+      },
+
     },
   },
 
@@ -119,6 +148,20 @@ return {
     keys = { { ']]', desc = 'Next Reference' }, { '[[', desc = 'Prev Reference' } },
   },
 
+  -- nvim-hlslens
+  {
+    'kevinhwang91/nvim-hlslens',
+    config = true,
+    keys = {
+      { 'n',  [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { 'N',  [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]] },
+      { '*',  [[*<Cmd>lua require('hlslens').start()<CR>]] },
+      { '#',  [[#<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]] },
+      { 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]] },
+    },
+  },
+
   -- neo-tree.nvim
   {
     'nvim-neo-tree/neo-tree.nvim',
@@ -152,11 +195,10 @@ return {
     },
     -- Load neo-tree.nvim if we provide a directory as an argument
     init = function()
-      if vim.fn.argc() == 1 then
-        ---@diagnostic disable-next-line: param-type-mismatch
+      if vim.fn.argc(-1) == 1 then
         local stat = vim.loop.fs_stat(vim.fn.argv(0))
         if stat and stat.type == 'directory' then
-          require 'neo-tree'
+          require 'lazy'.load { plugins = { 'neo-tree.nvim' } }
         end
       end
     end,
@@ -275,6 +317,32 @@ return {
       end
       return ret
     end,
+  },
+
+  -- zen-mode.nvim
+  {
+    'folke/zen-mode.nvim',
+    dependencies = {
+      {
+        'folke/twilight.nvim',
+        keys = { { '<leader>zt', '<cmd>Twilight<CR>', desc = 'Toggle twilight.nvim' } },
+        config = true,
+      },
+    },
+    opts = {
+      window = {
+        width = 0.8,
+      },
+    },
+    keys = {
+      {
+        '<leader>zz',
+        function()
+          return require 'zen-mode'.toggle()
+        end,
+        desc = 'Toggle zen-mode.nvim',
+      },
+    },
   },
 
   -- neogit

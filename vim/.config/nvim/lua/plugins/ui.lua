@@ -157,6 +157,7 @@ return {
   -- indent-blankline.nvim
   {
     'lukas-reineke/indent-blankline.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
     main = 'ibl',
     opts = {
       indent = {
@@ -167,6 +168,7 @@ return {
           'lspinfo',
           'packer',
           'checkhealth',
+          'dashboard',
           'help',
           'lazy',
           'neo-tree',
