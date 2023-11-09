@@ -279,35 +279,40 @@ return {
     config = true
   },
 
-  -- -- actions-preview.nvim
-  -- {
-  --   'aznhe21/actions-preview.nvim',
-  --   dependencies = 'nvim-telescope/telescope.nvim',
-  --   opts = {
-  --     telescope = {
-  --       sorting_strategy = 'ascending',
-  --       layout_strategy = 'vertical',
-  --       layout_config = {
-  --         width = 0.8,
-  --         height = 0.9,
-  --         prompt_position = 'top',
-  --         preview_cutoff = 20,
-  --         preview_height = function(_, _, max_lines)
-  --           return max_lines - 15
-  --         end,
-  --       },
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       'gf',
-  --       function()
-  --         return require('actions-preview').code_actions()
-  --       end,
-  --       desc = 'Open actions-preview.nvim',
-  --     },
-  --   },
-  -- },
+  -- actions-preview.nvim
+  {
+    'aznhe21/actions-preview.nvim',
+    dependencies = 'nvim-telescope/telescope.nvim',
+    event = 'LspAttach',
+    keys = {
+      {
+        'gf',
+        function()
+          require 'actions-preview'.code_actions()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Open actions-preview.nvim',
+      },
+    },
+    opts = {
+      diff = {
+        algorithm = 'patience',
+      },
+      telescope = {
+        sorting_strategy = 'ascending',
+        layout_strategy = 'vertical',
+        layout_config = {
+          width = 0.8,
+          height = 0.9,
+          prompt_position = 'top',
+          preview_cutoff = 20,
+          preview_height = function(_, _, max_lines)
+            return max_lines - 15
+          end,
+        },
+      },
+    },
+  },
   --
   -- -- nvim-lightbulb
   -- { 'kosayoda/nvim-lightbulb', event = 'LspAttach', opts = { autocmd = { enabled = true } } },

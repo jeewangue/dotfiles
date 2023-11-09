@@ -54,15 +54,40 @@ map('t', '<C-x>', vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true
 map('n', '<leader>ldt', function()
   if vim.diagnostic.is_disabled(0) then
     vim.diagnostic.enable(0)
-    vim.notify('Diagnostics enabled')
+    vim.notify 'Diagnostics enabled'
   else
     vim.diagnostic.disable(0)
-    vim.notify('Diagnostics disabled')
+    vim.notify 'Diagnostics disabled'
   end
 end, { desc = 'LSP toggle diagnostics' })
 
 map('n', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 map('v', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
+
+function PandocPasteMarkdown()
+  -- Get the content of the clipboard with xclip
+  local handle = io.popen('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm --wrap=none', 'r')
+  if handle == nil then
+    vim.notify 'Failed to get clipboard content'
+    return
+  end
+  local markdown_content = handle:read '*a'
+  handle:close()
+
+  -- Split the converted Markdown content into lines
+  local lines = {}
+  for line in string.gmatch(markdown_content, '[^\r\n]+') do
+    table.insert(lines, line)
+  end
+
+  -- Insert the lines into the buffer after the current line
+  local line_number = vim.fn.line '.'
+  vim.fn.append(line_number, lines)
+
+  -- Move the cursor to the last line of the inserted text
+  local last_line_number = line_number + #lines - 1
+  vim.fn.cursor(last_line_number + 1, 0)
+end
 
 -- n = {
 --   ['gD'] = {

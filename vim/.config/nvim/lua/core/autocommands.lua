@@ -35,3 +35,11 @@ autocmd('FileType', {
   pattern = { 'sh', 'zsh' },
   command = 'silent! set filetype=sh',
 })
+
+-- Set filetype qml for .qml files
+augroup('QmlFileType', {})
+autocmd('BufRead', {
+  group = 'QmlFileType',
+  pattern = { '*.qml' },
+  command = 'set filetype=qml',
+})

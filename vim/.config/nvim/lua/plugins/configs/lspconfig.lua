@@ -147,21 +147,25 @@ return {
     { 'gK', vim.lsp.buf.signature_help, desc = 'Signature Help' },
   },
   config = function()
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.offsetEncoding = { 'utf-16' }
+
     local lspconfig = require 'lspconfig'
 
     lspconfig.clangd.setup {
-      capabilities = {
-        offsetEncoding = { 'utf-16' },
-      },
+      capabilities = capabilities,
     }
 
     lspconfig.terraformls.setup {
+      capabilities = capabilities,
       cmd = { 'terraform-ls', 'serve' },
       filetypes = { 'tf', 'terraform', 'terraform-vars' },
       root_dir = lspconfig.util.root_pattern('.terraform', '.git'),
     }
 
     lspconfig.lua_ls.setup {
+      capabilities = capabilities,
       on_init = function(client)
         local path = client.workspace_folders[1].name
         if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
@@ -201,7 +205,13 @@ return {
       end,
     }
 
+    lspconfig.bashls.setup {
+      capabilities = capabilities,
+    }
+
+
     lspconfig.jsonls.setup {
+      capabilities = capabilities,
       settings = {
         json = {
           schemas = require 'schemastore'.json.schemas(),
@@ -211,6 +221,7 @@ return {
     }
 
     lspconfig.yamlls.setup {
+      capabilities = capabilities,
       settings = {
         yaml = {
           schemas = require 'schemastore'.yaml.schemas(),
@@ -225,13 +236,25 @@ return {
       },
     }
 
-    lspconfig.pyright.setup {}
+    lspconfig.pyright.setup {
+      capabilities = capabilities,
+    }
 
-    lspconfig.tsserver.setup {}
+    lspconfig.tsserver.setup {
+      capabilities = capabilities,
+    }
 
-    lspconfig.ruff_lsp.setup {}
+    lspconfig.ruff_lsp.setup {
+      capabilities = capabilities,
+    }
 
-    lspconfig.marksman.setup {}
+    lspconfig.marksman.setup {
+      capabilities = capabilities,
+    }
+
+    lspconfig.eslint.setup {
+      capabilities = capabilities,
+    }
 
     require 'mason-lspconfig'.setup {}
   end,

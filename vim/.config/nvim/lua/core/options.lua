@@ -82,3 +82,5 @@ vim.diagnostic.config({
 	virtual_lines = true,
 })
 
+-- Set log level for LSP
+vim.lsp.set_log_level("debug")

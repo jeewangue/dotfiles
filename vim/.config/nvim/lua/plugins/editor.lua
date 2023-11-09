@@ -1,4 +1,26 @@
 return {
+  -- diffview.nvim
+  {
+    'sindrets/diffview.nvim',
+    keys = {
+      {
+        '<leader>gd',
+        function()
+          return require 'diffview'.open()
+        end,
+        desc = 'Open diffview',
+      },
+      {
+        '<leader>gD',
+        function()
+          return require 'diffview'.close()
+        end,
+        desc = 'Close diffview',
+      },
+    },
+  },
+
+
   -- todo-comments.nvim
   {
     'folke/todo-comments.nvim',
@@ -465,13 +487,13 @@ return {
         end,
         desc = 'Unstage the hunk',
       },
-      {
-        '<leader>gd',
-        function()
-          return require 'gitsigns'.diffthis()
-        end,
-        desc = 'Open a diff',
-      },
+      -- {
+      --   '<leader>gd',
+      --   function()
+      --     return require 'gitsigns'.diffthis()
+      --   end,
+      --   desc = 'Open a diff',
+      -- },
       {
         '<leader>gb',
         function()
@@ -1029,6 +1051,7 @@ return {
             vim.cmd 'tabdo TroubleClose'
           end
         end,
+        'tabdo DiffviewClose',
       },
     },
   },
@@ -1042,4 +1065,21 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
   },
+
+  -- markdown-preview.nvim
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
+    ft = { 'markdown' },
+    keys = {
+      {
+        '<leader>mp',
+        '<cmd>MarkdownPreviewToggle<CR>',
+        desc = 'Toggle markdown preview',
+      },
+    },
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
+  }
 }
