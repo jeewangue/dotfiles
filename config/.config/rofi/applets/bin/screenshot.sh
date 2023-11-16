@@ -130,7 +130,7 @@ shotarea () {
 }
 
 shotflame() {
-	cd ${dir} && flameshot gui --raw | copy_shot
+	sleep 1 && cd ${dir} && flameshot gui --raw | copy_shot
 	notify_view
 
 }

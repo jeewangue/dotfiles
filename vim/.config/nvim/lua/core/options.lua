@@ -83,4 +83,4 @@ vim.diagnostic.config({
 })
 
 -- Set log level for LSP
-vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level("debug")

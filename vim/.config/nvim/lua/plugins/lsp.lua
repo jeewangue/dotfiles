@@ -1,113 +1,292 @@
 return {
-  -- -- nvim-lspconfig
-  -- {
-  --   'neovim/nvim-lspconfig',
-  --   dependencies = {
-  --     { 'folke/neodev.nvim', lazy = true },
-  --     {
-  --       'williamboman/mason.nvim',
-  --       cmd = 'Mason',
-  --       opts = {
-  --         ui = {
-  --           icons = {
-  --             package_installed = '',
-  --             package_pending = '',
-  --             package_uninstalled = '',
-  --           },
-  --         },
-  --       },
-  --     },
-  --     {
-  --       'williamboman/mason-lspconfig.nvim',
-  --       cmd = { 'LspInstall', 'LspUninstall' },
-  --       opts = {
-  --         ensure_installed = {
-  --           'lua_ls',
-  --           'clangd',
-  --           'marksman',
-  --         },
-  --       },
-  --     },
-  --     {
-  --       'jay-babu/mason-null-ls.nvim',
-  --       cmd = { 'NullLsInstall', 'NullLsUninstall' },
-  --       opts = {
-  --         ensure_installed = {
-  --           'stylua',
-  --           'markdownlint',
-  --           'mdformat',
-  --           -- 'selene',
-  --           'cpplint',
-  --           'clang_format',
-  --           'beautysh',
-  --         },
-  --       },
-  --     },
-  --     {
-  --       'jay-babu/mason-nvim-dap.nvim',
-  --       cmd = { 'DapInstall', 'DapUninstall' },
-  --       opts = {
-  --         automatic_installation = true,
-  --         handlers = {},
-  --         ensure_installed = { 'codelldb' },
-  --       },
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       'gd',
-  --       function()
-  --         return require('telescope.builtin').lsp_definitions()
-  --       end,
-  --       desc = 'Goto Definition',
-  --     },
-  --     {
-  --       'gr',
-  --       function()
-  --         return require('telescope.builtin').lsp_references()
-  --       end,
-  --       desc = 'References',
-  --     },
-  --     {
-  --       'gi',
-  --       function()
-  --         return require('telescope.builtin').lsp_implementations()
-  --       end,
-  --       desc = 'Goto Implementation',
-  --     },
-  --     {
-  --       'gy',
-  --       function()
-  --         return require('telescope.builtin').lsp_type_definitions()
-  --       end,
-  --       desc = 'Goto T[y]pe Definition',
-  --     },
-  --     { 'gD', vim.lsp.buf.declaration, desc = 'Goto Declaration' },
-  --     { 'K', vim.lsp.buf.hover, desc = 'Hover' },
-  --     { 'gK', vim.lsp.buf.signature_help, desc = 'Signature Help' },
-  --     { 'gR', vim.lsp.buf.rename, desc = 'Rename' },
-  --   },
-  --   event = { 'BufReadPre', 'BufNewFile' },
-  --   config = function()
-  --     local lspconfig = require('lspconfig')
-  --     local navic = require('nvim-navic')
-  --     local on_attach = function(client, bufnr)
-  --       if client.server_capabilities.documentSymbolProvider then
-  --         navic.attach(client, bufnr)
-  --       end
-  --     end
-  --     -- Load neodev.nvim before loading everything else
-  --     require('neodev').setup()
-  --     lspconfig.clangd.setup({
-  --       -- Fix clangd offset encoding
-  --       capabilities = { offsetEncoding = { 'utf-16' } },
-  --       on_attach = on_attach,
-  --     })
-  --     lspconfig.lua_ls.setup({ on_attach = on_attach, log_level = 0 })
-  --     lspconfig.marksman.setup({ on_attach = on_attach })
-  --   end,
-  -- },
-  --
+  -- nvim-lspconfig
+  {
+    'neovim/nvim-lspconfig',
+    cmd = { 'LspStart', 'LspStop', 'LspRestart', 'LspInfo', 'LspLog' },
+    event = { 'BufReadPre', 'BufNewFile' },
+    dependencies = {
+      { 'folke/neodev.nvim' },
+      { 'hrsh7th/nvim-cmp' },
+      {
+        'williamboman/mason.nvim',
+        cmd = { 'Mason', 'MasonInstall', 'MasonInstallAll', 'MasonUninstall', 'MasonUninstallAll', 'MasonLog' },
+        opts = {
+          PATH = 'prepend',
+
+          ui = {
+            icons = {
+              package_pending = ' ',
+              package_installed = '󰄳 ',
+              package_uninstalled = ' 󰚌',
+            },
+          },
+          max_concurrent_installers = 10,
+        },
+      },
+      {
+        'williamboman/mason-lspconfig.nvim',
+        cmd = { 'LspInstall', 'LspUninstall' },
+        opts = {
+          ensure_installed = {
+            -- lsp servers
+            'asm_lsp',
+            'bashls',
+            'biome',
+            'clangd',
+            'cmake',
+            'cssls',
+            'denols',
+            'dockerls',
+            'efm',
+            'eslint',
+            'golangci_lint_ls',
+            'gopls',
+            'gradle_ls',
+            'graphql',
+            'helm_ls',
+            'html',
+            'jdtls', -- java
+            'jqls',
+            'jsonls',
+            'lua_ls',
+            'marksman',
+            'neocmake',
+            'perlnavigator',
+            'pyright',
+            'ruff_lsp',
+            'rust_analyzer',
+            'solargraph',
+            'solc',
+            'solidity',
+            'sqlls',
+            'taplo',
+            'terraformls',
+            'texlab',
+            'tflint',
+            'tsserver',
+            'vimls',
+            'yamlls',
+            'zk',
+            'zls',
+          },
+        },
+      },
+      { 'b0o/schemastore.nvim' },
+    },
+    keys = {
+      {
+        'gd',
+        function()
+          return require 'telescope.builtin'.lsp_definitions()
+        end,
+        desc = 'Goto Definition',
+      },
+      {
+        'gr',
+        function()
+          return require 'telescope.builtin'.lsp_references()
+        end,
+        desc = 'References',
+      },
+      {
+        'gR',
+        function()
+          return vim.lsp.buf.rename()
+        end,
+        desc = 'Rename',
+      },
+      {
+        'gD',
+        vim.lsp.buf.declaration,
+        desc = 'Goto Declaration',
+      },
+      {
+        'gI',
+        function()
+          return require 'telescope.builtin'.lsp_implementations()
+        end,
+        desc = 'Goto Implementation',
+      },
+      {
+        'gy',
+        function()
+          return require 'telescope.builtin'.lsp_type_definitions()
+        end,
+        desc = 'Goto T[y]pe Definition',
+      },
+      { 'K',  vim.lsp.buf.hover,          desc = 'Hover' },
+      { 'gK', vim.lsp.buf.signature_help, desc = 'Signature Help' },
+    },
+    config = function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
+      capabilities.offsetEncoding = { 'utf-16' }
+
+      local lspconfig = require 'lspconfig'
+
+      lspconfig.clangd.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.taplo.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.terraformls.setup {
+        capabilities = capabilities,
+        cmd = { 'terraform-ls', 'serve' },
+        filetypes = { 'tf', 'terraform', 'terraform-vars' },
+        root_dir = lspconfig.util.root_pattern('.terraform', '.git'),
+      }
+
+      lspconfig.lua_ls.setup {
+        capabilities = capabilities,
+        on_init = function(client)
+          local path = client.workspace_folders[1].name
+          if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+            client.config.settings = vim.tbl_deep_extend('force', client.config.settings, {
+              Lua = {
+                runtime = {
+                  version = 'LuaJIT',
+                },
+                diagnostics = {
+                  enable = true,
+                  globals = {
+                    'vim',
+                    'describe',
+                    'it',
+                    'before_each',
+                    'after_each',
+                    'teardown',
+                    'pending',
+                    'lfs',
+                  },
+                },
+                workspace = {
+                  library = vim.api.nvim_get_runtime_file('', true),
+                  checkThirdParty = false,
+                  maxPreload = 2000,
+                  preloadFileSize = 1000,
+                },
+                hint = {
+                  enable = true,
+                },
+              },
+            })
+
+            client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+          end
+          return true
+        end,
+      }
+
+      lspconfig.bashls.setup {
+        capabilities = capabilities,
+      }
+
+
+      lspconfig.jsonls.setup {
+        capabilities = capabilities,
+        settings = {
+          json = {
+            schemas = require 'schemastore'.json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      }
+
+      lspconfig.yamlls.setup {
+        capabilities = capabilities,
+        settings = {
+          yaml = {
+            schemas = vim.tbl_deep_extend('force',
+              {
+                ['https://raw.githubusercontent.com/jeewangue/kubernetes-json-schema/master/v1.28.3-standalone-strict/any.json'] = '/*.k8s.yaml',
+
+              },
+              require 'schemastore'.yaml.schemas()
+            ),
+            schemaStore = {
+              enable = false,
+              url = '',
+            },
+            format = {
+              enable = true,
+              format = {
+                printWidth = 160,
+              },
+            },
+            hover = true,
+            completion = true,
+          },
+        },
+      }
+
+      lspconfig.pyright.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.tsserver.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.ruff_lsp.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.marksman.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.eslint.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.efm.setup {
+        capabilities = capabilities,
+        init_options = {
+          documentFormatting = true,
+          documentRangeFormatting = true,
+          hover = true,
+          documentSymbol = true,
+          codeAction = true,
+          completion = true
+        },
+        filetypes = { 'cfn', 'yaml' },
+        settings = {
+          rootMarkers = { '.git/' },
+          languages = {
+            cfn = {
+              {
+                lintCommand = 'cfn-lint',
+                lintStdin = true
+              }
+            },
+            yaml = {
+              {
+                lintCommand =
+                'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments-indentation: disable}}" -',
+                lintStdin = true,
+                lintFormats = { '%f:%l:%c: %m' },
+                formatCommand = 'prettier --parser yaml',
+                formatStdin = true
+              }
+            },
+          }
+        }
+      }
+
+      require 'mason-lspconfig'.setup {}
+    end,
+  },
+
+  -- lsp-inlayhints.nvim
+  {
+    'lvimuser/lsp-inlayhints.nvim',
+    event = 'LspAttach',
+    config = true,
+  },
+
   -- nvim-navic
   {
     'SmiteshP/nvim-navic',
@@ -116,6 +295,9 @@ return {
       highlight = true,
       lsp = {
         auto_attach = true,
+        preference = {
+          'yamlls', 'jsonls', 'tsserver', 'pyright', 'rust_analyzer', 'clangd', 'gopls', 'bashls'
+        },
       },
       icons = {
         Array = ' ',
@@ -157,6 +339,34 @@ return {
     },
   },
 
+  -- mfussenegger/nvim-lint
+  {
+    'mfussenegger/nvim-lint',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      local lint = require 'lint'
+      lint.linters_by_ft = {
+        python = { 'mypy' },
+        sh = { 'shellcheck' },
+        markdown = { 'markdownlint' },
+        json = { 'jsonlint' },
+        dockerfile = { 'hadolint' },
+      }
+
+      vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+        callback = function()
+          require 'lint'.try_lint()
+        end,
+      })
+
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          require 'lint'.try_lint()
+        end,
+      })
+    end,
+  },
+
   -- conform.nvim
   {
     'stevearc/conform.nvim',
@@ -181,78 +391,39 @@ return {
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         toml = { 'taplo' },
-        -- dockerfile = { 'hadolint' },
+        markdown = { 'prettierd' },
       },
       formatters = {
         shfmt = {
           prepend_args = { '-i', '2' },
         },
-        -- hadolint = {
-        --   command = 'hadolint',
-        --   args = { '--no-fail', '--format', 'json', '$FILENAME' },
-        -- },
       },
-      -- format_on_save = {
-      --   -- These options will be passed to conform.format()
-      --   timeout_ms = 500,
-      --   lsp_fallback = true,
-      -- },
     },
     config = true,
   },
-  --
-  -- -- null-ls.nvim
-  -- -- WARNING: null-ls.nvim will be archived on August 11, 2023
-  -- -- Find a suitable replacement soon
-  -- -- Related: https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1621
-  -- -- NOTE: Look into alternatives
-  -- -- Related: https://github.com/mhartington/formatter.nvim and https://github.com/mfussenegger/nvim-lint
-  -- -- NOTE: mason-tools-installer.nvim seems to work for installing the tools I need, but doesn't seem to work properly.
-  -- -- Keep looking into this, maybe it's a config error on my end?
-  -- -- Related: https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-  -- {
-  --   'jose-elias-alvarez/null-ls.nvim',
-  --   dependencies = { 'williamboman/mason.nvim', 'nvim-lua/plenary.nvim' },
-  --   event = { 'BufReadPre', 'BufNewFile' },
-  --   opts = function()
-  --     local nls = require('null-ls')
-  --     local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
-  --     return {
-  --       sources = {
-  --         nls.builtins.formatting.stylua,
-  --         -- nls.builtins.formatting.markdownlint,
-  --         nls.builtins.formatting.mdformat,
-  --         nls.builtins.formatting.clang_format,
-  --         nls.builtins.diagnostics.markdownlint,
-  --         nls.builtins.diagnostics.cpplint,
-  --         nls.builtins.formatting.beautysh,
-  --       },
-  --       on_attach = function(client, bufnr)
-  --         -- Autoformat on save if supported
-  --         if client.supports_method('textDocument/formatting') then
-  --           vim.api.nvim_clear_autocmds({
-  --             group = augroup,
-  --             buffer = bufnr,
-  --           })
-  --           vim.api.nvim_create_autocmd('BufWritePre', {
-  --             group = augroup,
-  --             buffer = bufnr,
-  --             callback = function()
-  --               vim.lsp.buf.format({
-  --                 bufnr = bufnr,
-  --                 -- I don't really like the style of lua_ls's formatting, so I exclude it and instead use stylua
-  --                 ---@diagnostic disable-next-line: redefined-local
-  --                 filter = function(client)
-  --                   return client.name ~= 'lua_ls'
-  --                 end,
-  --               })
-  --             end,
-  --           })
-  --         end
-  --       end,
-  --     }
-  --   end,
-  -- },
+
+  -- ThePrimeagen/refactoring.nvim
+  {
+    'ThePrimeagen/refactoring.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim',
+    },
+    keys = {
+      {
+        '<leader>rr',
+        function()
+          require 'telescope'.extensions.refactoring.refactors()
+        end,
+        mode = { 'n', 'x' },
+      }
+    },
+    config = function()
+      require 'refactoring'.setup()
+      require 'telescope'.load_extension 'refactoring'
+    end,
+  },
 
   -- fidget.nvim
   {
@@ -270,7 +441,6 @@ return {
       text = { spinner = 'dots' }
     },
   },
-
 
   -- lsp_lines.nvim
   {
@@ -313,9 +483,6 @@ return {
       },
     },
   },
-  --
-  -- -- nvim-lightbulb
-  -- { 'kosayoda/nvim-lightbulb', event = 'LspAttach', opts = { autocmd = { enabled = true } } },
   --
   -- -- nvim-dap
   -- {
