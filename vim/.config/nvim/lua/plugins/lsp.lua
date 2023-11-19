@@ -53,6 +53,7 @@ return {
             'neocmake',
             'perlnavigator',
             'pyright',
+            'ruby_ls',
             'ruff_lsp',
             'rust_analyzer',
             'solargraph',
@@ -200,11 +201,11 @@ return {
         settings = {
           yaml = {
             schemas = vim.tbl_deep_extend('force',
+              require 'schemastore'.yaml.schemas(),
               {
-                ['https://raw.githubusercontent.com/jeewangue/kubernetes-json-schema/master/v1.28.3-standalone-strict/any.json'] = '/*.k8s.yaml',
+                ['https://raw.githubusercontent.com/jeewangue/kubernetes-json-schema/master/v1.28.3-standalone-strict/all.json'] = '*.k8s.yaml',
 
-              },
-              require 'schemastore'.yaml.schemas()
+              }
             ),
             schemaStore = {
               enable = false,
@@ -218,6 +219,8 @@ return {
             },
             hover = true,
             completion = true,
+            validate = true,
+
           },
         },
       }
@@ -242,6 +245,12 @@ return {
         capabilities = capabilities,
       }
 
+      lspconfig.solargraph.setup {
+        cmd = { 'bundle', 'exec', 'solargraph', 'stdio' },
+      }
+
+      lspconfig.ruby_ls.setup {}
+
       lspconfig.efm.setup {
         capabilities = capabilities,
         init_options = {
@@ -254,12 +263,15 @@ return {
         },
         filetypes = { 'cfn', 'yaml' },
         settings = {
+          log_level = 1,
           rootMarkers = { '.git/' },
           languages = {
             cfn = {
               {
-                lintCommand = 'cfn-lint',
-                lintStdin = true
+                lintCommand = 'cfn-lint -f parseable',
+                lintStdin = false,
+                lintIgnoreExitCode = true,
+                lintFormats = { '%f:%l:%c:%e:%k:%t%n:%m' },
               }
             },
             yaml = {
@@ -267,13 +279,15 @@ return {
                 lintCommand =
                 'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments-indentation: disable}}" -',
                 lintStdin = true,
+                lintIgnoreExitCode = true,
                 lintFormats = { '%f:%l:%c: %m' },
                 formatCommand = 'prettier --parser yaml',
                 formatStdin = true
               }
             },
           }
-        }
+        },
+        single_file_support = true,
       }
 
       require 'mason-lspconfig'.setup {}
