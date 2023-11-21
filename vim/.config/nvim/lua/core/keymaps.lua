@@ -64,9 +64,26 @@ end, { desc = 'LSP toggle diagnostics' })
 map('n', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 map('v', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 
-function PandocPasteMarkdown()
+local function split_string(inputstr, sep)
+  if sep == nil then
+    sep = '%s'
+  end
+  local t = {}
+  for str in string.gmatch(inputstr, '([^' .. sep .. ']+)') do
+    table.insert(t, str)
+  end
+  return t
+end
+
+function PasteAsMarkdown()
+  -- Check if the window is writable
+  if vim.bo.readonly then
+    vim.notify 'Cannot paste in a readonly window'
+    return
+  end
+
   -- Get the content of the clipboard with xclip
-  local handle = io.popen('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm --wrap=none', 'r')
+  local handle = io.popen('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm-raw_html --wrap=none', 'r')
   if handle == nil then
     vim.notify 'Failed to get clipboard content'
     return
@@ -74,20 +91,27 @@ function PandocPasteMarkdown()
   local markdown_content = handle:read '*a'
   handle:close()
 
-  -- Split the converted Markdown content into lines
-  local lines = {}
-  for line in string.gmatch(markdown_content, '[^\r\n]+') do
-    table.insert(lines, line)
+  local lines = split_string(markdown_content, '\n')
+
+  local line_num = vim.fn.line '.' or 0
+  if line_num == 0 then
+    vim.notify 'Failed to get current line'
+    return
   end
 
-  -- Insert the lines into the buffer after the current line
-  local line_number = vim.fn.line '.'
-  vim.fn.append(line_number, lines)
+  -- Append each line individually
+  for _, line in ipairs(lines) do
+    vim.fn.append(line_num, line)
+    line_num = line_num + 1
+  end
 
   -- Move the cursor to the last line of the inserted text
-  local last_line_number = line_number + #lines - 1
-  vim.fn.cursor(last_line_number + 1, 0)
+  vim.fn.cursor({ line_num + 1, 0 })
 end
+
+map('n', '<leader>pm', function()
+  PasteAsMarkdown()
+end, { desc = 'Paste from clipboard as Markdown' })
 
 -- n = {
 --   ['gD'] = {
