@@ -53,7 +53,6 @@ return {
             'neocmake',
             'perlnavigator',
             'pyright',
-            'ruby_ls',
             'ruff_lsp',
             'rust_analyzer',
             'solargraph',
@@ -249,7 +248,6 @@ return {
         cmd = { 'bundle', 'exec', 'solargraph', 'stdio' },
       }
 
-      lspconfig.ruby_ls.setup {}
 
       lspconfig.efm.setup {
         capabilities = capabilities,
