@@ -398,12 +398,14 @@ return {
         -- Conform will run multiple formatters sequentially
         python = { 'isort', 'black', 'ruff' },
         -- Use a sub-list to run only the first available formatter
-        javascript = { { 'prettierd', 'prettier' } },
-        typescript = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         toml = { 'taplo' },
-        markdown = { 'prettierd' },
+        markdown = { 'prettier' },
+        xml = { 'xmlformat' },
+        json = { 'prettier' },
       },
       formatters = {
         shfmt = {
@@ -495,166 +497,174 @@ return {
       },
     },
   },
-  --
-  -- -- nvim-dap
-  -- {
-  --   'mfussenegger/nvim-dap',
-  --   dependencies = {
-  --     -- Virtual text for nvim-dap
-  --     { 'theHamsta/nvim-dap-virtual-text', config = true },
-  --
-  --     -- UI for nvim-dap
-  --     {
-  --       'rcarriga/nvim-dap-ui',
-  --       keys = {
-  --         {
-  --           '<leader>du',
-  --           function()
-  --             return require('dapui').toggle()
-  --           end,
-  --           desc = 'Dap UI',
-  --         },
-  --         {
-  --           '<leader>de',
-  --           function()
-  --             return require('dapui').eval()
-  --           end,
-  --           desc = 'Eval',
-  --           mode = { 'n', 'v' },
-  --         },
-  --       },
-  --       config = function()
-  --         local dap = require('dap')
-  --         local dapui = require('dapui')
-  --         dapui.setup()
-  --         dap.listeners.after.event_initialized['dapui_config'] = function()
-  --           dapui.open()
-  --         end
-  --         dap.listeners.before.event_terminated['dapui_config'] = function()
-  --           dapui.close()
-  --         end
-  --         dap.listeners.before.event_exited['dapui_config'] = function()
-  --           dapui.close()
-  --         end
-  --       end,
-  --     },
-  --   },
-  --   keys = {
-  --     {
-  --       '<leader>dB',
-  --       function()
-  --         return require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))
-  --       end,
-  --       desc = 'Breakpoint Condition',
-  --     },
-  --     {
-  --       '<leader>db',
-  --       function()
-  --         return require('dap').toggle_breakpoint()
-  --       end,
-  --       desc = 'Toggle Breakpoint',
-  --     },
-  --     {
-  --       '<leader>dc',
-  --       function()
-  --         return require('dap').continue()
-  --       end,
-  --       desc = 'Continue',
-  --     },
-  --     {
-  --       '<leader>dC',
-  --       function()
-  --         return require('dap').run_to_cursor()
-  --       end,
-  --       desc = 'Run to Cursor',
-  --     },
-  --     {
-  --       '<leader>dg',
-  --       function()
-  --         return require('dap').goto_()
-  --       end,
-  --       desc = 'Go to line (no execute)',
-  --     },
-  --     {
-  --       '<leader>di',
-  --       function()
-  --         return require('dap').step_into()
-  --       end,
-  --       desc = 'Step Into',
-  --     },
-  --     {
-  --       '<leader>dj',
-  --       function()
-  --         return require('dap').down()
-  --       end,
-  --       desc = 'Down',
-  --     },
-  --     {
-  --       '<leader>dk',
-  --       function()
-  --         return require('dap').up()
-  --       end,
-  --       desc = 'Up',
-  --     },
-  --     {
-  --       '<leader>dl',
-  --       function()
-  --         return require('dap').run_last()
-  --       end,
-  --       desc = 'Run Last',
-  --     },
-  --     {
-  --       '<leader>do',
-  --       function()
-  --         return require('dap').step_out()
-  --       end,
-  --       desc = 'Step Out',
-  --     },
-  --     {
-  --       '<leader>dO',
-  --       function()
-  --         return require('dap').step_over()
-  --       end,
-  --       desc = 'Step Over',
-  --     },
-  --     {
-  --       '<leader>dp',
-  --       function()
-  --         return require('dap').pause()
-  --       end,
-  --       desc = 'Pause',
-  --     },
-  --     {
-  --       '<leader>dr',
-  --       function()
-  --         return require('dap').repl.toggle()
-  --       end,
-  --       desc = 'Toggle REPL',
-  --     },
-  --     {
-  --       '<leader>ds',
-  --       function()
-  --         return require('dap').session()
-  --       end,
-  --       desc = 'Session',
-  --     },
-  --     {
-  --       '<leader>dt',
-  --       function()
-  --         return require('dap').terminate()
-  --       end,
-  --       desc = 'Terminate',
-  --     },
-  --     {
-  --       '<leader>dw',
-  --       function()
-  --         return require('dap.ui.widgets').hover()
-  --       end,
-  --       desc = 'Widgets',
-  --     },
-  --   },
-  --   config = function()
-  --     vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
-  --   end,
-  -- },
+
+  -- rust-tools.nvim
+  {
+    'simrat39/rust-tools.nvim',
+    event = 'BufReadPre',
+    ft = { 'rust' },
+    config = function()
+      require 'rust-tools'.setup {
+        tools = {
+          autoSetHints = true,
+          hover_with_actions = true,
+          runnables = {
+            use_telescope = true,
+          },
+          inlay_hints = {
+            show_parameter_hints = true,
+            parameter_hints_prefix = '<- ',
+            other_hints_prefix = '=> ',
+            highlight = 'MyInlayHint',
+          },
+        },
+      }
+    end,
+  },
+
+  -- nvim-dap
+  {
+    'mfussenegger/nvim-dap',
+    dependencies = {
+      -- nvim-dap-virtual-text
+      {
+        'theHamsta/nvim-dap-virtual-text',
+        opts = { highlight_new_as_changed = true }
+      },
+
+      -- mason-nvim-dap.nvim
+      {
+        'jay-babu/mason-nvim-dap.nvim',
+        cmd = { 'DapInstall', 'DapUninstall' },
+        dependencies = 'williamboman/mason.nvim',
+        opts = {
+          automatic_installation = true,
+          handlers = {},
+          ensure_installed = { 'codelldb' },
+        },
+      },
+
+      -- goto-breakpoints.nvim
+      {
+        'ofirgall/goto-breakpoints.nvim',
+        keys = {
+          -- stylua: ignore start
+          { ']b', function() return require 'goto-breakpoints'.next() end, desc = 'Next breakpoint' },
+          { '[b', function() return require 'goto-breakpoints'.prev() end, desc = 'Previous breakpoint' },
+          -- stylua: ignore end
+        },
+      },
+
+      -- nvim-dap-ui
+      {
+        'rcarriga/nvim-dap-ui',
+        keys = {
+          -- stylua: ignore start
+          { '<leader>du', function() return require 'dapui'.toggle() end, desc = 'Dap UI' },
+          { '<leader>de', function() return require 'dapui'.eval() end,   desc = 'Eval',  mode = { 'n', 'v' } },
+          -- stylua: ignore end
+        },
+        config = function()
+          local dap = require 'dap'
+          local dapui = require 'dapui'
+          dapui.setup()
+          dap.listeners.after.event_initialized['dapui_config'] = function()
+            dapui.open()
+          end
+          dap.listeners.before.event_terminated['dapui_config'] = function()
+            dapui.close()
+          end
+          dap.listeners.before.event_exited['dapui_config'] = function()
+            dapui.close()
+          end
+        end,
+      },
+    },
+    keys = {
+      {
+        '<leader>dB',
+        function() return require 'dap'.set_breakpoint(vim.fn.input 'Breakpoint condition: ') end,
+        desc = 'Breakpoint Condition'
+      },
+      {
+        '<leader>db',
+        function() return require 'dap'.toggle_breakpoint() end,
+        desc = 'Toggle Breakpoint'
+      },
+      {
+        '<leader>dc',
+        function() return require 'dap'.continue() end,
+        desc = 'Continue'
+      },
+      {
+        '<leader>dC',
+        function() return require 'dap'.run_to_cursor() end,
+        desc = 'Run to Cursor'
+      },
+      {
+        '<leader>dg',
+        function() return require 'dap'.goto_() end,
+        desc = 'Go to line (no execute)'
+      },
+      {
+        '<leader>di',
+        function() return require 'dap'.step_into() end,
+        desc = 'Step Into'
+      },
+      {
+        '<leader>dj',
+        function() return require 'dap'.down() end,
+        desc = 'Down'
+      },
+      {
+        '<leader>dk',
+        function() return require 'dap'.up() end,
+        desc = 'Up'
+      },
+      {
+        '<leader>dl',
+        function() return require 'dap'.run_last() end,
+        desc = 'Run Last'
+      },
+      {
+        '<leader>dO',
+        function() return require 'dap'.step_out() end,
+        desc = 'Step Out'
+      },
+      {
+        '<leader>do',
+        function() return require 'dap'.step_over() end,
+        desc = 'Step Over'
+      },
+      {
+        '<leader>dp',
+        function() return require 'dap'.pause() end,
+        desc = 'Pause'
+      },
+      {
+        '<leader>dr',
+        function() return require 'dap'.repl.toggle() end,
+        desc = 'Toggle REPL'
+      },
+      {
+        '<leader>ds',
+        function() return require 'dap'.session() end,
+        desc = 'Session'
+      },
+      {
+        '<leader>dt',
+        function() return require 'dap'.terminate() end,
+        desc = 'Terminate'
+      },
+      {
+        '<leader>dw',
+        function() return require 'dap.ui.widgets'.hover() end,
+        desc = 'Widgets'
+      },
+    },
+    config = function()
+      vim.api.nvim_set_hl(0, 'DapStoppedLine', { default = true, link = 'Visual' })
+    end,
+  },
+
 }

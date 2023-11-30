@@ -5,6 +5,12 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
+      -- create highlight groups
+      vim.cmd [[
+        highlight default link MyInlayHint LspInlayHint
+      ]]
+
+      -- create highlight groups
       require 'kanagawa'.setup {
         -- NOTE: Run `:KanagawaCompile` to compile the colorscheme
         compile = true,   -- enable compiling the colorscheme
@@ -59,6 +65,7 @@ return {
             TelescopePromptNormal = { bg = colors.palette.RichBlack },
             TelescopePromptBorder = { bg = colors.palette.RichBlack, fg = colors.palette.surimiOrange },
             TelescopePromptTitle = { bg = colors.palette.RichBlack, fg = colors.palette.surimiOrange },
+            MyInlayHint = { fg = colors.palette.Rust, bg = colors.palette.RichBlack },
           }
         end,
       }
@@ -102,7 +109,23 @@ return {
   -- nvim-ufo
   {
     'kevinhwang91/nvim-ufo',
-    dependencies = 'kevinhwang91/promise-async',
+    dependencies = {
+      "kevinhwang91/promise-async",
+      {
+        "luukvbaal/statuscol.nvim",
+        config = function()
+          local builtin = require("statuscol.builtin")
+          require("statuscol").setup({
+            relculright = true,
+            segments = {
+              { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+              { text = { "%s" }, click = "v:lua.ScSa" },
+              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            },
+          })
+        end,
+      },
+    },
     event = { 'BufReadPost', 'BufNewFile' },
     keys = {
       {
@@ -289,3 +312,4 @@ return {
     end,
   },
 }
+

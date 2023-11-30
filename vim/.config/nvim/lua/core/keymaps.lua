@@ -64,6 +64,7 @@ end, { desc = 'LSP toggle diagnostics' })
 map('n', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 map('v', '<leader>ac', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = 'LSP code action' })
 
+------------ Custom (PasteAsMarkdown) ------------
 local function split_string(inputstr, sep)
   if sep == nil then
     sep = '%s'
@@ -75,6 +76,7 @@ local function split_string(inputstr, sep)
   return t
 end
 
+-- Paste from clipboard as Markdown
 function PasteAsMarkdown()
   -- Check if the window is writable
   if vim.bo.readonly then
@@ -83,7 +85,8 @@ function PasteAsMarkdown()
   end
 
   -- Get the content of the clipboard with xclip
-  local handle = io.popen('xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm-raw_html --wrap=none', 'r')
+  local handle = io.popen(
+  'xclip -o -selection clipboard -t text/html | pandoc --from=html --to=gfm-raw_html --wrap=none', 'r')
   if handle == nil then
     vim.notify 'Failed to get clipboard content'
     return
@@ -106,132 +109,9 @@ function PasteAsMarkdown()
   end
 
   -- Move the cursor to the last line of the inserted text
-  vim.fn.cursor({ line_num + 1, 0 })
+  vim.fn.cursor { line_num + 1, 0 }
 end
 
 map('n', '<leader>pm', function()
   PasteAsMarkdown()
 end, { desc = 'Paste from clipboard as Markdown' })
-
--- n = {
---   ['gD'] = {
---     function()
---       vim.lsp.buf.declaration()
---     end,
---     'LSP declaration',
---   },
---
---   ['gd'] = {
---     function()
---       vim.lsp.buf.definition()
---     end,
---     'LSP definition',
---   },
---
---   ['K'] = {
---     function()
---       vim.lsp.buf.hover()
---     end,
---     'LSP hover',
---   },
---
---   ['gi'] = {
---     function()
---       vim.lsp.buf.implementation()
---     end,
---     'LSP implementation',
---   },
---
---   ['<leader>ls'] = {
---     function()
---       vim.lsp.buf.signature_help()
---     end,
---     'LSP signature help',
---   },
---
---   ['<leader>D'] = {
---     function()
---       vim.lsp.buf.type_definition()
---     end,
---     'LSP definition type',
---   },
---
---   ['<leader>ra'] = {
---     function()
---       require 'nvchad.renamer'.open()
---     end,
---     'LSP rename',
---   },
---
---   ['<leader>ca'] = {
---     function()
---       vim.lsp.buf.code_action()
---     end,
---     'LSP code action',
---   },
---
---   ['gr'] = {
---     function()
---       vim.lsp.buf.references()
---     end,
---     'LSP references',
---   },
---
---   ['<leader>f'] = {
---     function()
---       vim.diagnostic.open_float { border = 'rounded' }
---     end,
---     'Floating diagnostic',
---   },
---
---   ['[d'] = {
---     function()
---       vim.diagnostic.goto_prev { float = { border = 'rounded' } }
---     end,
---     'Goto prev',
---   },
---
---   [']d'] = {
---     function()
---       vim.diagnostic.goto_next { float = { border = 'rounded' } }
---     end,
---     'Goto next',
---   },
---
---   ['<leader>q'] = {
---     function()
---       vim.diagnostic.setloclist()
---     end,
---     'Diagnostic setloclist',
---   },
---
---   ['<leader>wa'] = {
---     function()
---       vim.lsp.buf.add_workspace_folder()
---     end,
---     'Add workspace folder',
---   },
---
---   ['<leader>wr'] = {
---     function()
---       vim.lsp.buf.remove_workspace_folder()
---     end,
---     'Remove workspace folder',
---   },
---
---   ['<leader>wl'] = {
---     function()
---       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
---     end,
---     'List workspace folders',
---   },
--- },
---
--- v = {
---   ['<leader>ca'] = {
---     function()
---       vim.lsp.buf.code_action()
---     end,
---     'LSP code action',
---   },
--- },

@@ -132,13 +132,13 @@ return {
     end,
   },
 
-  -- nvim-treesitter-context
-  {
-    'nvim-treesitter/nvim-treesitter-context',
-    dependencies = 'nvim-treesitter/nvim-treesitter',
-    event = { 'BufReadPost', 'BufNewFile' },
-    config = true,
-  },
+  -- -- nvim-treesitter-context
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-context',
+  --   dependencies = 'nvim-treesitter/nvim-treesitter',
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   config = true,
+  -- },
 
   -- treesj
   {
