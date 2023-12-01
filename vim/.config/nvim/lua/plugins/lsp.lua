@@ -120,6 +120,7 @@ return {
     config = function()
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities.textDocument.completion.completionItem.snippetSupport = true
+      capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
       capabilities.offsetEncoding = { 'utf-16' }
 
       local lspconfig = require 'lspconfig'
@@ -286,6 +287,22 @@ return {
           }
         },
         single_file_support = true,
+      }
+
+      lspconfig.cmake.setup {
+        capabilities = capabilities,
+        on_attach = function(client)
+          client.server_capabilities.hoverProvider = false
+          client.server_capabilities.documentSymbolProvider = false
+        end,
+      }
+
+      lspconfig.neocmake.setup {
+        capabilities = capabilities,
+      }
+
+      lspconfig.dockerls.setup {
+        capabilities = capabilities,
       }
 
       require 'mason-lspconfig'.setup {}
@@ -507,7 +524,6 @@ return {
       require 'rust-tools'.setup {
         tools = {
           autoSetHints = true,
-          hover_with_actions = true,
           runnables = {
             use_telescope = true,
           },

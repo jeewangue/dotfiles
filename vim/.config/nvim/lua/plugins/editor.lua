@@ -632,6 +632,15 @@ return {
     config = true,
   },
 
+  -- undotree
+  {
+    'mbbill/undotree',
+    lazy = false,
+    keys = {
+      { '<leader>ut', '<cmd>UndotreeToggle<CR>', desc = 'Toggle undotree' },
+    },
+  },
+
   -- bufferline.nvim
   {
     'akinsho/bufferline.nvim',
@@ -751,12 +760,6 @@ return {
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
-      {
-        'debugloop/telescope-undo.nvim',
-        config = function()
-          require 'telescope'.load_extension 'undo'
-        end,
-      },
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
@@ -900,13 +903,6 @@ return {
         desc = 'Search and checkout git commits',
       },
       {
-        '<leader>ut',
-        function()
-          return require 'telescope'.extensions.undo.undo()
-        end,
-        desc = 'Search through undotree',
-      },
-      {
         '<leader>fz',
         function()
           return require 'telescope.builtin'.current_buffer_fuzzy_find()
@@ -962,11 +958,6 @@ return {
             override_generic_sorter = true,
             override_file_sorter = true,
             case_mode = 'smart_case',
-          },
-          undo = {
-            use_delta = true,
-            side_by_side = true,
-            diff_context_lines = 15,
           },
           media_files = {
             -- filetypes whitelist
@@ -1052,6 +1043,7 @@ return {
           end
         end,
         'tabdo DiffviewClose',
+        'tabdo UndotreeHide',
       },
     },
   },
