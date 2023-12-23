@@ -1062,7 +1062,7 @@ return {
   {
     'iamcco/markdown-preview.nvim',
     cmd = { 'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop' },
-    ft = { 'markdown' },
+    ft = { 'markdown', 'pandoc', 'pandoc.markdown' },
     keys = {
       {
         '<leader>mp',
@@ -1073,5 +1073,46 @@ return {
     build = function()
       vim.fn['mkdp#util#install']()
     end,
-  }
+    init = function()
+      vim.g.mkdp_filetypes = { 'markdown', 'pandoc', 'pandoc.markdown' }
+    end,
+  },
+
+  -- nvim-asciidoc-preview
+  {
+    'tigion/nvim-asciidoc-preview',
+    cmd = { 'AsciiDocPreview', 'AsciiDocPreviewStop' },
+    ft = { 'asciidoc' },
+    keys = {
+      {
+        '<leader>ap',
+        '<cmd>AsciiDocPreview<CR>',
+        desc = 'Start asciidoc preview',
+      },
+      {
+        '<leader>aP',
+        '<cmd>AsciiDocPreview<CR>',
+        desc = 'Stop asciidoc preview',
+      },
+    },
+    -- opts = {},
+  },
+
+  -- vim-pandoc
+  {
+    'vim-pandoc/vim-pandoc',
+    cmd = { 'Pandoc', 'PandocPreview' },
+    ft = { 'markdown', 'pandoc', 'rst', 'textile', 'asciidoc' },
+  },
+
+  -- vim-pandoc-syntax
+  {
+    'vim-pandoc/vim-pandoc-syntax',
+    ft = { 'markdown', 'pandoc' },
+  },
+
+  -- papyrus
+  {
+    'abeleinin/papyrus',
+  },
 }

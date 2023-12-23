@@ -42,6 +42,7 @@ return {
             'golangci_lint_ls',
             'gopls',
             'gradle_ls',
+            'grammarly',
             'graphql',
             'helm_ls',
             'html',
@@ -276,7 +277,7 @@ return {
             yaml = {
               {
                 lintCommand =
-                'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments-indentation: disable}}" -',
+                'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments-indentation: disable, document-start: disable}}" -',
                 lintStdin = true,
                 lintIgnoreExitCode = true,
                 lintFormats = { '%f:%l:%c: %m' },
@@ -421,6 +422,7 @@ return {
         sh = { 'shfmt' },
         toml = { 'taplo' },
         markdown = { 'prettier' },
+        pandoc = { 'prettier' },
         xml = { 'xmlformat' },
         json = { 'prettier' },
       },

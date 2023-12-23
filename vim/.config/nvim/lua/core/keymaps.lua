@@ -49,6 +49,17 @@ map('v', '<leader>y', '"+y', { desc = 'Yank to clipboard' })
 -- Escape terminal mode
 map('t', '<C-x>', vim.api.nvim_replace_termcodes('<C-\\><C-n>', true, true, true), { desc = 'Escape terminal mode' })
 
+-- Conceal level
+map('n', '<leader>cl', function()
+  if vim.wo.conceallevel == 0 then
+    vim.wo.conceallevel = 2
+    vim.notify 'Conceal level set to 2'
+  else
+    vim.wo.conceallevel = 0
+    vim.notify 'Conceal level set to 0'
+  end
+end, { desc = 'Toggle conceal level' })
+
 ------------ LSP ------------
 -- See `<cmd> :help vim.lsp.*` for documentation on any of the below functions
 map('n', '<leader>ldt', function()
