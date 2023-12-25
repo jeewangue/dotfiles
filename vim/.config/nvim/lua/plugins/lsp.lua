@@ -126,6 +126,10 @@ return {
 
       local lspconfig = require 'lspconfig'
 
+      lspconfig.cssls.setup {
+        capabilities = capabilities,
+      }
+
       lspconfig.clangd.setup {
         capabilities = capabilities,
       }
@@ -381,6 +385,7 @@ return {
         markdown = { 'markdownlint' },
         json = { 'jsonlint' },
         dockerfile = { 'hadolint' },
+        htmldjango = { 'djlint' },
       }
 
       vim.api.nvim_create_autocmd({ 'BufEnter' }, {
@@ -425,6 +430,7 @@ return {
         pandoc = { 'prettier' },
         xml = { 'xmlformat' },
         json = { 'prettier' },
+        htmldjango = { 'djlint' },
       },
       formatters = {
         shfmt = {
