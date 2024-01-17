@@ -36,6 +36,7 @@ return {
             'cmake',
             'cssls',
             'denols',
+            'diagnosticls',
             'dockerls',
             'efm',
             'eslint',
@@ -125,6 +126,7 @@ return {
       capabilities.offsetEncoding = { 'utf-16' }
 
       local lspconfig = require 'lspconfig'
+      local handlers = require 'etc/lsp_handlers'
 
       lspconfig.cssls.setup {
         capabilities = capabilities,
@@ -132,6 +134,48 @@ return {
 
       lspconfig.clangd.setup {
         capabilities = capabilities,
+      }
+
+      lspconfig.helm_ls.setup {
+        capabilities = capabilities,
+        filetypes = { 'helm' },
+        cmd = { 'helm_ls', 'serve' },
+      }
+
+      lspconfig.diagnosticls.setup {
+        capabilities = capabilities,
+        on_init = function(client)
+          client.resolved_capabilities.document_formatting = true
+          client.resolved_capabilities.document_range_formatting = true
+          client.resolved_capabilities.execute_command = true
+          client.request = handlers.client_request(client)
+        end,
+        filetypes = { 'markdown', 'tex', 'text', 'pandoc' },
+        handlers = {
+          ['textDocument/codeAction'] = {
+            type = 'local_lsp',
+            handler = handlers.lintCodeAction,
+          },
+          ['workspace/executeCommand'] = {
+            type = 'local_lsp',
+            handler = handlers.workspaceExecuteCommand,
+          },
+        },
+      }
+
+      lspconfig.grammarly.setup {
+        capabilities = capabilities,
+        on_init = function(client)
+          client.resolve_capabilities.execute_command = true
+        end,
+        filetypes = { 'markdown', 'tex', 'text', 'pandoc' },
+        settings = {
+          grammarly = {
+            config = {
+              documentDomain = 'academic',
+            },
+          },
+        },
       }
 
       lspconfig.taplo.setup {
@@ -426,11 +470,15 @@ return {
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         toml = { 'taplo' },
+        gotmpl = { 'prettier' },
         markdown = { 'prettier' },
         pandoc = { 'prettier' },
         xml = { 'xmlformat' },
         json = { 'prettier' },
         htmldjango = { 'djlint' },
+        css = { 'prettier' },
+        scss = { 'prettier' },
+        sass = { 'prettier' },
       },
       formatters = {
         shfmt = {

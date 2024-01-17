@@ -14,26 +14,6 @@ return {
     },
   },
 
-  -- vim-doge
-  {
-    'kkoomen/vim-doge',
-    keys = {
-      {
-        '<leader>d',
-        function()
-          vim.cmd [[call doge#generate('')]]
-        end,
-        mode = { 'n' },
-        desc = 'Generate documentation'
-      },
-    },
-    build = ':call doge#install()',
-    init = function()
-      vim.g.doge_enable_mappings = 0
-      vim.api.nvim_command 'filetype plugin on'
-    end,
-  },
-
   -- Copilot
   {
     'zbirenbaum/copilot.lua',
