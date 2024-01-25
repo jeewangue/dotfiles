@@ -134,6 +134,10 @@ return {
 
       lspconfig.clangd.setup {
         capabilities = capabilities,
+        on_attach = function(client)
+          require 'clangd_extensions.inlay_hints'.setup_autocmd()
+          require 'clangd_extensions.inlay_hints'.set_inlay_hints()
+        end,
       }
 
       lspconfig.helm_ls.setup {
@@ -510,6 +514,17 @@ return {
       require 'refactoring'.setup()
       require 'telescope'.load_extension 'refactoring'
     end,
+  },
+
+  -- clangd_extensions.nvim
+  {
+    'p00f/clangd_extensions.nvim',
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+    opts = {
+      inlay_hints = {
+        highlight = 'MyInlayHint',
+      },
+    },
   },
 
   -- fidget.nvim
