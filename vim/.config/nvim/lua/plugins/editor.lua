@@ -1036,14 +1036,26 @@ return {
       log_level = 'error',
       auto_session_suppress_dirs = { '/', '~/' },
       pre_save_cmds = {
-        'tabdo Neotree close',
+        function()
+          if vim.fn.exists(':Neotree') then
+            vim.cmd 'tabdo Neotree close'
+          end
+        end,
         function()
           if vim.fn.exists ':TroubleClose' then
             vim.cmd 'tabdo TroubleClose'
           end
         end,
-        'tabdo DiffviewClose',
-        'tabdo UndotreeHide',
+        function()
+          if vim.fn.exists ':DiffviewClose' then
+            vim.cmd 'tabdo DiffviewClose'
+          end
+        end,
+        function()
+          if vim.fn.exists ':UndotreeHide' then
+            vim.cmd 'tabdo UndotreeHide'
+          end
+        end,
       },
     },
   },
