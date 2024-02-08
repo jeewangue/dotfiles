@@ -2,7 +2,7 @@ java openjdk-20
 ruby 3.2.2
 python 3.11.7
 golang system
-nodejs system
+nodejs 20.11.0
 rust stable
 deno 1.26.1
 haskell 9.6.2

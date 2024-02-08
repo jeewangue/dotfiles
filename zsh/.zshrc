@@ -50,3 +50,7 @@ complete -o nospace -C /home/jeewangue/bin/mc mc
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
 
+# gcloud with asdf (through command -v asdf)
+if command -v asdf &> /dev/null && [[ -f "$(asdf where gcloud)/completion.zsh.inc" ]]; then
+  source "$(asdf where gcloud)/completion.zsh.inc"
+fi

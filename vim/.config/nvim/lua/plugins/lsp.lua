@@ -132,6 +132,32 @@ return {
         capabilities = capabilities,
       }
 
+      lspconfig.omnisharp.setup {
+        capabilities = capabilities,
+        enable_roslyn_analyzers = false,
+      }
+
+      -- lspconfig.csharp_ls.setup {
+      --   capabilities = capabilities,
+      -- }
+      
+      lspconfig.gopls.setup {
+        capabilities = capabilities,
+        cmd = { 'gopls', 'serve' },
+        settings = {
+          gopls = {
+            analyses = {
+              unusedparams = true,
+            },
+            staticcheck = true,
+          },
+        },
+      }
+
+      lspconfig.golangci_lint_ls.setup {
+        capabilities = capabilities,
+      }
+
       lspconfig.clangd.setup {
         capabilities = capabilities,
         on_attach = function(client)
@@ -329,7 +355,7 @@ return {
             yaml = {
               {
                 lintCommand =
-                'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments-indentation: disable, document-start: disable}}" -',
+                'yamllint -f parsable -d "{extends: default, rules: {line-length: disable, comments: disable, comments-indentation: disable, document-start: disable}}" -',
                 lintStdin = true,
                 lintIgnoreExitCode = true,
                 lintFormats = { '%f:%l:%c: %m' },
@@ -474,6 +500,7 @@ return {
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         toml = { 'taplo' },
+        go = { 'gofumpt', 'goimports' },
         gotmpl = { 'prettier' },
         markdown = { 'prettier' },
         pandoc = { 'prettier' },
@@ -627,7 +654,7 @@ return {
         opts = {
           automatic_installation = true,
           handlers = {},
-          ensure_installed = { 'codelldb' },
+          ensure_installed = { 'codelldb', 'go-debug-adapter', 'node-debug2-adapter' },
         },
       },
 
