@@ -68,7 +68,7 @@ opt.foldlevelstart = 99
 opt.foldcolumn = '1'
 
 -- Session
-opt.sessionoptions = { 'blank', 'buffers', 'curdir', 'folds', 'tabpages', 'winsize', 'winpos' }
+opt.sessionoptions = { 'blank', 'buffers', 'curdir', 'tabpages', 'winsize', 'winpos' }
 
 -- Misc
 opt.swapfile = false
