@@ -36,15 +36,13 @@ set wildmenu
 set cmdheight=2
 set colorcolumn=+1,+2,+3
 
-set signcolumn=auto:4
-set statuscolumn=%=%l%s%C
+set signcolumn=auto
 
 set formatoptions=jcroqlnt
 
 set foldenable
 set foldlevel=99
 set foldlevelstart=99
-set foldcolumn=auto
 
 set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize,winpos
 

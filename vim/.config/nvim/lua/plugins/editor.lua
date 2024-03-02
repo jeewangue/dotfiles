@@ -300,6 +300,21 @@ return {
         filtered_items = { visible = true, hide_dotfiles = false },
         follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
+        window = {
+          mappings = {
+            ['o'] = 'system_open',
+          },
+        },
+        commands = {
+          system_open = function(state)
+            local node = state.tree:get_node()
+            local path = node:get_id()
+            -- -- macOs: open file in default application in the background.
+            -- vim.fn.jobstart({ "xdg-open", "-g", path }, { detach = true })
+            -- Linux: open file in default application
+            vim.fn.jobstart({ "xdg-open", path }, { detach = true })
+          end
+        },
       },
       document_symbols = {
         follow_cursor = true,
@@ -1037,7 +1052,7 @@ return {
       auto_session_suppress_dirs = { '/', '~/' },
       pre_save_cmds = {
         function()
-          if vim.fn.exists(':Neotree') then
+          if vim.fn.exists ':Neotree' then
             vim.cmd 'tabdo Neotree close'
           end
         end,
@@ -1065,6 +1080,18 @@ return {
   -- gx.nvim
   {
     'chrishrb/gx.nvim',
+    keys = {
+      {
+        'gx',
+        '<cmd>Browse<cr>',
+        desc = 'Open URL under cursor',
+        mode = { 'n', 'x' },
+      },
+    },
+    cmd = { 'Browse' },
+    init = function()
+      vim.g.netrw_nogx = 1 --disable netrw gx
+    end,
     event = { 'BufEnter' },
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
@@ -1127,4 +1154,40 @@ return {
   {
     'abeleinin/papyrus',
   },
+
+  -- icon-picker.nvim
+  {
+    'ziontee113/icon-picker.nvim',
+    lazy = false,
+    cmd = { 'IconPickerNormal', 'IconPickerInsert' },
+    keys = {
+      {
+        '<C-i>i',
+        '<cmd>IconPickerNormal<cr>',
+        desc = 'Open icon picker in normal mode',
+        mode = { 'n' },
+      },
+      {
+        '<C-i>i',
+        '<cmd>IconPickerInsert<cr>',
+        desc = 'Open icon picker in insert mode',
+        mode = { 'i' },
+      },
+    },
+    opts = {
+      disable_legacy_comands = true,
+    },
+  },
+
+  -- nvim-surround
+  {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require 'nvim-surround'.setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end
+  }
 }

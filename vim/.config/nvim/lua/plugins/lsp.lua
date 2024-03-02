@@ -194,7 +194,6 @@ return {
       }
 
       lspconfig.lua_ls.setup {
-        capabilities = capabilities,
         on_init = function(client)
           local path = client.workspace_folders[1].name
           if not vim.loop.fs_stat(path .. '/.luarc.json') and not vim.loop.fs_stat(path .. '/.luarc.jsonc') then
@@ -217,10 +216,11 @@ return {
                   },
                 },
                 workspace = {
-                  library = vim.api.nvim_get_runtime_file('', true),
+                  -- library = vim.api.nvim_get_runtime_file('', true),
+                  library = {
+                    vim.env.VIMRUNTIME
+                  },
                   checkThirdParty = false,
-                  maxPreload = 2000,
-                  preloadFileSize = 1000,
                 },
                 hint = {
                   enable = true,
@@ -238,9 +238,16 @@ return {
         capabilities = capabilities,
       }
 
-
-      lspconfig.jsonls.setup {
+      lspconfig.gopls.setup {
         capabilities = capabilities,
+      }
+
+
+      --Enable (broadcasting) snippet capability for completion
+      local jsonls_capabilities = vim.lsp.protocol.make_client_capabilities()
+      jsonls_capabilities.textDocument.completion.completionItem.snippetSupport = true
+      lspconfig.jsonls.setup {
+        capabilities = jsonls_capabilities,
         settings = {
           json = {
             schemas = require 'schemastore'.json.schemas(),
