@@ -61,8 +61,8 @@
 	path = ~/workspace/airs/.gitconfig
 [includeIf "gitdir:~/workspace/eisen/"]
 	path = ~/workspace/eisen/.gitconfig
-; [url "git@github.com:"]
-; 	insteadOf = https://github.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 [url "https://"]
 	insteadOf = git://
 [credential]
