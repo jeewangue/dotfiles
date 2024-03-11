@@ -20,6 +20,47 @@ return {
     },
   },
 
+  -- nvim-pack/nvim-spectre
+  {
+    'nvim-pack/nvim-spectre',
+    cmd = { 'Spectre', 'SpectreOpen', 'SpectreClose' },
+    keys = {
+      {
+        '<leader>sp',
+        function()
+          return require 'spectre'.toggle()
+        end,
+        desc = 'Spectre Toggle',
+      },
+      {
+        '<leader>sw',
+        function()
+          return require 'spectre'.open_visual { select_word = true }
+        end,
+        desc = 'Spectre open visual with word under the cursor',
+        mode = { 'n' },
+      },
+      {
+        '<leader>sw',
+        function()
+          return require 'spectre'.open_visual()
+        end,
+        desc = 'Spectre open visual with word under the cursor',
+        mode = { 'x' },
+      },
+      {
+        '<leader>sf',
+        function()
+          return require 'spectre'.open_file_search { select_word = true }
+        end,
+        desc = 'Spectre open file search',
+      },
+    },
+    config = function()
+      require 'spectre'.setup()
+    end,
+  },
+
 
   -- todo-comments.nvim
   {
@@ -312,7 +353,7 @@ return {
             -- -- macOs: open file in default application in the background.
             -- vim.fn.jobstart({ "xdg-open", "-g", path }, { detach = true })
             -- Linux: open file in default application
-            vim.fn.jobstart({ "xdg-open", path }, { detach = true })
+            vim.fn.jobstart({ 'xdg-open', path }, { detach = true })
           end
         },
       },

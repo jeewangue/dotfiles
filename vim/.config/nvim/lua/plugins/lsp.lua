@@ -140,7 +140,6 @@ return {
       -- lspconfig.csharp_ls.setup {
       --   capabilities = capabilities,
       -- }
-      
       lspconfig.gopls.setup {
         capabilities = capabilities,
         cmd = { 'gopls', 'serve' },
@@ -150,6 +149,7 @@ return {
               unusedparams = true,
             },
             staticcheck = true,
+            gofumpt = true,
           },
         },
       }
@@ -164,6 +164,8 @@ return {
           require 'clangd_extensions.inlay_hints'.setup_autocmd()
           require 'clangd_extensions.inlay_hints'.set_inlay_hints()
         end,
+
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
       }
 
       lspconfig.helm_ls.setup {
