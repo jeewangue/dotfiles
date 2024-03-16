@@ -105,6 +105,7 @@ return {
         'strace',
         'svelte',
         'swift',
+        'slint',
         'systemtap',
         'terraform',
         'thrift',

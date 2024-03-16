@@ -128,6 +128,8 @@ return {
       local lspconfig = require 'lspconfig'
       local handlers = require 'etc/lsp_handlers'
 
+      lspconfig.autotools_ls.setup{}
+
       lspconfig.cssls.setup {
         capabilities = capabilities,
       }
@@ -519,6 +521,7 @@ return {
         css = { 'prettier' },
         scss = { 'prettier' },
         sass = { 'prettier' },
+        cmake = { 'gersemi' },
       },
       formatters = {
         shfmt = {

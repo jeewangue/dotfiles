@@ -52,7 +52,7 @@ bindkey '[B' history-beginning-search-forward
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ############### before prompt ############
-taskbook
+# taskbook
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 

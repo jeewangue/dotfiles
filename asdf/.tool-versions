@@ -8,3 +8,4 @@ deno 1.26.1
 haskell 9.6.2
 bun 1.0.2
 gcloud 456.0.0
+protoc 26.0
